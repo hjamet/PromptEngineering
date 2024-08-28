@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "promptengineering"
+version = "0.1.0"
+description = "A web server enabling a class to experiment with prompt emgineering using small open-source models."
+authors = ["Henri Jamet <henri.jamet@epita.fr>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
