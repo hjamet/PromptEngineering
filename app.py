@@ -44,9 +44,12 @@ app = dash.Dash(
 # ---------------------------------------------------------------------------- #
 #                                 DEFINE USERS                                 #
 # ---------------------------------------------------------------------------- #
-USERS = [
-    {"name": "John Doe", "level": 1, "chat": Chat()},
-]
+USERS = {
+    "John Doe": {
+        "chat": Chat(),
+        "level": 1,
+    }
+}
 
 
 # Define layout function
@@ -96,12 +99,42 @@ def create_layout():
         style={"width": "100%", "maxWidth": "500px", "marginTop": "20px"},
     )
 
+    clean_chat_button = dmc.Button(
+        "Clean chat",
+        id="clean-chat-button",
+        leftSection=DashIconify(icon="mdi:broom", width=20),
+        variant="outline",
+        color="red",
+        mt="md",
+    )
+
+    history_button = dmc.Button(
+        "Historique",
+        id="history-button",
+        leftSection=DashIconify(icon="mdi:history", width=20),
+        variant="outline",
+        color="blue",
+        mt="md",
+    )
+
+    button_group = dmc.Group(
+        [clean_chat_button, history_button],
+        justify="center",
+        gap="md",
+    )
+
     paper_content = dmc.Paper(
         shadow="sm",
         p="xl",
         withBorder=True,
         style={"width": "100%", "maxWidth": "500px"},
-        children=[question_input, submit_button, output_text, model_response],
+        children=[
+            question_input,
+            submit_button,
+            output_text,
+            model_response,
+            button_group,
+        ],
     )
 
     # Modal for username input
@@ -197,10 +230,9 @@ def manage_modal_display(session_data: dict):
     """
     if session_data and "username" in session_data:
         username = session_data["username"]
-        user = next((user for user in USERS if user["name"] == username), None)
-        if not user:
+        if username not in USERS:
             # Create new user if not found
-            USERS.append({"name": username, "level": 1, "chat": Chat()})
+            USERS[username] = {"chat": Chat(), "level": 1}
 
         dash.set_props("username-modal", {"opened": False})
         dash.set_props(
@@ -237,10 +269,9 @@ def handle_username_input(
     Returns:
         None
     """
-    global USERS
     if (n_clicks or n_submit) and username:
-        if not any(user["name"] == username for user in USERS):
-            USERS.append({"name": username, "level": 1, "chat": Chat()})
+        if username not in USERS:
+            USERS[username] = {"chat": Chat(), "level": 1}
             dash.set_props("username-input", {"error": None})
             dash.set_props("session-store", {"data": {"username": username}})
         else:
@@ -262,7 +293,9 @@ def handle_username_input(
     ],
     prevent_initial_call=True,
 )
-def update_output(n_clicks, n_keydowns, value, session_data):
+def update_output(
+    n_clicks: int, n_keydowns: int, value: str, session_data: dict
+) -> str:
     """
     Update model response and refocus input.
 
@@ -275,11 +308,13 @@ def update_output(n_clicks, n_keydowns, value, session_data):
     Returns:
         str: Empty string to trigger clientside callback.
     """
+    global USERS
     if (n_clicks or n_keydowns) and value and session_data:
         username = session_data.get("username")
-        user = next((user for user in USERS if user["name"] == username), None)
-        if user:
-            response = user["chat"].ask(value)
+        if username in USERS:
+            chat = USERS[username]["chat"]
+            response = chat.ask(value)
+
             # Update model response
             dash.set_props("model-response", {"children": response})
         else:
@@ -292,7 +327,7 @@ def update_output(n_clicks, n_keydowns, value, session_data):
     return ""  # Trigger clientside callback
 
 
-# Ajoutez ce callback clientside
+# Trigger clientside callback
 app.clientside_callback(
     """
     function(trigger) {
@@ -308,25 +343,58 @@ app.clientside_callback(
 
 
 @app.callback(
-    dash.Input("submit-button", "n_clicks"),
-    dash.dependencies.Input("question-input", "n_submit"),
-    dash.dependencies.State("question-input", "value"),
+    Output("model-response", "children", allow_duplicate=True),
+    Input("clean-chat-button", "n_clicks"),
+    State("session-store", "data"),
     prevent_initial_call=True,
 )
-def update_output(n_clicks: int, n_submit: int, value: str):
+def clean_chat(n_clicks: int, session_data: dict) -> str:
     """
-    Update the output div when the submit button is clicked or Enter is pressed.
+    Clean the chat for the current user.
 
     Args:
-        n_clicks (int): Number of times the button has been clicked.
-        n_submit (int): Number of times the Enter key has been pressed in the input.
-        value (str): The input value from the text box.
+        n_clicks (int): Number of button clicks.
+        session_data (dict): Current session data.
+
+    Returns:
+        str: Confirmation message.
     """
-    if (n_clicks or n_submit) and value:
-        dash.set_props("output-div", {"children": f"Question envoyée : {value}"})
-        dash.set_props("question-input", {"value": ""})
-    else:
-        dash.set_props("output-div", {"children": ""})
+    if n_clicks and session_data:
+        username = session_data.get("username")
+        if username in USERS:
+            USERS[username]["chat"] = Chat()
+            return "Chat nettoyé. Vous pouvez commencer une nouvelle conversation."
+    return "Erreur lors du nettoyage du chat."
+
+
+@app.callback(
+    Output("model-response", "children", allow_duplicate=True),
+    Input("history-button", "n_clicks"),
+    State("session-store", "data"),
+    prevent_initial_call=True,
+)
+def show_history(n_clicks: int, session_data: dict) -> str:
+    """
+    Show chat history for the current user.
+
+    Args:
+        n_clicks (int): Number of button clicks.
+        session_data (dict): Current session data.
+
+    Returns:
+        str: Chat history or error message.
+    """
+    if n_clicks and session_data:
+        username = session_data.get("username")
+        if username in USERS:
+            history = USERS[username]["chat"].get_messages()
+            return "\n\n".join(
+                [
+                    f"Q: {msg.content}" if msg.role == "user" else f"A: {msg.content}"
+                    for msg in history
+                ]
+            )
+    return "Erreur lors de la récupération de l'historique."
 
 
 if __name__ == "__main__":
