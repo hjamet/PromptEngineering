@@ -3,10 +3,33 @@ import dash
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 from src.Chat import Chat
+from dash_extensions import Keyboard
+from dash import callback, Input, Output, State
+import time
 
 # Set React version
 os.environ["REACT_VERSION"] = "18.2.0"
 
+# Start background task manager
+background_callback_manager = None
+if "REDIS_URL" in os.environ:
+    # Use Redis & Celery if REDIS_URL set as an env variable
+    from celery import Celery
+
+    celery_app = Celery(
+        __name__,
+        broker=os.environ["REDIS_URL"],
+        backend=os.environ["REDIS_URL"],
+    )
+    background_callback_manager = dash.CeleryManager(celery_app)
+else:
+    # Diskcache for non-production apps when developing locally
+    import diskcache
+
+    cache = diskcache.Cache("./.cache")
+    background_callback_manager = dash.DiskcacheManager(cache)
+
+# Create the Dash app
 app = dash.Dash(
     __name__,
     external_stylesheets=[
@@ -16,6 +39,7 @@ app = dash.Dash(
         "https://cdn.jsdelivr.net/npm/@mantine/dropzone@5.10.4/dist/mantine-dropzone.min.css",
         "https://cdn.jsdelivr.net/npm/@mantine/spotlight@5.10.4/dist/mantine-spotlight.min.css",
     ],
+    background_callback_manager=background_callback_manager,
 )
 
 # ---------------------------------------------------------------------------- #
@@ -38,10 +62,16 @@ def create_layout():
     main_title = dmc.Title("Learn Prompt Engineering", order=1)
     sub_title = dmc.Title("Level 1", order=2, style={"color": "dimmed"})
 
-    question_input = dmc.TextInput(
-        id="question-input",
-        placeholder="Tapez votre question ici...",
-        style={"width": "100%"},
+    question_input = Keyboard(
+        id="keyboard",
+        captureKeys=["Enter"],
+        children=[
+            dmc.TextInput(
+                id="question-input",
+                placeholder="Tapez votre question ici...",
+                style={"width": "100%"},
+            )
+        ],
     )
 
     submit_button = dmc.Button(
@@ -152,7 +182,7 @@ app.layout = dmc.MantineProvider(
     dash.Input("session-store", "data"),
     prevent_initial_call=False,
 )
-def manage_modal_display(session_data):
+def manage_modal_display(session_data: dict):
     """
     Manage the display of the username modal and welcome alert.
 
@@ -163,11 +193,17 @@ def manage_modal_display(session_data):
         None
     """
     if session_data and "username" in session_data:
+        username = session_data["username"]
+        user = next((user for user in USERS if user["name"] == username), None)
+        if not user:
+            # Create new user if not found
+            USERS.append({"name": username, "level": 1, "chat": Chat()})
+
         dash.set_props("username-modal", {"opened": False})
         dash.set_props(
             "welcome-alert",
             {
-                "children": f"Bienvenue, {session_data['username']}!",
+                "children": f"Bienvenue, {username}!",
                 "style": {"display": "block"},
             },
         )
@@ -183,7 +219,9 @@ def manage_modal_display(session_data):
     dash.State("session-store", "data"),
     prevent_initial_call=True,
 )
-def handle_username_input(n_clicks, n_submit, username, session_data):
+def handle_username_input(
+    n_clicks: int, n_submit: int, username: str, session_data: dict
+):
     """
     Handle username input and update session data.
 
@@ -208,31 +246,41 @@ def handle_username_input(n_clicks, n_submit, username, session_data):
         dash.set_props("username-input", {"error": "Please enter a username"})
 
 
-@app.callback(
-    dash.dependencies.Output("model-response", "children"),
-    dash.dependencies.Input("submit-button", "n_clicks"),
-    dash.dependencies.Input("question-input", "n_submit"),
-    dash.dependencies.State("question-input", "value"),
-    dash.dependencies.State("session-store", "data"),
+@callback(
+    Output("model-response", "children"),
+    Output("question-input", "disabled"),
+    Input("submit-button", "n_clicks"),
+    Input("keyboard", "n_keydowns"),
+    State("question-input", "value"),
+    State("session-store", "data"),
+    background=True,
+    running=[
+        (Output("question-input", "disabled"), True, False),
+        (Output("submit-button", "disabled"), True, False),
+    ],
     prevent_initial_call=True,
 )
-def update_output(n_clicks: int, n_submit: int, value: str, session_data: dict):
+def update_output(n_clicks, n_keydowns, value, session_data):
     """
-    Update the output div and get model response when the submit button is clicked or Enter is pressed.
+    Update model response on button click or Enter key press.
+    Disable input while processing.
 
     Args:
-        n_clicks (int): Number of times the button has been clicked.
-        n_submit (int): Number of times the Enter key has been pressed in the input.
-        value (str): The input value from the text box.
-        session_data (dict): Current session data.
+        n_clicks: Button click count.
+        n_keydowns: Number of Enter key presses.
+        value: Input text value.
+        session_data: Current session data.
+
+    Returns:
+        Tuple: (Model response, Input disabled state)
     """
-    if (n_clicks or n_submit) and value and session_data:
+    if (n_clicks or n_keydowns) and value and session_data:
         username = session_data.get("username")
         user = next((user for user in USERS if user["name"] == username), None)
         if user:
             response = user["chat"].ask(value)
-            return response
-    return ""
+            return response, False
+    return "", False
 
 
 @app.callback(
