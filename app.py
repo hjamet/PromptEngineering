@@ -2,9 +2,11 @@ import os
 import dash
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
-from src.Chat import Chat
+from src.Chat import Chat, Message
 from dash_extensions import Keyboard
 from dash import callback, Input, Output, State
+from flask_caching import Cache
+import logging
 
 # Set React version
 os.environ["REACT_VERSION"] = "18.2.0"
@@ -41,15 +43,50 @@ app = dash.Dash(
     background_callback_manager=background_callback_manager,
 )
 
-# ---------------------------------------------------------------------------- #
-#                                 DEFINE USERS                                 #
-# ---------------------------------------------------------------------------- #
-USERS = {
-    "John Doe": {
-        "chat": Chat(),
-        "level": 1,
-    }
-}
+# Configurer Flask-Caching
+cache = Cache(
+    app.server,
+    config={
+        "CACHE_TYPE": "SimpleCache",  # Utiliser SimpleCache pour le développement
+        "CACHE_DEFAULT_TIMEOUT": 300,
+    },
+)
+
+# Clé unique pour le cache des utilisateurs
+USERS_CACHE_KEY = "all_users"
+
+# Configuration du logging
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+
+# Modifier la fonction get_cached_users
+def get_cached_users():
+    """
+    Retrieve users from cache.
+
+    Returns:
+        dict: A dictionary of users with their Chat instances.
+    """
+    users = cache.get(USERS_CACHE_KEY)
+    if users is None:
+        users = {"John Doe": {"chat": Chat(), "level": 1}}
+        cache.set(USERS_CACHE_KEY, users)
+    logging.debug(f"Retrieved users from cache: {users}")
+    return users
+
+
+# Modifier la fonction update_cached_users
+def update_cached_users(users):
+    """
+    Update users in cache.
+
+    Args:
+        users (dict): A dictionary of users to update in the cache.
+    """
+    cache.set(USERS_CACHE_KEY, users)
+    logging.debug(f"Updated users in cache: {users}")
 
 
 # Define layout function
@@ -230,9 +267,10 @@ def manage_modal_display(session_data: dict):
     """
     if session_data and "username" in session_data:
         username = session_data["username"]
-        if username not in USERS:
-            # Create new user if not found
-            USERS[username] = {"chat": Chat(), "level": 1}
+        users = get_cached_users()
+        if username not in users:
+            users[username] = {"chat": Chat(), "level": 1}
+            update_cached_users(users)
 
         dash.set_props("username-modal", {"opened": False})
         dash.set_props(
@@ -270,8 +308,10 @@ def handle_username_input(
         None
     """
     if (n_clicks or n_submit) and username:
-        if username not in USERS:
-            USERS[username] = {"chat": Chat(), "level": 1}
+        users = get_cached_users()
+        if username not in users:
+            users[username] = {"chat": Chat(), "level": 1}
+            update_cached_users(users)
             dash.set_props("username-input", {"error": None})
             dash.set_props("session-store", {"data": {"username": username}})
         else:
@@ -308,17 +348,23 @@ def update_output(
     Returns:
         str: Empty string to trigger clientside callback.
     """
-    global USERS
     if (n_clicks or n_keydowns) and value and session_data:
         username = session_data.get("username")
-        if username in USERS:
-            chat = USERS[username]["chat"]
+        users = get_cached_users()
+        if username in users:
+            chat = users[username]["chat"]
             response = chat.ask(value)
 
-            # Update model response
+            # Mettre à jour le chat de l'utilisateur
+            users[username]["chat"] = chat
+            update_cached_users(users)
+
+            # Mettre à jour la réponse du modèle
             dash.set_props("model-response", {"children": response})
+            logging.debug(f"Updated chat for user {username}: {chat.messages}")
         else:
             dash.set_props("model-response", {"children": "User not found"})
+            logging.warning(f"User not found: {username}")
     else:
         # Re-enable input if no response
         dash.set_props("question-input", {"disabled": False})
@@ -361,9 +407,13 @@ def clean_chat(n_clicks: int, session_data: dict) -> str:
     """
     if n_clicks and session_data:
         username = session_data.get("username")
-        if username in USERS:
-            USERS[username]["chat"] = Chat()
+        users = get_cached_users()
+        if username in users:
+            users[username]["chat"] = Chat()
+            update_cached_users(users)
+            logging.info(f"Cleaned chat for user {username}")
             return "Chat nettoyé. Vous pouvez commencer une nouvelle conversation."
+    logging.warning("Failed to clean chat")
     return "Erreur lors du nettoyage du chat."
 
 
@@ -386,14 +436,18 @@ def show_history(n_clicks: int, session_data: dict) -> str:
     """
     if n_clicks and session_data:
         username = session_data.get("username")
-        if username in USERS:
-            history = USERS[username]["chat"].get_messages()
-            return "\n\n".join(
+        users = get_cached_users()
+        if username in users:
+            chat = users[username]["chat"]
+            history = "\n\n".join(
                 [
                     f"Q: {msg.content}" if msg.role == "user" else f"A: {msg.content}"
-                    for msg in history
+                    for msg in chat.messages
                 ]
             )
+            logging.debug(f"Retrieved history for user {username}: {history}")
+            return history
+    logging.warning("Failed to retrieve chat history")
     return "Erreur lors de la récupération de l'historique."
 
 

@@ -2,6 +2,14 @@ import ollama
 from collections import namedtuple
 
 Message = namedtuple("Message", ["role", "content"])
+Message.__new__.__defaults__ = (None,) * len(Message._fields)
+
+
+def _asdict(self):
+    return {"role": self.role, "content": self.content}
+
+
+Message._asdict = _asdict
 
 
 class Chat:
