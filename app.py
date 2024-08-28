@@ -2,7 +2,7 @@ import os
 import dash
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
-
+from src.Chat import Chat
 
 # Set React version
 os.environ["REACT_VERSION"] = "18.2.0"
@@ -22,7 +22,7 @@ app = dash.Dash(
 #                                 DEFINE USERS                                 #
 # ---------------------------------------------------------------------------- #
 USERS = [
-    {"name": "John Doe", "level": 1},
+    {"name": "John Doe", "level": 1, "chat": Chat()},
 ]
 
 
@@ -59,12 +59,20 @@ def create_layout():
         mt="lg",
     )
 
+    model_response = dmc.Paper(
+        id="model-response",
+        shadow="sm",
+        p="md",
+        withBorder=True,
+        style={"width": "100%", "maxWidth": "500px", "marginTop": "20px"},
+    )
+
     paper_content = dmc.Paper(
         shadow="sm",
         p="xl",
         withBorder=True,
         style={"width": "100%", "maxWidth": "500px"},
-        children=[question_input, submit_button, output_text],
+        children=[question_input, submit_button, output_text, model_response],
     )
 
     # Modal for username input
@@ -191,7 +199,7 @@ def handle_username_input(n_clicks, n_submit, username, session_data):
     global USERS
     if (n_clicks or n_submit) and username:
         if not any(user["name"] == username for user in USERS):
-            USERS.append({"name": username, "level": 1})
+            USERS.append({"name": username, "level": 1, "chat": Chat()})
             dash.set_props("username-input", {"error": None})
             dash.set_props("session-store", {"data": {"username": username}})
         else:
@@ -201,7 +209,34 @@ def handle_username_input(n_clicks, n_submit, username, session_data):
 
 
 @app.callback(
+    dash.dependencies.Output("model-response", "children"),
     dash.dependencies.Input("submit-button", "n_clicks"),
+    dash.dependencies.Input("question-input", "n_submit"),
+    dash.dependencies.State("question-input", "value"),
+    dash.dependencies.State("session-store", "data"),
+    prevent_initial_call=True,
+)
+def update_output(n_clicks: int, n_submit: int, value: str, session_data: dict):
+    """
+    Update the output div and get model response when the submit button is clicked or Enter is pressed.
+
+    Args:
+        n_clicks (int): Number of times the button has been clicked.
+        n_submit (int): Number of times the Enter key has been pressed in the input.
+        value (str): The input value from the text box.
+        session_data (dict): Current session data.
+    """
+    if (n_clicks or n_submit) and value and session_data:
+        username = session_data.get("username")
+        user = next((user for user in USERS if user["name"] == username), None)
+        if user:
+            response = user["chat"].ask(value)
+            return response
+    return ""
+
+
+@app.callback(
+    dash.Input("submit-button", "n_clicks"),
     dash.dependencies.Input("question-input", "n_submit"),
     dash.dependencies.State("question-input", "value"),
     prevent_initial_call=True,
