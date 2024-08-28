@@ -1,6 +1,8 @@
 import os
 import dash
 import dash_mantine_components as dmc
+from dash_iconify import DashIconify
+
 
 # Set React version
 os.environ["REACT_VERSION"] = "18.2.0"
@@ -89,6 +91,16 @@ def create_layout():
         ],
     )
 
+    # Add welcome alert
+    welcome_alert = dmc.Alert(
+        id="welcome-alert",
+        title="Bienvenue!",
+        color="green",
+        icon=DashIconify(icon="mdi:emoticon-happy-outline", width=26, color="green"),
+        withCloseButton=True,
+        style={"display": "none"},
+    )
+
     return dmc.Box(
         style={
             "display": "flex",
@@ -105,7 +117,7 @@ def create_layout():
                         align="center",
                         justify="center",
                         gap="xl",
-                        children=[main_title, sub_title, paper_content],
+                        children=[main_title, sub_title, welcome_alert, paper_content],
                     )
                 ],
             ),
@@ -134,7 +146,7 @@ app.layout = dmc.MantineProvider(
 )
 def manage_modal_display(session_data):
     """
-    Manage the display of the username modal.
+    Manage the display of the username modal and welcome alert.
 
     Args:
         session_data (dict): Current session data.
@@ -145,11 +157,15 @@ def manage_modal_display(session_data):
     if session_data and "username" in session_data:
         dash.set_props("username-modal", {"opened": False})
         dash.set_props(
-            "output-div", {"children": f"Bienvenue, {session_data['username']}!"}
+            "welcome-alert",
+            {
+                "children": f"Bienvenue, {session_data['username']}!",
+                "style": {"display": "block"},
+            },
         )
     else:
         dash.set_props("username-modal", {"opened": True})
-        dash.set_props("output-div", {"children": ""})
+        dash.set_props("welcome-alert", {"style": {"display": "none"}})
 
 
 @app.callback(

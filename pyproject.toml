@@ -10,6 +10,7 @@ python = "^3.9"
 dash = "^2.17.1"
 ollama = "^0.3.2"
 dash-mantine-components = "^0.14.4"
+dash-iconify = "^0.1.2"
 
 
 [build-system]
