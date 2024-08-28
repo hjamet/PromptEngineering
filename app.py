@@ -5,7 +5,6 @@ from dash_iconify import DashIconify
 from src.Chat import Chat
 from dash_extensions import Keyboard
 from dash import callback, Input, Output, State
-import time
 
 # Set React version
 os.environ["REACT_VERSION"] = "18.2.0"
@@ -139,6 +138,9 @@ def create_layout():
         style={"display": "none"},
     )
 
+    # Hidden div for storing data
+    hidden_div = dash.html.Div(id="hidden-div", style={"display": "none"})
+
     return dmc.Box(
         style={
             "display": "flex",
@@ -160,6 +162,7 @@ def create_layout():
                 ],
             ),
             username_modal,
+            hidden_div,  # Added hidden_div to the layout
         ],
     )
 
@@ -247,6 +250,7 @@ def handle_username_input(
 
 
 @callback(
+    Output("hidden-div", "children"),
     Input("submit-button", "n_clicks"),
     Input("keyboard", "n_keydowns"),
     State("question-input", "value"),
@@ -260,14 +264,16 @@ def handle_username_input(
 )
 def update_output(n_clicks, n_keydowns, value, session_data):
     """
-    Update model response on button click or Enter key press.
-    Disable input while processing, then re-enable and clear it.
+    Update model response and refocus input.
 
     Args:
-        n_clicks: Button click count.
-        n_keydowns: Number of Enter key presses.
-        value: Input text value.
-        session_data: Current session data.
+        n_clicks (int): Button click count.
+        n_keydowns (int): Number of Enter key presses.
+        value (str): Input text value.
+        session_data (dict): Current session data.
+
+    Returns:
+        str: Empty string to trigger clientside callback.
     """
     if (n_clicks or n_keydowns) and value and session_data:
         username = session_data.get("username")
@@ -282,6 +288,23 @@ def update_output(n_clicks, n_keydowns, value, session_data):
         # Re-enable input if no response
         dash.set_props("question-input", {"disabled": False})
         dash.set_props("model-response", {"children": ""})
+
+    return ""  # Trigger clientside callback
+
+
+# Ajoutez ce callback clientside
+app.clientside_callback(
+    """
+    function(trigger) {
+        if(trigger !== null) {
+            document.getElementById("question-input").focus();
+        }
+        return null;
+    }
+    """,
+    Output("question-input", "value"),
+    Input("hidden-div", "children"),
+)
 
 
 @app.callback(
