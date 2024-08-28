@@ -9,8 +9,8 @@ class Chat:
         self.messages = []
         self.model = model
         try:
-            # Check if Ollama server is accessible and model exists
             ollama.show(model)
+            # Check if Ollama server is accessible and model exists
         except Exception as e:
             print(
                 f"Error: Unable to connect to Ollama server or model '{model}' not found."
