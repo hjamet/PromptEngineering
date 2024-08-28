@@ -247,8 +247,6 @@ def handle_username_input(
 
 
 @callback(
-    Output("model-response", "children"),
-    Output("question-input", "disabled"),
     Input("submit-button", "n_clicks"),
     Input("keyboard", "n_keydowns"),
     State("question-input", "value"),
@@ -263,24 +261,27 @@ def handle_username_input(
 def update_output(n_clicks, n_keydowns, value, session_data):
     """
     Update model response on button click or Enter key press.
-    Disable input while processing.
+    Disable input while processing, then re-enable and clear it.
 
     Args:
         n_clicks: Button click count.
         n_keydowns: Number of Enter key presses.
         value: Input text value.
         session_data: Current session data.
-
-    Returns:
-        Tuple: (Model response, Input disabled state)
     """
     if (n_clicks or n_keydowns) and value and session_data:
         username = session_data.get("username")
         user = next((user for user in USERS if user["name"] == username), None)
         if user:
             response = user["chat"].ask(value)
-            return response, False
-    return "", False
+            # Update model response
+            dash.set_props("model-response", {"children": response})
+        else:
+            dash.set_props("model-response", {"children": "User not found"})
+    else:
+        # Re-enable input if no response
+        dash.set_props("question-input", {"disabled": False})
+        dash.set_props("model-response", {"children": ""})
 
 
 @app.callback(
