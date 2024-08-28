@@ -129,68 +129,59 @@ app.layout = dmc.MantineProvider(
 
 
 @app.callback(
-    dash.Output("username-modal", "opened"),
-    dash.Output("output-div", "children"),
     dash.Input("session-store", "data"),
     prevent_initial_call=False,
 )
-def check_username(session_data):
+def manage_modal_display(session_data):
     """
-    Check if the user has a username in the session data and open the modal if not.
+    Manage the display of the username modal.
 
     Args:
         session_data (dict): Current session data.
 
     Returns:
-        tuple: (bool, str) Modal opened state and welcome message.
+        None
     """
     if session_data and "username" in session_data:
-        return False, f"Bienvenue, {session_data['username']}!"
-    return True, ""
+        dash.set_props("username-modal", {"opened": False})
+        dash.set_props(
+            "output-div", {"children": f"Bienvenue, {session_data['username']}!"}
+        )
+    else:
+        dash.set_props("username-modal", {"opened": True})
+        dash.set_props("output-div", {"children": ""})
 
 
 @app.callback(
-    dash.dependencies.Input("confirm-username", "n_clicks"),
-    dash.dependencies.Input("username-input", "n_submit"),
-    dash.dependencies.State("username-input", "value"),
-    dash.dependencies.State("session-store", "data"),
-    prevent_initial_call=False,
+    dash.Input("confirm-username", "n_clicks"),
+    dash.Input("username-input", "n_submit"),
+    dash.State("username-input", "value"),
+    dash.State("session-store", "data"),
+    prevent_initial_call=True,
 )
-def handle_username_modal(n_clicks, n_submit, username, session_data):
+def handle_username_input(n_clicks, n_submit, username, session_data):
     """
-    Handle the username modal opening/closing and display welcome message.
+    Handle username input and update session data.
 
     Args:
         n_clicks (int): Number of confirm button clicks.
         n_submit (int): Number of Enter key presses in input.
         username (str): Input value from username text box.
         session_data (dict): Current session data.
+
+    Returns:
+        None
     """
     global USERS
-    ctx = dash.callback_context
-    if not ctx.triggered:
-        if session_data and "username" in session_data:
-            dash.set_props("username-modal", {"opened": False})
-            dash.set_props(
-                "output-div", {"children": f"Bienvenue, {session_data['username']}!"}
-            )
-            return
-        else:
-            dash.set_props("username-modal", {"opened": True})
-            return
-
     if (n_clicks or n_submit) and username:
         if not any(user["name"] == username for user in USERS):
             USERS.append({"name": username, "level": 1})
-            dash.set_props("username-modal", {"opened": False})
             dash.set_props("username-input", {"error": None})
             dash.set_props("session-store", {"data": {"username": username}})
-            dash.set_props("output-div", {"children": f"Bienvenue, {username}!"})
         else:
-            dash.set_props("username-modal", {"opened": True})
             dash.set_props("username-input", {"error": "Username already exists"})
     else:
-        dash.set_props("username-modal", {"opened": True})
+        dash.set_props("username-input", {"error": "Please enter a username"})
 
 
 @app.callback(
