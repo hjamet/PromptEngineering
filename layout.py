@@ -17,14 +17,17 @@ def create_layout():
 
     question_input = Keyboard(
         id="keyboard",
-        captureKeys=["Enter"],
+        captureKeys=[{"key": "Enter", "ctrlKey": False, "shiftKey": False}],  # Modifié
         children=[
-            dmc.TextInput(
+            dmc.Textarea(
                 id="question-input",
                 placeholder="Type your question here...",
-                style={"width": "100%"},
+                style={"width": "100%", "resize": "vertical"},
+                autosize=True,
+                minRows=2,
             )
         ],
+        style={"width": "100%"},
     )
 
     submit_button = dmc.Button(
@@ -87,7 +90,7 @@ def create_layout():
         shadow="sm",
         p="xl",
         withBorder=True,
-        style={"width": "100%", "maxWidth": "500px"},
+        style={"width": "100%", "maxWidth": "800px"},  # Augmenté de 500px à 800px
         children=[
             question_input,
             submit_button,
@@ -138,13 +141,16 @@ def create_layout():
         },
         children=[
             dmc.Container(
-                size="sm",
+                size="lg",  # Changé de "sm" à "lg"
                 children=[
                     dmc.Stack(
                         align="center",
                         justify="center",
                         gap="xl",
                         children=[main_title, sub_title, welcome_alert, paper_content],
+                        style={
+                            "width": "100%"
+                        },  # Ajouté pour s'assurer que la pile prend toute la largeur
                     )
                 ],
             ),

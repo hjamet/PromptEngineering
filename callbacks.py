@@ -64,10 +64,23 @@ def register_callbacks(app):
             (Output("question-input", "disabled"), True, False),
             (Output("submit-button", "disabled"), True, False),
             (Output("loading-overlay", "visible"), True, False),
+            (Output("model-response", "children"), "", ""),
         ],
         prevent_initial_call=True,
     )
     def update_output(n_clicks: int, n_keydowns: int, value: str, session_id: str):
+        """
+        Update the chat output based on user input.
+
+        Args:
+            n_clicks (int): Number of button clicks.
+            n_keydowns (int): Number of key presses.
+            value (str): User input text.
+            session_id (str): Session identifier.
+
+        Returns:
+            tuple: Contains the model response, updated input value, and loading state.
+        """
         if (n_clicks or n_keydowns) and value and session_id:
             user_data = get_user_data(cache, session_id)
             chat = user_data["chat"]
@@ -76,8 +89,12 @@ def register_callbacks(app):
             user_data["chat"] = chat
             update_user_data(cache, session_id, user_data)
             logger.debug(f"Updated chat for session {session_id}")
-            return response, "", False
-        logger.warning("Invalid input for update_output")
+
+            # Ensure response is a string before returning
+            if isinstance(response, str):
+                return response, "", False
+            else:
+                return str(response), "", False  # Convert to string if not already
         return dash.no_update, dash.no_update, False
 
     @app.callback(
