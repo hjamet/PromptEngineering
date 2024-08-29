@@ -1,6 +1,7 @@
 import dash
 import dash_mantine_components as dmc
 from dash import Input, Output, State, callback, clientside_callback
+from dash_iconify import DashIconify
 
 from cache_manager import generate_session_id, get_user_data, update_user_data
 from src.Chat import Chat
@@ -166,22 +167,37 @@ def register_callbacks(app):
             session_id (str): Session ID.
 
         Returns:
-            tuple: (bool, dmc.Text) Drawer opened state and history content.
+            tuple: (bool, list) Drawer opened state and history content.
         """
         if n_clicks is None:
-            return False, dmc.Text("")
+            return False, []
 
         if session_id:
             user_data = get_user_data(cache, session_id)
             chat = user_data["chat"]
-            history = "\n\n".join(
-                [
-                    (f"Q: {msg.content}" if msg.role == "user" else f"A: {msg.content}")
-                    for msg in chat.messages
-                ]
-            )
-            logger.debug(f"Retrieved history for session {session_id}: {history}")
-            return True, dmc.Text(history)
+            history_blocks = []
+
+            for msg in chat.messages:
+                if msg.role == "user":
+                    icon = DashIconify(
+                        icon="emojione:smiling-face-with-sunglasses", width=24
+                    )
+                    color = "blue"
+                else:
+                    icon = DashIconify(icon="emojione:robot-face", width=24)
+                    color = "green"
+
+                history_blocks.append(
+                    dmc.Blockquote(
+                        msg.content,
+                        icon=icon,
+                        color=color,
+                        mt="md",
+                    )
+                )
+
+            logger.debug(f"Retrieved history for session {session_id}")
+            return True, history_blocks
 
         logger.warning("Failed to retrieve chat history")
-        return False, dmc.Text("Error while retrieving chat history.")
+        return False, [dmc.Text("Error while retrieving chat history.")]

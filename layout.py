@@ -146,7 +146,7 @@ def create_layout():
             dmc.ScrollArea(
                 id="history-content",
                 style={"height": "calc(100vh - 60px)"},
-                children=[dmc.Text("")],
+                children=[],  # Contenu sera rempli par le callback
             )
         ],
     )
