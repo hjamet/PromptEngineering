@@ -1,0 +1,102 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Poetry
+poetry.lock
+
+# Dash and Flask caches
+.dash_cache/
+instance/
+.webassets-cache
+
+# Logs
+logs/
+*.log
+
+# Caches
+cache-directory/
+.cache/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Redis
+dump.rdb
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific
+.cache/
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Database
+*.sqlite
+
+# Diskcache
+.diskcache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Large data files (if any)
+*.csv
+*.json
+*.pkl
+
+# Environment variables
+.env
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ollama specific (if needed)
+ollama_models/
+
+# Project specific
+cache-directory/
+*.pyc
+
+# Dash specific
+assets/

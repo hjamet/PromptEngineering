@@ -137,6 +137,20 @@ def create_layout():
         dcc.Store(id="session-store", storage_type="session"),
     ]
 
+    history_drawer = dmc.Drawer(
+        id="history-drawer",
+        size="xl",
+        padding="md",
+        title="Chat History",
+        children=[
+            dmc.ScrollArea(
+                id="history-content",
+                style={"height": "calc(100vh - 60px)"},
+                children=[dmc.Text("")],
+            )
+        ],
+    )
+
     return dmc.Box(
         style={
             "display": "flex",
@@ -165,5 +179,6 @@ def create_layout():
             username_modal,
             hidden_div,
             *session_stores,  # Utiliser l'unpacking pour ajouter les deux stores
+            history_drawer,  # Ajout du drawer ici
         ],
     )

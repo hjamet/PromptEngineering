@@ -1,7 +1,9 @@
 import dash
+import dash_mantine_components as dmc
 from dash import Input, Output, State, callback, clientside_callback
+
+from cache_manager import generate_session_id, get_user_data, update_user_data
 from src.Chat import Chat
-from cache_manager import get_user_data, update_user_data, generate_session_id
 from src.Logger import Logger
 
 logger = Logger(__name__).get_logger()
@@ -151,13 +153,25 @@ def register_callbacks(app):
         return "Error while cleaning the chat."
 
     @app.callback(
-        Output("model-response", "children", allow_duplicate=True),
-        Input("history-button", "n_clicks"),
-        State("session-id", "data"),
-        prevent_initial_call=True,
+        [Output("history-drawer", "opened"), Output("history-content", "children")],
+        [Input("history-button", "n_clicks")],
+        [State("session-id", "data")],
     )
-    def show_history(n_clicks, session_id):
-        if n_clicks and session_id:
+    def toggle_history_drawer(n_clicks, session_id):
+        """
+        Toggle the history drawer and update its content.
+
+        Args:
+            n_clicks (int): Number of clicks on the history button.
+            session_id (str): Session ID.
+
+        Returns:
+            tuple: (bool, dmc.Text) Drawer opened state and history content.
+        """
+        if n_clicks is None:
+            return False, dmc.Text("")
+
+        if session_id:
             user_data = get_user_data(cache, session_id)
             chat = user_data["chat"]
             history = "\n\n".join(
@@ -167,6 +181,7 @@ def register_callbacks(app):
                 ]
             )
             logger.debug(f"Retrieved history for session {session_id}: {history}")
-            return history
+            return True, dmc.Text(history)
+
         logger.warning("Failed to retrieve chat history")
-        return "Error while retrieving chat history."
+        return False, dmc.Text("Error while retrieving chat history.")
