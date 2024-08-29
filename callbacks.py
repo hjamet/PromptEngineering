@@ -1,5 +1,5 @@
 import dash
-from dash import Input, Output, State, callback
+from dash import Input, Output, State, callback, clientside_callback
 from src.Chat import Chat
 from cache_manager import get_user_data, update_user_data, generate_session_id
 from src.Logger import Logger
@@ -70,6 +70,7 @@ def register_callbacks(app):
         Output("model-response", "children"),
         Output("question-input", "value"),
         Output("loading-overlay", "visible"),
+        Output("hidden-div", "children"),
         Input("submit-button", "n_clicks"),
         Input("keyboard", "n_keydowns"),
         State("question-input", "value"),
@@ -79,7 +80,11 @@ def register_callbacks(app):
             (Output("question-input", "disabled"), True, False),
             (Output("submit-button", "disabled"), True, False),
             (Output("loading-overlay", "visible"), True, False),
-            (Output("model-response", "children"), "", ""),
+            (
+                Output("model-response", "children"),
+                "",
+                "",
+            ),  # Don't put no_update here, it will break the callback
         ],
         prevent_initial_call=True,
     )
@@ -94,7 +99,7 @@ def register_callbacks(app):
             session_id (str): Session identifier.
 
         Returns:
-            tuple: Contains the model response, updated input value, and loading state.
+            tuple: Contains the model response, updated input value, loading state, and focus trigger.
         """
         if (n_clicks or n_keydowns) and value and session_id:
             user_data = get_user_data(cache, session_id)
@@ -105,12 +110,29 @@ def register_callbacks(app):
             update_user_data(cache, session_id, user_data)
             logger.debug(f"Updated chat for session {session_id}")
 
-            # Ensure response is a string before returning
-            if isinstance(response, str):
-                return response, "", False
-            else:
-                return str(response), "", False  # Convert to string if not already
-        return dash.no_update, dash.no_update, False
+            return str(response), "", False, "trigger_focus"
+        return dash.no_update, "", False, dash.no_update
+
+    # Clientside callback to handle focus
+    app.clientside_callback(
+        """
+        function(trigger) {
+            if(trigger === "trigger_focus") {
+                setTimeout(() => {
+                    const input = document.getElementById("question-input");
+                    if (input) {
+                        input.focus();
+                        input.select();
+                    }
+                }, 100);
+            }
+            return window.dash_clientside.no_update;
+        }
+        """,
+        Output("question-input", "value", allow_duplicate=True),
+        Input("hidden-div", "children"),
+        prevent_initial_call=True,
+    )
 
     @app.callback(
         Output("model-response", "children", allow_duplicate=True),

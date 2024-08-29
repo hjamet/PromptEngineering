@@ -1534,3 +1534,105 @@ A: Touché ! Effectivement, je suis considéré comme "jeune" par rapport à la 
 2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
 2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
 2024-08-29 12:54:45,725 - callbacks - INFO - [callbacks.py:126] - Cleaned chat for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c
+2024-08-29 13:00:31,167 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:31,169 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:31,169 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:31,169 - callbacks - INFO - [callbacks.py:26] - New session created: f4edc1ae-8b60-4b7f-90c5-20ecee3f09dc
+2024-08-29 13:00:34,427 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:34,427 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:34,427 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:34,429 - callbacks - INFO - [callbacks.py:64] - Username set for session f4edc1ae-8b60-4b7f-90c5-20ecee3f09dc: coucou
+2024-08-29 13:00:34,462 - callbacks - DEBUG - [callbacks.py:30] - User coucou logged in
+2024-08-29 13:00:37,924 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:37,924 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:37,924 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:37,924 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:00:37,926 - callbacks - INFO - [callbacks.py:107] - User sent message: Coucou !
+2024-08-29 13:00:37,926 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou !
+2024-08-29 13:00:37,926 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou !
+2024-08-29 13:00:37,926 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou !
+2024-08-29 13:00:37,926 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou !
+2024-08-29 13:00:54,414 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 13:00:54,414 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 13:00:54,414 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 13:00:54,414 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 13:00:54,417 - callbacks - DEBUG - [callbacks.py:111] - Updated chat for session f4edc1ae-8b60-4b7f-90c5-20ecee3f09dc
+2024-08-29 13:01:03,245 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:01:03,245 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:01:03,245 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:01:03,245 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:01:03,246 - callbacks - INFO - [callbacks.py:107] - User sent message: Super bien !
+2024-08-29 13:01:03,247 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Super bien !
+2024-08-29 13:01:03,247 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Super bien !
+2024-08-29 13:01:03,247 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Super bien !
+2024-08-29 13:01:03,247 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Super bien !
+2024-08-29 13:01:03,959 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Je suis content pour toi ! Qu'est-ce qui fait de cette journée un jour super spécial ?
+2024-08-29 13:01:03,959 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Je suis content pour toi ! Qu'est-ce qui fait de cette journée un jour super spécial ?
+2024-08-29 13:01:03,959 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Je suis content pour toi ! Qu'est-ce qui fait de cette journée un jour super spécial ?
+2024-08-29 13:01:03,959 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Je suis content pour toi ! Qu'est-ce qui fait de cette journée un jour super spécial ?
+2024-08-29 13:01:03,963 - callbacks - DEBUG - [callbacks.py:111] - Updated chat for session f4edc1ae-8b60-4b7f-90c5-20ecee3f09dc
+2024-08-29 13:03:47,712 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:47,714 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:47,714 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:47,714 - callbacks - INFO - [callbacks.py:26] - New session created: c9cebfd5-183a-4d54-beeb-3ce520f16658
+2024-08-29 13:03:50,475 - callbacks - WARNING - [callbacks.py:50] - Username 'coucou' is already taken
+2024-08-29 13:03:52,680 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:52,680 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:52,680 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:52,683 - callbacks - INFO - [callbacks.py:64] - Username set for session c9cebfd5-183a-4d54-beeb-3ce520f16658: test
+2024-08-29 13:03:52,699 - callbacks - DEBUG - [callbacks.py:30] - User test logged in
+2024-08-29 13:03:58,654 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:58,654 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:58,654 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:58,654 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:03:58,656 - callbacks - INFO - [callbacks.py:107] - User sent message: Coucou
+ça va ?
+2024-08-29 13:03:58,656 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou
+ça va ?
+2024-08-29 13:03:58,656 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou
+ça va ?
+2024-08-29 13:03:58,656 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou
+ça va ?
+2024-08-29 13:03:58,656 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou
+ça va ?
+2024-08-29 13:04:00,323 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Ça va bien, merci de demander ! Je suis un modèle de langage artificiel, donc je n'ai pas vraiment de vie personnelle, mais je suis toujours prêt à discuter et à répondre à tes questions. Qu'est-ce que tu veux parler aujourd'hui ?
+2024-08-29 13:04:00,323 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Ça va bien, merci de demander ! Je suis un modèle de langage artificiel, donc je n'ai pas vraiment de vie personnelle, mais je suis toujours prêt à discuter et à répondre à tes questions. Qu'est-ce que tu veux parler aujourd'hui ?
+2024-08-29 13:04:00,323 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Ça va bien, merci de demander ! Je suis un modèle de langage artificiel, donc je n'ai pas vraiment de vie personnelle, mais je suis toujours prêt à discuter et à répondre à tes questions. Qu'est-ce que tu veux parler aujourd'hui ?
+2024-08-29 13:04:00,323 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Ça va bien, merci de demander ! Je suis un modèle de langage artificiel, donc je n'ai pas vraiment de vie personnelle, mais je suis toujours prêt à discuter et à répondre à tes questions. Qu'est-ce que tu veux parler aujourd'hui ?
+2024-08-29 13:04:00,326 - callbacks - DEBUG - [callbacks.py:111] - Updated chat for session c9cebfd5-183a-4d54-beeb-3ce520f16658
+2024-08-29 13:04:06,665 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:06,665 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:06,665 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:06,665 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:06,667 - callbacks - INFO - [callbacks.py:107] - User sent message: Impeccable !
+2024-08-29 13:04:06,668 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Impeccable !
+2024-08-29 13:04:06,668 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Impeccable !
+2024-08-29 13:04:06,668 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Impeccable !
+2024-08-29 13:04:06,668 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Impeccable !
+2024-08-29 13:04:08,478 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Magnifique !
+
+Je suis ravi que nous partagions un moment en français, ça me fait plaisir de voir que les langues vivent encore ! Qu'est-ce qui t'a amené ici aujourd'hui ? Une petite conversation pour passer le temps ou une question spécifique à résoudre ?
+2024-08-29 13:04:08,478 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Magnifique !
+
+Je suis ravi que nous partagions un moment en français, ça me fait plaisir de voir que les langues vivent encore ! Qu'est-ce qui t'a amené ici aujourd'hui ? Une petite conversation pour passer le temps ou une question spécifique à résoudre ?
+2024-08-29 13:04:08,478 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Magnifique !
+
+Je suis ravi que nous partagions un moment en français, ça me fait plaisir de voir que les langues vivent encore ! Qu'est-ce qui t'a amené ici aujourd'hui ? Une petite conversation pour passer le temps ou une question spécifique à résoudre ?
+2024-08-29 13:04:08,478 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Magnifique !
+
+Je suis ravi que nous partagions un moment en français, ça me fait plaisir de voir que les langues vivent encore ! Qu'est-ce qui t'a amené ici aujourd'hui ? Une petite conversation pour passer le temps ou une question spécifique à résoudre ?
+2024-08-29 13:04:08,482 - callbacks - DEBUG - [callbacks.py:111] - Updated chat for session c9cebfd5-183a-4d54-beeb-3ce520f16658
+2024-08-29 13:04:14,120 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:14,120 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:14,120 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:14,120 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 13:04:14,122 - callbacks - DEBUG - [callbacks.py:169] - Retrieved history for session c9cebfd5-183a-4d54-beeb-3ce520f16658: Q: Coucou
+ça va ?
+
+A: Coucou ! Ça va bien, merci de demander ! Je suis un modèle de langage artificiel, donc je n'ai pas vraiment de vie personnelle, mais je suis toujours prêt à discuter et à répondre à tes questions. Qu'est-ce que tu veux parler aujourd'hui ?
+
+Q: Impeccable !
+
+A: Magnifique !
+
+Je suis ravi que nous partagions un moment en français, ça me fait plaisir de voir que les langues vivent encore ! Qu'est-ce qui t'a amené ici aujourd'hui ? Une petite conversation pour passer le temps ou une question spécifique à résoudre ?
