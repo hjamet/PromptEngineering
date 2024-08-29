@@ -2,6 +2,7 @@ import dash
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 from dash_extensions import Keyboard
+from dash import dcc
 
 
 def create_layout():
@@ -108,6 +109,12 @@ def create_layout():
 
     hidden_div = dash.html.Div(id="hidden-div", style={"display": "none"})
 
+    # Modifier cette ligne pour inclure les deux stores
+    session_stores = [
+        dcc.Store(id="session-id", storage_type="session"),
+        dcc.Store(id="session-store", storage_type="session"),
+    ]
+
     return dmc.Box(
         style={
             "display": "flex",
@@ -130,5 +137,6 @@ def create_layout():
             ),
             username_modal,
             hidden_div,
+            *session_stores,  # Utiliser l'unpacking pour ajouter les deux stores
         ],
     )

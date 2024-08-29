@@ -145,3 +145,174 @@
 2024-08-28 23:33:34,082 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
 2024-08-28 23:33:34,082 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
 2024-08-28 23:33:34,084 - callbacks - DEBUG - [callbacks.py:26] - User toto logged in
+2024-08-28 23:36:33,704 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-28 23:36:35,736 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-28 23:36:36,950 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-28 23:36:36,951 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:36:36,951 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:36:36,952 - callbacks - INFO - [callbacks.py:25] - New user created: toto
+2024-08-28 23:36:36,952 - callbacks - DEBUG - [callbacks.py:26] - User toto logged in
+2024-08-28 23:36:36,952 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:36:36,952 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:36:47,553 - callbacks - INFO - [callbacks.py:75] - User toto sent message: Coucou
+2024-08-28 23:36:47,554 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: Coucou
+2024-08-28 23:36:47,554 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: Coucou
+2024-08-28 23:36:47,554 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: Coucou
+2024-08-28 23:36:55,884 - callbacks - DEBUG - [callbacks.py:26] - User toto logged in
+2024-08-28 23:37:02,382 - callbacks - INFO - [callbacks.py:75] - User toto sent message: coucou
+2024-08-28 23:37:03,011 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: coucou
+2024-08-28 23:37:03,011 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: coucou
+2024-08-28 23:37:03,011 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: coucou
+2024-08-28 23:37:05,114 - src.Chat - DEBUG - [Chat.py:139] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-28 23:37:05,114 - src.Chat - DEBUG - [Chat.py:139] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-28 23:37:05,114 - src.Chat - DEBUG - [Chat.py:139] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-28 23:37:05,116 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,116 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,116 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,116 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,117 - callbacks - DEBUG - [callbacks.py:79] - Updated chat for user toto: [Message(role='user', content='Coucou'), Message(role='assistant', content="Coucou ! Comment vas-tu aujourd'hui ?")]
+2024-08-28 23:37:05,118 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,118 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,118 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,118 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:05,456 - src.Chat - DEBUG - [Chat.py:139] - Received response from Ollama: Coucou ! Comment vas-tu ?
+2024-08-28 23:37:05,456 - src.Chat - DEBUG - [Chat.py:139] - Received response from Ollama: Coucou ! Comment vas-tu ?
+2024-08-28 23:37:05,456 - src.Chat - DEBUG - [Chat.py:139] - Received response from Ollama: Coucou ! Comment vas-tu ?
+2024-08-28 23:37:11,207 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:11,207 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:11,207 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:11,207 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-28 23:37:14,308 - callbacks - DEBUG - [callbacks.py:79] - Updated chat for user toto: [Message(role='user', content='coucou'), Message(role='assistant', content='Coucou ! Comment vas-tu ?')]
+2024-08-28 23:37:58,766 - callbacks - INFO - [callbacks.py:75] - User toto sent message: super et toi ?
+2024-08-28 23:38:08,218 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: super et toi ?
+2024-08-28 23:38:08,218 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: super et toi ?
+2024-08-28 23:38:08,218 - src.Chat - DEBUG - [Chat.py:123] - Sending message to Ollama: super et toi ?
+2024-08-29 10:07:05,207 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-29 10:07:07,216 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-29 10:07:09,008 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:07:09,011 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-29 10:07:13,734 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-29 10:07:13,734 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-29 10:07:15,740 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-29 10:07:15,740 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-29 10:07:15,748 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:07:15,748 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:07:15,753 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-29 10:07:15,753 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-29 10:08:19,341 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-29 10:08:21,348 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-29 10:08:22,502 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:08:22,503 - callbacks - INFO - [callbacks.py:23] - New session created: 355c8fc1-b594-4ccb-8d6a-ffa75a6f7244
+2024-08-29 10:31:11,337 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-29 10:31:13,346 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-29 10:31:15,888 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:31:15,891 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-29 10:31:21,299 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-29 10:31:21,299 - src.Chat - INFO - [Chat.py:66] - Attempting to start Ollama server...
+2024-08-29 10:31:23,305 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-29 10:31:23,305 - src.Chat - INFO - [Chat.py:73] - Ollama server started or was already running.
+2024-08-29 10:31:23,313 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:31:23,313 - src.Chat - INFO - [Chat.py:43] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:31:23,319 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-29 10:31:23,319 - src.Chat - INFO - [Chat.py:101] - Chat instance is being destroyed.
+2024-08-29 10:34:13,600 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:34:15,069 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:34:15,069 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:34:15,607 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:34:15,607 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:34:16,725 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:34:16,725 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:34:17,075 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:34:17,075 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:34:17,083 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:34:17,083 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:36:32,906 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:32,906 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:32,906 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:43,747 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:45,754 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:36:46,934 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:36:46,937 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:46,937 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:48,943 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:36:48,943 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:36:48,950 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:36:48,950 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:36:54,708 - callbacks - INFO - [callbacks.py:26] - New session created: c99f9580-b5e3-4c02-8f20-b793a39d200b
+2024-08-29 10:36:59,410 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:59,410 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:36:59,410 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:37:01,416 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:37:01,416 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:37:01,416 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:37:01,423 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:37:01,423 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:37:01,423 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:37:01,425 - callbacks - INFO - [callbacks.py:49] - Username set for session c99f9580-b5e3-4c02-8f20-b793a39d200b: toto
+2024-08-29 10:37:01,446 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 10:37:59,372 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:38:01,407 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:38:02,583 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:38:02,584 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:38:02,584 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:38:04,590 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:38:04,590 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:38:04,597 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:38:04,597 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:38:04,598 - callbacks - INFO - [callbacks.py:26] - New session created: f1d85435-d9c0-436b-87dd-3e3cc80abcf8
+2024-08-29 10:38:28,114 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:38:28,114 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:38:28,114 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:38:30,120 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:38:30,120 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:38:30,120 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:38:30,127 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:38:30,127 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:38:30,127 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:38:30,130 - callbacks - INFO - [callbacks.py:49] - Username set for session f1d85435-d9c0-436b-87dd-3e3cc80abcf8: toto
+2024-08-29 10:38:30,148 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 10:51:56,495 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 10:54:44,537 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 10:55:01,286 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:55:03,293 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:55:04,583 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:55:04,585 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:55:04,585 - src.Chat - INFO - [Chat.py:58] - Attempting to start Ollama server...
+2024-08-29 10:55:06,590 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:55:06,590 - src.Chat - INFO - [Chat.py:65] - Ollama server started or was already running.
+2024-08-29 10:55:06,599 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:55:06,599 - src.Chat - INFO - [Chat.py:35] - Successfully connected to Ollama server and loaded model 'llama3:instruct'.
+2024-08-29 10:55:18,656 - callbacks - INFO - [callbacks.py:72] - User sent message: Coucou !
+2024-08-29 10:55:20,839 - src.Chat - DEBUG - [Chat.py:91] - Sending message to Ollama: Coucou !
+2024-08-29 10:55:20,839 - src.Chat - DEBUG - [Chat.py:91] - Sending message to Ollama: Coucou !
+2024-08-29 10:59:33,172 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 10:59:45,543 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 10:59:52,554 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 10:59:55,600 - callbacks - INFO - [callbacks.py:72] - User sent message: Coucou !
+2024-08-29 10:59:56,441 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou !
+2024-08-29 11:00:14,287 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu ?
+2024-08-29 11:00:34,969 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:34,969 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:40,300 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:40,300 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:40,300 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:45,122 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:45,122 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:45,122 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:45,122 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:00:50,408 - callbacks - DEBUG - [callbacks.py:76] - Updated chat for session f1d85435-d9c0-436b-87dd-3e3cc80abcf8
+2024-08-29 11:01:00,329 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:01:11,745 - callbacks - INFO - [callbacks.py:72] - User sent message: Super et toi ?
+2024-08-29 11:01:11,746 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Super et toi ?
+2024-08-29 11:01:13,428 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Je vais bien, merci ! Je suis un modèle de langage artificiel, donc je n'ai pas vraiment d'émotions ou de sentiments comme les humains, mais je suis toujours prêt à discuter et à jouer avec toi ! Qu'est-ce que tu veux faire aujourd'hui ?
+2024-08-29 11:01:13,433 - callbacks - DEBUG - [callbacks.py:76] - Updated chat for session f1d85435-d9c0-436b-87dd-3e3cc80abcf8
+2024-08-29 11:01:25,481 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:01:25,482 - callbacks - INFO - [callbacks.py:72] - User sent message: Tu te souviens de ma première question ?
+2024-08-29 11:01:25,483 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu te souviens de ma première question ?
+2024-08-29 11:01:28,212 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Non, je ne me souviens pas de ta première question. Comme modèle de langage artificiel, j'ai une mémoire vive mais elle est limitée dans le temps et elle n'est pas permanente. Chaque fois que tu m'interroges, c'est un nouveau dialogue et je n'ai plus d'informations sur les échanges précédents. Mais si tu veux me rappeler ta première question, je suis prêt à l'entendre !
+2024-08-29 11:01:28,214 - callbacks - DEBUG - [callbacks.py:76] - Updated chat for session f1d85435-d9c0-436b-87dd-3e3cc80abcf8
+2024-08-29 11:01:48,521 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 11:01:48,522 - callbacks - INFO - [callbacks.py:72] - User sent message: Rappelle moi mon dernier message s'il te plaît
+2024-08-29 11:01:48,522 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Rappelle moi mon dernier message s'il te plaît
+2024-08-29 11:01:49,555 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ton dernier message était : "Super et toi ?"
+2024-08-29 11:01:49,557 - callbacks - DEBUG - [callbacks.py:76] - Updated chat for session f1d85435-d9c0-436b-87dd-3e3cc80abcf8

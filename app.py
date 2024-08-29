@@ -4,9 +4,11 @@ from dash_extensions import Keyboard
 from flask_caching import Cache
 import logging
 import dash_mantine_components as dmc
-from cache_manager import configure_cache, get_cached_users, update_cached_users
+from cache_manager import configure_cache
 from layout import create_layout
 from callbacks import register_callbacks
+import subprocess
+import time
 
 # Set React version
 os.environ["REACT_VERSION"] = "18.2.0"
@@ -15,6 +17,31 @@ os.environ["REACT_VERSION"] = "18.2.0"
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+logger = logging.getLogger(__name__)
+
+
+def start_ollama_server():
+    """
+    Start the Ollama server in a subprocess if it's not running.
+    """
+    try:
+        logger.info("Attempting to start Ollama server...")
+        subprocess.Popen(
+            ["ollama", "serve"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        time.sleep(2)  # Give some time for the server to start
+        logger.info("Ollama server started or was already running.")
+    except Exception as e:
+        logger.warning(
+            f"Failed to start Ollama server: {str(e)}. It might already be running."
+        )
+
+
+# Start Ollama server
+start_ollama_server()
 
 # Initialize background task manager
 background_callback_manager = None
@@ -46,7 +73,14 @@ app = dash.Dash(
 )
 
 # Configure cache
-cache = configure_cache(app)
+cache = Cache(
+    app.server,
+    config={
+        "CACHE_TYPE": "filesystem",
+        "CACHE_DIR": "cache-directory",
+        "CACHE_THRESHOLD": 200,
+    },
+)
 
 # Set up app layout
 app.layout = dmc.MantineProvider(
