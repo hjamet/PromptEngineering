@@ -719,3 +719,229 @@ A: Ahaha, oui ! Il s'agissait de "COUCOU" ! J'avais répondu avec le même mot p
 2024-08-29 12:12:36,774 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Je vais comme un bot, merci pour demander ! Je suis toujours prêt à discuter ou jouer avec toi. Qu'est-ce que tu aimes faire en ce moment ?
 2024-08-29 12:12:36,774 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Je vais comme un bot, merci pour demander ! Je suis toujours prêt à discuter ou jouer avec toi. Qu'est-ce que tu aimes faire en ce moment ?
 2024-08-29 12:12:36,778 - callbacks - DEBUG - [callbacks.py:78] - Updated chat for session 57202e44-dbce-4ecf-a50b-c059bcc4643a
+2024-08-29 12:13:03,168 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:13:03,168 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:13:03,168 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:13:03,168 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:13:03,170 - callbacks - DEBUG - [callbacks.py:115] - Retrieved history for session 57202e44-dbce-4ecf-a50b-c059bcc4643a: Q: Coucou !
+
+A: Coucou ! Comment vas-tu aujourd'hui ?
+
+Q: Je vais bien et toi ?
+
+A: Je vais comme un bot, merci pour demander ! Je suis toujours prêt à discuter ou jouer avec toi. Qu'est-ce que tu aimes faire en ce moment ?
+2024-08-29 12:17:45,111 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,113 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,113 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,114 - callbacks - INFO - [callbacks.py:26] - New session created: 1bf43e9d-836b-4118-b65e-242cc81af92e
+2024-08-29 12:17:45,140 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,140 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,140 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,142 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,142 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,142 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,142 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:45,144 - callbacks - INFO - [callbacks.py:26] - New session created: 0365372e-8777-49e8-bb34-00161b7e2e5d
+2024-08-29 12:17:49,242 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,242 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,242 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,242 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,242 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,244 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,244 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,244 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,244 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,244 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,244 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:49,246 - callbacks - INFO - [callbacks.py:26] - New session created: 9f97296b-02a3-41f5-9f59-15f1b4b27ac6
+2024-08-29 12:17:51,992 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:51,992 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:51,992 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:51,992 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:51,992 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:51,992 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:51,992 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:51,995 - callbacks - INFO - [callbacks.py:49] - Username set for session 9f97296b-02a3-41f5-9f59-15f1b4b27ac6: toto
+2024-08-29 12:17:52,028 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,915 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:17:54,918 - callbacks - INFO - [callbacks.py:74] - User sent message: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:17:54,918 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: coucou
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,372 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Coucou ! Comment vas-tu aujourd'hui ?
+2024-08-29 12:18:11,376 - callbacks - DEBUG - [callbacks.py:78] - Updated chat for session 9f97296b-02a3-41f5-9f59-15f1b4b27ac6
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,255 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:30,258 - callbacks - INFO - [callbacks.py:74] - User sent message: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:30,259 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu peux me répondre avec un joli formattage markdown ?
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,363 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: **Ahah, bien sûr !**
+
+### Coucou !
+
+Je suis ravi de vous voir ! Comment allez-vous aujourd'hui ?
+
+**Bonne journée !**
+2024-08-29 12:18:31,367 - callbacks - DEBUG - [callbacks.py:78] - Updated chat for session 9f97296b-02a3-41f5-9f59-15f1b4b27ac6
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,856 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:18:46,858 - callbacks - INFO - [callbacks.py:74] - User sent message: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:46,858 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Parfait ! Tu peux mettre des smileys aussi ?
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,852 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: * *Ahah, bien sûr ! *
+### Coucou ! 😊
+#### Je suis ravi de vous voir ! 💕
+##### Comment allez-vous aujourd'hui ? 🤔
+**Bonne journée ! ☀️**
+
+(Note : I'll use the following markdown syntax to add emojis:
+`:emoji_name:`)
+2024-08-29 12:18:48,857 - callbacks - DEBUG - [callbacks.py:78] - Updated chat for session 9f97296b-02a3-41f5-9f59-15f1b4b27ac6

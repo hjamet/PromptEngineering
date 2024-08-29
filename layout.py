@@ -45,16 +45,17 @@ def create_layout():
                 visible=False,
                 id="loading-overlay",
             ),
-            dmc.Paper(
+            dcc.Markdown(
                 id="model-response",
-                shadow="sm",
-                p="md",
-                withBorder=True,
                 style={
                     "width": "100%",
                     "maxWidth": "500px",
                     "marginTop": "20px",
                     "minHeight": "100px",
+                    "border": "1px solid #dee2e6",
+                    "borderRadius": "4px",
+                    "padding": "10px",
+                    "backgroundColor": "white",
                 },
             ),
         ],
