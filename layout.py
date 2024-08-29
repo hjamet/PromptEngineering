@@ -12,12 +12,16 @@ def create_layout():
     Returns:
         dmc.Box: The main layout component.
     """
-    main_title = dmc.Title("Learn Prompt Engineering", order=1)
-    sub_title = dmc.Title("Level 1", order=2, style={"color": "dimmed"})
+    main_title = dmc.Title(
+        "Learn Prompt Engineering", order=1, style={"textAlign": "center"}
+    )
+    sub_title = dmc.Title(
+        "Level 1", order=2, style={"color": "dimmed", "textAlign": "center"}
+    )
 
     question_input = Keyboard(
         id="keyboard",
-        captureKeys=[{"key": "Enter", "ctrlKey": False, "shiftKey": False}],  # Modifié
+        captureKeys=[{"key": "Enter", "ctrlKey": False, "shiftKey": False}],
         children=[
             dmc.Textarea(
                 id="question-input",
@@ -35,7 +39,7 @@ def create_layout():
         id="submit-button",
         variant="gradient",
         gradient={"from": "indigo", "to": "cyan"},
-        fullWidth=True,
+        style={"width": "30%", "height": "50px"},  # Modifié
         mt="md",
     )
 
@@ -51,8 +55,7 @@ def create_layout():
             dcc.Markdown(
                 id="model-response",
                 style={
-                    "width": "100%",
-                    "maxWidth": "500px",
+                    "width": "100%",  # Modifié
                     "marginTop": "20px",
                     "minHeight": "100px",
                     "border": "1px solid #dee2e6",
@@ -90,10 +93,13 @@ def create_layout():
         shadow="sm",
         p="xl",
         withBorder=True,
-        style={"width": "100%", "maxWidth": "800px"},  # Augmenté de 500px à 800px
+        style={
+            "width": "100%",
+            "maxWidth": "60vw",
+        },
         children=[
             question_input,
-            submit_button,
+            dmc.Center(submit_button),
             model_response_area,
             button_group,
         ],
@@ -136,21 +142,23 @@ def create_layout():
             "display": "flex",
             "justifyContent": "center",
             "alignItems": "center",
-            "height": "100vh",
+            "minHeight": "100vh",  # Changé de "height" à "minHeight"
             "backgroundColor": "#f8f9fa",
         },
         children=[
             dmc.Container(
-                size="lg",  # Changé de "sm" à "lg"
+                size="xl",  # Changé de "lg" à "xl"
+                style={
+                    "width": "100%",
+                    "maxWidth": "60vw",
+                },  # Ajouté pour limiter la largeur à 60% de l'écran
                 children=[
                     dmc.Stack(
-                        align="center",
+                        align="stretch",  # Changé de "center" à "stretch"
                         justify="center",
                         gap="xl",
                         children=[main_title, sub_title, welcome_alert, paper_content],
-                        style={
-                            "width": "100%"
-                        },  # Ajouté pour s'assurer que la pile prend toute la largeur
+                        style={"width": "100%"},
                     )
                 ],
             ),

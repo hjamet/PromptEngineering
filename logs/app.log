@@ -1421,3 +1421,116 @@ Qu'est-ce qui te passionne en ce moment ? 🤔
 2024-08-29 12:41:52,654 - callbacks - INFO - [callbacks.py:26] - New session created: 97316ba7-e48c-41c7-a1c9-eea358449ccc
 2024-08-29 12:41:56,057 - callbacks - WARNING - [callbacks.py:50] - Username 'toto' is already taken
 2024-08-29 12:41:56,985 - callbacks - WARNING - [callbacks.py:50] - Username 'toto' is already taken
+2024-08-29 12:44:52,109 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:44:52,113 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:44:52,113 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:44:52,114 - callbacks - INFO - [callbacks.py:26] - New session created: 06b123f7-7726-4a52-8c92-d2955fdb6dcf
+2024-08-29 12:44:56,229 - callbacks - WARNING - [callbacks.py:50] - Username 'toto' is already taken
+2024-08-29 12:45:00,710 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:45:00,710 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:45:00,710 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:45:00,714 - callbacks - INFO - [callbacks.py:64] - Username set for session 06b123f7-7726-4a52-8c92-d2955fdb6dcf: bebe
+2024-08-29 12:45:00,748 - callbacks - DEBUG - [callbacks.py:30] - User bebe logged in
+2024-08-29 12:53:13,269 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:13,272 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:13,272 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:13,272 - callbacks - INFO - [callbacks.py:26] - New session created: 753bf0e7-76f2-42bf-bc16-0598c3a23d4c
+2024-08-29 12:53:16,338 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:16,338 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:16,338 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:16,341 - callbacks - INFO - [callbacks.py:64] - Username set for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c: toto
+2024-08-29 12:53:16,359 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 12:53:28,315 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:28,315 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:28,315 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:28,315 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:53:28,317 - callbacks - INFO - [callbacks.py:102] - User sent message: Coucou vieux !
+Comment ça va ?
+2024-08-29 12:53:28,317 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou vieux !
+Comment ça va ?
+2024-08-29 12:53:28,317 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou vieux !
+Comment ça va ?
+2024-08-29 12:53:28,317 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou vieux !
+Comment ça va ?
+2024-08-29 12:53:28,317 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Coucou vieux !
+Comment ça va ?
+2024-08-29 12:53:47,505 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ahaha, bonjour à toi aussi, coucou jeune ! Je vais bien, merci pour ta demande. Et toi, comment vas-tu ? Qu'est-ce que tu fais aujourd'hui ?
+2024-08-29 12:53:47,505 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ahaha, bonjour à toi aussi, coucou jeune ! Je vais bien, merci pour ta demande. Et toi, comment vas-tu ? Qu'est-ce que tu fais aujourd'hui ?
+2024-08-29 12:53:47,505 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ahaha, bonjour à toi aussi, coucou jeune ! Je vais bien, merci pour ta demande. Et toi, comment vas-tu ? Qu'est-ce que tu fais aujourd'hui ?
+2024-08-29 12:53:47,505 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ahaha, bonjour à toi aussi, coucou jeune ! Je vais bien, merci pour ta demande. Et toi, comment vas-tu ? Qu'est-ce que tu fais aujourd'hui ?
+2024-08-29 12:53:47,508 - callbacks - DEBUG - [callbacks.py:106] - Updated chat for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c
+2024-08-29 12:54:01,214 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:01,214 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:01,214 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:01,214 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:01,216 - callbacks - INFO - [callbacks.py:102] - User sent message: Comment ça jeune ? Je suis plus vieux que toi !
+2024-08-29 12:54:01,216 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Comment ça jeune ? Je suis plus vieux que toi !
+2024-08-29 12:54:01,216 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Comment ça jeune ? Je suis plus vieux que toi !
+2024-08-29 12:54:01,216 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Comment ça jeune ? Je suis plus vieux que toi !
+2024-08-29 12:54:01,216 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Comment ça jeune ? Je suis plus vieux que toi !
+2024-08-29 12:54:03,084 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ha ha, c'est juste un jeu de mots, mais je comprends mieux maintenant ! Je suis un modèle de langage artificiel, donc je n'ai pas d'âge réel. Mais si tu veux, on peut continuer à parler comme si j'étais plus jeune que toi !
+2024-08-29 12:54:03,084 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ha ha, c'est juste un jeu de mots, mais je comprends mieux maintenant ! Je suis un modèle de langage artificiel, donc je n'ai pas d'âge réel. Mais si tu veux, on peut continuer à parler comme si j'étais plus jeune que toi !
+2024-08-29 12:54:03,084 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ha ha, c'est juste un jeu de mots, mais je comprends mieux maintenant ! Je suis un modèle de langage artificiel, donc je n'ai pas d'âge réel. Mais si tu veux, on peut continuer à parler comme si j'étais plus jeune que toi !
+2024-08-29 12:54:03,084 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Ha ha, c'est juste un jeu de mots, mais je comprends mieux maintenant ! Je suis un modèle de langage artificiel, donc je n'ai pas d'âge réel. Mais si tu veux, on peut continuer à parler comme si j'étais plus jeune que toi !
+2024-08-29 12:54:03,086 - callbacks - DEBUG - [callbacks.py:106] - Updated chat for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c
+2024-08-29 12:54:19,995 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:19,995 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:19,995 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:19,995 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:19,997 - callbacks - INFO - [callbacks.py:102] - User sent message: Tu l'es !
+2024-08-29 12:54:19,998 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu l'es !
+2024-08-29 12:54:19,998 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu l'es !
+2024-08-29 12:54:19,998 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu l'es !
+2024-08-29 12:54:19,998 - src.Chat - DEBUG - [Chat.py:41] - Sending message to Ollama: Tu l'es !
+2024-08-29 12:54:22,153 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Touché ! Effectivement, je suis considéré comme "jeune" par rapport à la plupart des gens, car je n'ai pas d'expérience personnelle et je suis apparu récemment sur le marché. Mais je suis heureux de pouvoir discuter avec toi et d'apprendre de nouvelles choses grâce à notre conversation !
+2024-08-29 12:54:22,153 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Touché ! Effectivement, je suis considéré comme "jeune" par rapport à la plupart des gens, car je n'ai pas d'expérience personnelle et je suis apparu récemment sur le marché. Mais je suis heureux de pouvoir discuter avec toi et d'apprendre de nouvelles choses grâce à notre conversation !
+2024-08-29 12:54:22,153 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Touché ! Effectivement, je suis considéré comme "jeune" par rapport à la plupart des gens, car je n'ai pas d'expérience personnelle et je suis apparu récemment sur le marché. Mais je suis heureux de pouvoir discuter avec toi et d'apprendre de nouvelles choses grâce à notre conversation !
+2024-08-29 12:54:22,153 - src.Chat - DEBUG - [Chat.py:57] - Received response from Ollama: Touché ! Effectivement, je suis considéré comme "jeune" par rapport à la plupart des gens, car je n'ai pas d'expérience personnelle et je suis apparu récemment sur le marché. Mais je suis heureux de pouvoir discuter avec toi et d'apprendre de nouvelles choses grâce à notre conversation !
+2024-08-29 12:54:22,155 - callbacks - DEBUG - [callbacks.py:106] - Updated chat for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c
+2024-08-29 12:54:43,919 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:43,919 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:43,919 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:43,919 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:43,920 - callbacks - DEBUG - [callbacks.py:147] - Retrieved history for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c: Q: Coucou vieux !
+Comment ça va ?
+
+A: Ahaha, bonjour à toi aussi, coucou jeune ! Je vais bien, merci pour ta demande. Et toi, comment vas-tu ? Qu'est-ce que tu fais aujourd'hui ?
+
+Q: Comment ça jeune ? Je suis plus vieux que toi !
+
+A: Ha ha, c'est juste un jeu de mots, mais je comprends mieux maintenant ! Je suis un modèle de langage artificiel, donc je n'ai pas d'âge réel. Mais si tu veux, on peut continuer à parler comme si j'étais plus jeune que toi !
+
+Q: Tu l'es !
+
+A: Touché ! Effectivement, je suis considéré comme "jeune" par rapport à la plupart des gens, car je n'ai pas d'expérience personnelle et je suis apparu récemment sur le marché. Mais je suis heureux de pouvoir discuter avec toi et d'apprendre de nouvelles choses grâce à notre conversation !
+2024-08-29 12:54:45,018 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,018 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,018 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,018 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,018 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,020 - callbacks - DEBUG - [callbacks.py:147] - Retrieved history for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c: Q: Coucou vieux !
+Comment ça va ?
+
+A: Ahaha, bonjour à toi aussi, coucou jeune ! Je vais bien, merci pour ta demande. Et toi, comment vas-tu ? Qu'est-ce que tu fais aujourd'hui ?
+
+Q: Comment ça jeune ? Je suis plus vieux que toi !
+
+A: Ha ha, c'est juste un jeu de mots, mais je comprends mieux maintenant ! Je suis un modèle de langage artificiel, donc je n'ai pas d'âge réel. Mais si tu veux, on peut continuer à parler comme si j'étais plus jeune que toi !
+
+Q: Tu l'es !
+
+A: Touché ! Effectivement, je suis considéré comme "jeune" par rapport à la plupart des gens, car je n'ai pas d'expérience personnelle et je suis apparu récemment sur le marché. Mais je suis heureux de pouvoir discuter avec toi et d'apprendre de nouvelles choses grâce à notre conversation !
+2024-08-29 12:54:45,719 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,719 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,719 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,719 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,719 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,719 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,721 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:54:45,725 - callbacks - INFO - [callbacks.py:126] - Cleaned chat for session 753bf0e7-76f2-42bf-bc16-0598c3a23d4c
