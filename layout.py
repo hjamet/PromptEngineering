@@ -36,14 +36,28 @@ def create_layout():
         mt="md",
     )
 
-    output_text = dmc.Text(id="output-div", ta="center", mt="lg")
-
-    model_response = dmc.Paper(
-        id="model-response",
-        shadow="sm",
-        p="md",
-        withBorder=True,
-        style={"width": "100%", "maxWidth": "500px", "marginTop": "20px"},
+    model_response_area = dmc.Stack(
+        pos="relative",
+        children=[
+            dmc.LoadingOverlay(
+                loaderProps={"type": "dots", "color": "blue", "size": "xl"},
+                overlayProps={"backgroundOpacity": 0.3},
+                visible=False,
+                id="loading-overlay",
+            ),
+            dmc.Paper(
+                id="model-response",
+                shadow="sm",
+                p="md",
+                withBorder=True,
+                style={
+                    "width": "100%",
+                    "maxWidth": "500px",
+                    "marginTop": "20px",
+                    "minHeight": "100px",
+                },
+            ),
+        ],
     )
 
     clean_chat_button = dmc.Button(
@@ -76,8 +90,7 @@ def create_layout():
         children=[
             question_input,
             submit_button,
-            output_text,
-            model_response,
+            model_response_area,
             button_group,
         ],
     )
@@ -109,7 +122,6 @@ def create_layout():
 
     hidden_div = dash.html.Div(id="hidden-div", style={"display": "none"})
 
-    # Modifier cette ligne pour inclure les deux stores
     session_stores = [
         dcc.Store(id="session-id", storage_type="session"),
         dcc.Store(id="session-store", storage_type="session"),

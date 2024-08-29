@@ -54,6 +54,7 @@ def register_callbacks(app):
     @app.callback(
         Output("model-response", "children"),
         Output("question-input", "value"),
+        Output("loading-overlay", "visible"),
         Input("submit-button", "n_clicks"),
         Input("keyboard", "n_keydowns"),
         State("question-input", "value"),
@@ -62,6 +63,7 @@ def register_callbacks(app):
         running=[
             (Output("question-input", "disabled"), True, False),
             (Output("submit-button", "disabled"), True, False),
+            (Output("loading-overlay", "visible"), True, False),
         ],
         prevent_initial_call=True,
     )
@@ -74,9 +76,9 @@ def register_callbacks(app):
             user_data["chat"] = chat
             update_user_data(cache, session_id, user_data)
             logger.debug(f"Updated chat for session {session_id}")
-            return response, ""
+            return response, "", False
         logger.warning("Invalid input for update_output")
-        return dash.no_update, dash.no_update
+        return dash.no_update, dash.no_update, False
 
     @app.callback(
         Output("model-response", "children", allow_duplicate=True),
