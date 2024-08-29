@@ -1,8 +1,30 @@
 import ollama
 from collections import namedtuple
 from src.Logger import Logger
+import subprocess
+import time
 
 Message = namedtuple("Message", ["role", "content"])
+
+
+def start_ollama_server():
+    """
+    Start the Ollama server in a subprocess if it's not running.
+    """
+    logger = Logger(__name__).get_logger()
+    try:
+        logger.info("Attempting to start Ollama server...")
+        subprocess.Popen(
+            ["ollama", "serve"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        time.sleep(2)  # Give some time for the server to start
+        logger.info("Ollama server started or was already running.")
+    except Exception as e:
+        logger.warning(
+            f"Failed to start Ollama server: {str(e)}. It might already be running."
+        )
 
 
 class Chat:

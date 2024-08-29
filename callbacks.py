@@ -189,7 +189,10 @@ def register_callbacks(app):
 
                 history_blocks.append(
                     dmc.Blockquote(
-                        msg.content, icon=icon, color=color, mt="md", ms="xs"
+                        msg.content,
+                        icon=icon,
+                        color=color,
+                        mt="md",
                     )
                 )
 
