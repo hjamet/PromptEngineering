@@ -1400,3 +1400,24 @@ Qu'est-ce qui te passionne en ce moment ? 🤔
 2024-08-29 12:37:55,347 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
 2024-08-29 12:37:55,347 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
 2024-08-29 12:37:55,352 - callbacks - INFO - [callbacks.py:111] - Cleaned chat for session 5754737d-a148-477a-ad96-daa65eb7495a
+2024-08-29 12:41:42,228 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:42,230 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:42,230 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:42,231 - callbacks - INFO - [callbacks.py:26] - New session created: 0d58ab8a-c515-42fb-af12-9726c5e01e2b
+2024-08-29 12:41:48,149 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:48,149 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:48,149 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:48,152 - callbacks - INFO - [callbacks.py:64] - Username set for session 0d58ab8a-c515-42fb-af12-9726c5e01e2b: toto
+2024-08-29 12:41:48,185 - callbacks - DEBUG - [callbacks.py:30] - User toto logged in
+2024-08-29 12:41:52,649 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,649 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,649 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,649 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,651 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,651 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,651 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,651 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,651 - src.Chat - INFO - [Chat.py:19] - Chat instance initialized with model: llama3:instruct
+2024-08-29 12:41:52,654 - callbacks - INFO - [callbacks.py:26] - New session created: 97316ba7-e48c-41c7-a1c9-eea358449ccc
+2024-08-29 12:41:56,057 - callbacks - WARNING - [callbacks.py:50] - Username 'toto' is already taken
+2024-08-29 12:41:56,985 - callbacks - WARNING - [callbacks.py:50] - Username 'toto' is already taken

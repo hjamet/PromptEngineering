@@ -43,9 +43,24 @@ def register_callbacks(app):
     )
     def handle_username_input(n_clicks, n_submit, username, session_id):
         if (n_clicks or n_submit) and username:
+            # Check if the username is already taken
+            all_sessions = cache.get("all_sessions") or {}
+            for sid, data in all_sessions.items():
+                if sid != session_id and data.get("username") == username:
+                    logger.warning(f"Username '{username}' is already taken")
+                    return (
+                        dash.no_update,
+                        "This username is already taken. Please choose another.",
+                    )
+
             user_data = get_user_data(cache, session_id)
             user_data["username"] = username
             update_user_data(cache, session_id, user_data)
+
+            # Update all_sessions in cache
+            all_sessions[session_id] = user_data
+            cache.set("all_sessions", all_sessions)
+
             logger.info(f"Username set for session {session_id}: {username}")
             return {"username": username}, None
         logger.warning("Empty username input")
