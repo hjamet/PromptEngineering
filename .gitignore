@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Poetry
+poetry.lock
+
+# Dash
+.dash_cache/
+
+# Flask
+instance/
+.webassets-cache
+
+# Logs
+logs/
+*.log
+
+# Cache
+cache-directory/
+.cache/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Redis
+dump.rdb
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific
+.cache/
+cache-directory/
+*.pyc
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Database
+*.sqlite
+
+# Environment variables
+.env
+
+# Ollama specific (if needed)
+# ollama_models/
+
+# Diskcache
+.diskcache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
