@@ -3,6 +3,7 @@ PYTHON = poetry run python
 APP = app.py
 CLOUDFLARED = cloudflared
 TUNNEL_NAME = prompt-engineering
+CONFIG_TEMPLATE = ./config_template.yml
 CONFIG_FILE = ./config.yml
 
 # Obtenir le nom d'utilisateur actuel
@@ -31,19 +32,21 @@ install:
 		echo "Authentification Cloudflare..."; \
 		$(CLOUDFLARED) tunnel login; \
 	fi
-	@if [ ! -f $(CONFIG_FILE) ]; then \
-		echo "Création du tunnel Cloudflare..."; \
+	@echo "Configuration du tunnel Cloudflare..."
+	@if [ -f $(CONFIG_FILE) ]; then \
+		TUNNEL_ID=$$(grep -oP '(?<=tunnel: ).*' $(CONFIG_FILE)); \
+	else \
 		TUNNEL_ID=$$($(CLOUDFLARED) tunnel create $(TUNNEL_NAME) | grep -oP '(?<=Created tunnel ).*(?= with id)'); \
-		echo "url: http://localhost:8050" > $(CONFIG_FILE); \
-		echo "tunnel: $$TUNNEL_ID" >> $(CONFIG_FILE); \
-		echo "credentials-file: /home/$(USER)/.cloudflared/$$TUNNEL_ID.json" >> $(CONFIG_FILE); \
-		echo "ingress:" >> $(CONFIG_FILE); \
-		echo "  - hostname: $(TUNNEL_NAME).henri-jamet.com" >> $(CONFIG_FILE); \
-		echo "    service: http://localhost:8050" >> $(CONFIG_FILE); \
-		echo "  - service: http_status:404" >> $(CONFIG_FILE); \
-		echo "Configuration DNS..."; \
-		$(CLOUDFLARED) tunnel route dns $(TUNNEL_NAME) $(TUNNEL_NAME).henri-jamet.com; \
 	fi
+	@if [ ! -f /home/$(USER)/.cloudflared/$$TUNNEL_ID.json ]; then \
+		echo "Création du fichier de credentials pour le tunnel..."; \
+		$(CLOUDFLARED) tunnel token $$TUNNEL_ID > /home/$(USER)/.cloudflared/$$TUNNEL_ID.json; \
+	else \
+		echo "Le fichier de credentials existe déjà."; \
+	fi
+	@sed 's|<USER>|$(USER)|g; s|345d8b1b-1174-4384-b569-16b39c812671|'$$TUNNEL_ID'|g' $(CONFIG_TEMPLATE) > $(CONFIG_FILE)
+	@echo "Configuration DNS..."
+	@$(CLOUDFLARED) tunnel route dns $$TUNNEL_ID $(TUNNEL_NAME).henri-jamet.com
 	@echo "Installation terminée. Utilisez 'make run' pour démarrer l'application."
 
 # Démarrer l'application et le tunnel Cloudflare
@@ -58,13 +61,11 @@ run-app:
 	@echo "Démarrage de l'application Dash..."
 	$(PYTHON) $(APP)
 
-# Démarrer le tunnel Cloudflare avec le fichier de configuration temporaire
+# Démarrer le tunnel Cloudflare avec le fichier de configuration
 .PHONY: run-tunnel
 run-tunnel:
 	@echo "Démarrage du tunnel Cloudflare..."
-	sed 's|<USER>|$(USER)|g' $(CONFIG_FILE) > config_temp.yml
-	$(CLOUDFLARED) tunnel --config config_temp.yml run $(TUNNEL_NAME)
-	rm config_temp.yml
+	$(CLOUDFLARED) tunnel --config $(CONFIG_FILE) run $(TUNNEL_NAME)
 
 # Démarrer l'application en mode debug
 .PHONY: debug
