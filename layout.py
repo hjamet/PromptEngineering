@@ -40,7 +40,19 @@ def create_layout():
                             spacing="xl",
                             children=[
                                 dmc.Alert(
-                                    title="Repeat Penalty",
+                                    title=dmc.Group(
+                                        [
+                                            "Repeat Penalty",
+                                            dmc.Badge(
+                                                id="repeat-penalty-badge",
+                                                variant="filled",
+                                                color="indigo",
+                                                size="lg",
+                                            ),
+                                        ],
+                                        gap="xs",  # Remplace spacing="xs"
+                                        justify="space-between",  # Remplace position="apart"
+                                    ),
                                     color="indigo",
                                     variant="light",
                                     children=[
@@ -50,19 +62,32 @@ def create_layout():
                                             max=2,
                                             step=0.01,
                                             value=1.1,
-                                            marks=[
-                                                {"value": 1, "label": "1"},
-                                                {"value": 2, "label": "2"},
-                                            ],
                                             color="indigo",
                                             size="lg",
-                                            labelAlwaysOn=True,
                                             style={"width": "100%"},
+                                            marks=[
+                                                {"value": 1, "label": "1"},
+                                                {"value": 1.5, "label": "1.5"},
+                                                {"value": 2, "label": "2"},
+                                            ],
+                                            labelAlwaysOn=True,
                                         )
                                     ],
                                 ),
                                 dmc.Alert(
-                                    title="Temperature",
+                                    title=dmc.Group(
+                                        [
+                                            "Temperature",
+                                            dmc.Badge(
+                                                id="temperature-badge",
+                                                variant="filled",
+                                                color="teal",
+                                                size="lg",
+                                            ),
+                                        ],
+                                        gap="xs",  # Remplace spacing="xs"
+                                        justify="space-between",  # Remplace position="apart"
+                                    ),
                                     color="teal",
                                     variant="light",
                                     children=[
@@ -72,19 +97,32 @@ def create_layout():
                                             max=2,
                                             step=0.01,
                                             value=0.7,
-                                            marks=[
-                                                {"value": 0, "label": "0"},
-                                                {"value": 2, "label": "2"},
-                                            ],
                                             color="teal",
                                             size="lg",
-                                            labelAlwaysOn=True,
                                             style={"width": "100%"},
+                                            marks=[
+                                                {"value": 0, "label": "0"},
+                                                {"value": 1, "label": "1"},
+                                                {"value": 2, "label": "2"},
+                                            ],
+                                            labelAlwaysOn=True,
                                         )
                                     ],
                                 ),
                                 dmc.Alert(
-                                    title="Top-K",
+                                    title=dmc.Group(
+                                        [
+                                            "Top-K",
+                                            dmc.Badge(
+                                                id="top-k-badge",
+                                                variant="filled",
+                                                color="grape",
+                                                size="lg",
+                                            ),
+                                        ],
+                                        gap="xs",  # Remplace spacing="xs"
+                                        justify="space-between",  # Remplace position="apart"
+                                    ),
                                     color="grape",
                                     variant="light",
                                     children=[
@@ -94,19 +132,32 @@ def create_layout():
                                             max=100,
                                             step=1,
                                             value=40,
-                                            marks=[
-                                                {"value": 0, "label": "0"},
-                                                {"value": 100, "label": "100"},
-                                            ],
                                             color="grape",
                                             size="lg",
-                                            labelAlwaysOn=True,
                                             style={"width": "100%"},
+                                            marks=[
+                                                {"value": 0, "label": "0"},
+                                                {"value": 50, "label": "50"},
+                                                {"value": 100, "label": "100"},
+                                            ],
+                                            labelAlwaysOn=True,
                                         )
                                     ],
                                 ),
                                 dmc.Alert(
-                                    title="Top-P",
+                                    title=dmc.Group(
+                                        [
+                                            "Top-P",
+                                            dmc.Badge(
+                                                id="top-p-badge",
+                                                variant="filled",
+                                                color="cyan",
+                                                size="lg",
+                                            ),
+                                        ],
+                                        gap="xs",  # Remplace spacing="xs"
+                                        justify="space-between",  # Remplace position="apart"
+                                    ),
                                     color="cyan",
                                     variant="light",
                                     children=[
@@ -116,14 +167,15 @@ def create_layout():
                                             max=1,
                                             step=0.01,
                                             value=0.95,
-                                            marks=[
-                                                {"value": 0, "label": "0"},
-                                                {"value": 1, "label": "1"},
-                                            ],
                                             color="cyan",
                                             size="lg",
-                                            labelAlwaysOn=True,
                                             style={"width": "100%"},
+                                            marks=[
+                                                {"value": 0, "label": "0"},
+                                                {"value": 0.5, "label": "0.5"},
+                                                {"value": 1, "label": "1"},
+                                            ],
+                                            labelAlwaysOn=True,
                                         )
                                     ],
                                 ),

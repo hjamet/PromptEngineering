@@ -201,3 +201,24 @@ def register_callbacks(app):
 
         logger.warning("Failed to retrieve chat history")
         return False, [dmc.Text("Error while retrieving chat history.")]
+
+    @app.callback(
+        Output("repeat-penalty-badge", "children"),
+        Input("repeat-penalty-slider", "value"),
+    )
+    def update_repeat_penalty_badge(value):
+        return f"{value:.2f}"
+
+    @app.callback(
+        Output("temperature-badge", "children"), Input("temperature-slider", "value")
+    )
+    def update_temperature_badge(value):
+        return f"{value:.2f}"
+
+    @app.callback(Output("top-k-badge", "children"), Input("top-k-slider", "value"))
+    def update_top_k_badge(value):
+        return str(int(value))
+
+    @app.callback(Output("top-p-badge", "children"), Input("top-p-slider", "value"))
+    def update_top_p_badge(value):
+        return f"{value:.2f}"
