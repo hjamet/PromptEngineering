@@ -286,8 +286,9 @@ def create_layout():
             "width": "100%",
             "maxWidth": "60vw",
         },
+        id="paper-content",  # Ajoutez cette ligne
         children=[
-            accordion,  # Ajout des sliders ici
+            accordion,
             question_input,
             dmc.Center(submit_button),
             model_response_area,
@@ -346,19 +347,19 @@ def create_layout():
             "display": "flex",
             "justifyContent": "center",
             "alignItems": "center",
-            "minHeight": "100vh",  # Changé de "height" à "minHeight"
+            "minHeight": "100vh",
             "backgroundColor": "#f8f9fa",
+            "width": "100%",  # Ajoutez cette ligne
         },
         children=[
             dmc.Container(
-                size="xl",  # Changé de "lg" à "xl"
-                style={
-                    "width": "100%",
-                    "maxWidth": "60vw",
-                },  # Ajouté pour limiter la largeur à 60% de l'écran
+                size="xl",
+                className="main-container",
+                p=0,  # Ajoutez cette ligne pour supprimer le padding par défaut
+                style={"width": "100%"},  # Ajoutez cette ligne
                 children=[
                     dmc.Stack(
-                        align="stretch",  # Changé de "center" à "stretch"
+                        align="stretch",
                         justify="center",
                         gap="xl",
                         children=[main_title, sub_title, welcome_alert, paper_content],
@@ -368,7 +369,7 @@ def create_layout():
             ),
             username_modal,
             hidden_div,
-            *session_stores,  # Utiliser l'unpacking pour ajouter les deux stores
-            history_drawer,  # Ajout du drawer ici
+            *session_stores,
+            history_drawer,
         ],
     )

@@ -98,3 +98,49 @@
     background-color: #15aabf;
     border-color: #15aabf;
 }
+
+/* Styles responsives pour le conteneur principal */
+.main-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 15px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .main-container {
+        max-width: 90%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .main-container {
+        max-width: 60%;
+    }
+}
+
+/* Ajustements responsifs pour les composants */
+@media (max-width: 767px) {
+    .custom-slider {
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }
+
+    .custom-slider .rc-slider-mark-text {
+        font-size: 10px;
+    }
+
+    #submit-button {
+        width: 100% !important;
+    }
+
+    #question-input {
+        min-height: 100px;
+    }
+
+    /* Ajustez la largeur maximale du contenu du papier sur les petits écrans */
+    #paper-content {
+        max-width: 100% !important;
+    }
+}
