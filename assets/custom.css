@@ -1,33 +1,33 @@
 .custom-slider {
-    padding-top: 10px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 25px;
 }
 
 .custom-slider .rc-slider-rail {
-    height: 6px;
+    height: 4px;
     background-color: #e9ecef;
 }
 
 .custom-slider .rc-slider-track {
-    height: 6px;
+    height: 4px;
 }
 
 .custom-slider .rc-slider-handle {
-    width: 18px;
-    height: 18px;
-    margin-top: -6px;
+    width: 20px;
+    height: 20px;
+    margin-top: -8px;
     border: 2px solid;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .custom-slider .rc-slider-handle:hover {
-    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1);
+    transform: scale(1.1);
 }
 
 .custom-slider .rc-slider-handle:active {
-    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .custom-slider .rc-slider-mark {
@@ -37,6 +37,18 @@
 .custom-slider .rc-slider-mark-text {
     color: #6c757d;
     font-size: 12px;
+}
+
+.custom-slider .rc-slider-dot {
+    bottom: -5px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #e9ecef;
+    background-color: #fff;
+}
+
+.custom-slider .rc-slider-dot-active {
+    border-color: currentColor;
 }
 
 .custom-slider .rc-slider-tooltip {
@@ -60,25 +72,29 @@
 
 /* Styles spécifiques pour chaque slider */
 .custom-slider-indigo .rc-slider-track,
-.custom-slider-indigo .rc-slider-handle {
+.custom-slider-indigo .rc-slider-handle,
+.custom-slider-indigo .rc-slider-dot-active {
     background-color: #4263eb;
     border-color: #4263eb;
 }
 
 .custom-slider-teal .rc-slider-track,
-.custom-slider-teal .rc-slider-handle {
+.custom-slider-teal .rc-slider-handle,
+.custom-slider-teal .rc-slider-dot-active {
     background-color: #0ca678;
     border-color: #0ca678;
 }
 
 .custom-slider-grape .rc-slider-track,
-.custom-slider-grape .rc-slider-handle {
+.custom-slider-grape .rc-slider-handle,
+.custom-slider-grape .rc-slider-dot-active {
     background-color: #ae3ec9;
     border-color: #ae3ec9;
 }
 
 .custom-slider-cyan .rc-slider-track,
-.custom-slider-cyan .rc-slider-handle {
+.custom-slider-cyan .rc-slider-handle,
+.custom-slider-cyan .rc-slider-dot-active {
     background-color: #15aabf;
     border-color: #15aabf;
 }
