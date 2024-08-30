@@ -5,6 +5,7 @@ CLOUDFLARED = cloudflared
 TUNNEL_NAME = prompt-engineering
 CONFIG_TEMPLATE = ./config_template.yml
 CONFIG_FILE = ./config.yml
+DOMAIN = henri-jamet.com
 
 # Obtenir le nom d'utilisateur actuel
 USER := $(shell whoami)
@@ -33,25 +34,18 @@ install:
 		$(CLOUDFLARED) tunnel login; \
 	fi
 	@echo "Configuration du tunnel Cloudflare..."
-	@if [ -f $(CONFIG_FILE) ]; then \
-		TUNNEL_ID=$$(grep -oP '(?<=tunnel: ).*' $(CONFIG_FILE)); \
-	else \
+	@TUNNEL_ID=$$($(CLOUDFLARED) tunnel list | grep $(TUNNEL_NAME) | awk '{print $$1}'); \
+	if [ -z "$$TUNNEL_ID" ]; then \
 		TUNNEL_ID=$$($(CLOUDFLARED) tunnel create $(TUNNEL_NAME) | grep -oP '(?<=Created tunnel ).*(?= with id)'); \
-	fi
-	@if [ ! -f /home/$(USER)/.cloudflared/$$TUNNEL_ID.json ]; then \
-		echo "Création du fichier de credentials pour le tunnel..."; \
-		$(CLOUDFLARED) tunnel token $$TUNNEL_ID > /home/$(USER)/.cloudflared/$$TUNNEL_ID.json; \
-	else \
-		echo "Le fichier de credentials existe déjà."; \
-	fi
-	@sed 's|<USER>|$(USER)|g; s|345d8b1b-1174-4384-b569-16b39c812671|'$$TUNNEL_ID'|g' $(CONFIG_TEMPLATE) > $(CONFIG_FILE)
+	fi; \
+	sed 's|<USER>|$(USER)|g; s|345d8b1b-1174-4384-b569-16b39c812671|'$$TUNNEL_ID'|g' $(CONFIG_TEMPLATE) > $(CONFIG_FILE)
 	@echo "Configuration DNS..."
-	@$(CLOUDFLARED) tunnel route dns $$TUNNEL_ID $(TUNNEL_NAME).henri-jamet.com
+	@$(CLOUDFLARED) tunnel route dns $(TUNNEL_NAME) $(TUNNEL_NAME).$(DOMAIN)
 	@echo "Installation terminée. Utilisez 'make run' pour démarrer l'application."
 
 # Démarrer l'application et le tunnel Cloudflare
 .PHONY: run
-run:
+run: update_config
 	@echo "Démarrage de l'application Dash et du tunnel Cloudflare..."
 	@$(MAKE) -j2 run-app run-tunnel
 
@@ -97,3 +91,9 @@ help:
 	@echo "  make debug   : Démarre l'application en mode debug"
 	@echo "  make stop    : Arrête tous les processus"
 	@echo "  make clean   : Nettoie les fichiers temporaires et les caches"
+
+# Nouvelle règle pour mettre à jour la configuration
+.PHONY: update_config
+update_config:
+	@echo "Mise à jour du fichier de configuration..."
+	@sed 's|<USER>|$(USER)|g' $(CONFIG_TEMPLATE) > $(CONFIG_FILE)
