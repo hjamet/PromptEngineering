@@ -12,6 +12,40 @@ USER := $(shell whoami)
 .PHONY: all
 all: run
 
+# Installation complète du projet
+.PHONY: install
+install:
+	@echo "Installation du projet..."
+	@if ! command -v poetry &> /dev/null; then \
+		echo "Installation de Poetry..."; \
+		curl -sSL https://install.python-poetry.org | python3 -; \
+	fi
+	poetry install
+	@if ! command -v $(CLOUDFLARED) &> /dev/null; then \
+		echo "Installation de Cloudflared..."; \
+		wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb; \
+		sudo dpkg -i cloudflared-linux-amd64.deb; \
+		rm cloudflared-linux-amd64.deb; \
+	fi
+	@if [ ! -f ~/.cloudflared/cert.pem ]; then \
+		echo "Authentification Cloudflare..."; \
+		$(CLOUDFLARED) tunnel login; \
+	fi
+	@if [ ! -f $(CONFIG_FILE) ]; then \
+		echo "Création du tunnel Cloudflare..."; \
+		TUNNEL_ID=$$($(CLOUDFLARED) tunnel create $(TUNNEL_NAME) | grep -oP '(?<=Created tunnel ).*(?= with id)'); \
+		echo "url: http://localhost:8050" > $(CONFIG_FILE); \
+		echo "tunnel: $$TUNNEL_ID" >> $(CONFIG_FILE); \
+		echo "credentials-file: /home/$(USER)/.cloudflared/$$TUNNEL_ID.json" >> $(CONFIG_FILE); \
+		echo "ingress:" >> $(CONFIG_FILE); \
+		echo "  - hostname: $(TUNNEL_NAME).henri-jamet.com" >> $(CONFIG_FILE); \
+		echo "    service: http://localhost:8050" >> $(CONFIG_FILE); \
+		echo "  - service: http_status:404" >> $(CONFIG_FILE); \
+		echo "Configuration DNS..."; \
+		$(CLOUDFLARED) tunnel route dns $(TUNNEL_NAME) $(TUNNEL_NAME).henri-jamet.com; \
+	fi
+	@echo "Installation terminée. Utilisez 'make run' pour démarrer l'application."
+
 # Démarrer l'application et le tunnel Cloudflare
 .PHONY: run
 run:
@@ -57,7 +91,8 @@ clean:
 .PHONY: help
 help:
 	@echo "Commandes disponibles:"
-	@echo "  make        : Démarre l'application et le tunnel Cloudflare"
-	@echo "  make debug  : Démarre l'application en mode debug"
-	@echo "  make stop   : Arrête tous les processus"
-	@echo "  make clean  : Nettoie les fichiers temporaires et les caches"
+	@echo "  make install : Installe le projet et configure Cloudflare"
+	@echo "  make         : Démarre l'application et le tunnel Cloudflare"
+	@echo "  make debug   : Démarre l'application en mode debug"
+	@echo "  make stop    : Arrête tous les processus"
+	@echo "  make clean   : Nettoie les fichiers temporaires et les caches"
