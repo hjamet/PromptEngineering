@@ -38,6 +38,7 @@ class Chat:
         self.logger = Logger(__name__).get_logger()
         self.messages = []
         self.model = model
+        self.client = ollama.Client()
         self.logger.info(f"Chat instance initialized with model: {model}")
 
     def add_message(self, role, content):
@@ -46,12 +47,24 @@ class Chat:
     def get_messages(self):
         return self.messages
 
-    def ask(self, message: str, streamline: bool = False) -> str:
+    def ask(
+        self,
+        message: str,
+        temperature: float = 0.7,
+        repeat_penalty: float = 1.1,
+        top_k: int = 40,
+        top_p: float = 0.95,
+        streamline: bool = False,
+    ) -> str:
         """
         Ask a message to the chat.
 
         Args:
             message (str): The message to ask.
+            temperature (float): Controls randomness in generation. Higher values make output more random.
+            repeat_penalty (float): Penalty for repeating tokens. Higher values make repetitions less likely.
+            top_k (int): Limits the next token selection to the K most probable tokens.
+            top_p (float): Selects tokens with cumulative probability above this threshold.
             streamline (bool): If True, display tokens in console as they are produced.
 
         Returns:
@@ -60,21 +73,38 @@ class Chat:
         self.add_message("user", message)
         response_content = ""
 
-        self.logger.debug(f"Sending message to Ollama: {message}")
-        for response in ollama.chat(
-            model=self.model,
-            messages=[
+        self.logger.debug(
+            f"""Sending message to Ollama: {message}
+            - Temperature: {temperature}
+            - Repeat Penalty: {repeat_penalty}
+            - Top K: {top_k}
+            - Top P: {top_p}
+            """
+        )
+
+        chat_params = {
+            "model": self.model,
+            "messages": [
                 {"role": msg.role, "content": msg.content} for msg in self.messages
             ],
-            stream=True,
-        ):
-            chunk = response["message"]["content"]
-            response_content += chunk
-            if streamline:
-                print(chunk, end="", flush=True)
+            "options": {
+                "temperature": temperature,
+                "repeat_penalty": repeat_penalty,
+                "top_k": top_k,
+                "top_p": top_p,
+            },
+        }
 
         if streamline:
+            chat_params["stream"] = True
+            for response in self.client.chat(**chat_params):
+                chunk = response["message"]["content"]
+                response_content += chunk
+                print(chunk, end="", flush=True)
             print()  # New line after streaming
+        else:
+            response = self.client.chat(**chat_params)
+            response_content = response["message"]["content"]
 
         self.logger.debug(f"Received response from Ollama: {response_content}")
         self.add_message("assistant", response_content)

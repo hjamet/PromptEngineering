@@ -78,6 +78,10 @@ def register_callbacks(app):
         Input("keyboard", "n_keydowns"),
         State("question-input", "value"),
         State("session-id", "data"),
+        State("repeat-penalty-slider", "value"),
+        State("temperature-slider", "value"),
+        State("top-k-slider", "value"),
+        State("top-p-slider", "value"),
         background=True,
         running=[
             (Output("question-input", "disabled"), True, False),
@@ -91,24 +95,27 @@ def register_callbacks(app):
         ],
         prevent_initial_call=True,
     )
-    def update_output(n_clicks: int, n_keydowns: int, value: str, session_id: str):
-        """
-        Update the chat output based on user input.
-
-        Args:
-            n_clicks (int): Number of button clicks.
-            n_keydowns (int): Number of key presses.
-            value (str): User input text.
-            session_id (str): Session identifier.
-
-        Returns:
-            tuple: Contains the model response, updated input value, loading state, and focus trigger.
-        """
+    def update_output(
+        n_clicks: int,
+        n_keydowns: int,
+        value: str,
+        session_id: str,
+        repeat_penalty: float,
+        temperature: float,
+        top_k: int,
+        top_p: float,
+    ):
         if (n_clicks or n_keydowns) and value and session_id:
             user_data = get_user_data(cache, session_id)
             chat = user_data["chat"]
             logger.info(f"User sent message: {value}")
-            response = chat.ask(value)
+            response = chat.ask(
+                value,
+                temperature=temperature,
+                repeat_penalty=repeat_penalty,
+                top_k=top_k,
+                top_p=top_p,
+            )
             user_data["chat"] = chat
             update_user_data(cache, session_id, user_data)
             logger.debug(f"Updated chat for session {session_id}")
