@@ -19,6 +19,125 @@ def create_layout():
         "Level 1", order=2, style={"color": "dimmed", "textAlign": "center"}
     )
 
+    # Creation of the accordion with sliders and settings icon
+    accordion = dmc.Accordion(
+        chevronPosition="left",
+        variant="separated",
+        children=[
+            dmc.AccordionItem(
+                [
+                    dmc.AccordionControl(
+                        "Model Parameters",
+                        icon=DashIconify(
+                            icon="tabler:settings",
+                            color=dmc.DEFAULT_THEME["colors"]["blue"][6],
+                            width=20,
+                        ),
+                    ),
+                    dmc.AccordionPanel(
+                        dmc.SimpleGrid(
+                            cols=2,
+                            spacing="xl",
+                            children=[
+                                dmc.Alert(
+                                    title="Repeat Penalty",
+                                    color="indigo",
+                                    variant="light",
+                                    children=[
+                                        dmc.Slider(
+                                            id="repeat-penalty-slider",
+                                            min=1,
+                                            max=2,
+                                            step=0.01,
+                                            value=1.1,
+                                            marks=[
+                                                {"value": 1, "label": "1"},
+                                                {"value": 2, "label": "2"},
+                                            ],
+                                            color="indigo",
+                                            size="lg",
+                                            labelAlwaysOn=True,
+                                            style={"width": "100%"},
+                                        )
+                                    ],
+                                ),
+                                dmc.Alert(
+                                    title="Temperature",
+                                    color="teal",
+                                    variant="light",
+                                    children=[
+                                        dmc.Slider(
+                                            id="temperature-slider",
+                                            min=0,
+                                            max=2,
+                                            step=0.01,
+                                            value=0.7,
+                                            marks=[
+                                                {"value": 0, "label": "0"},
+                                                {"value": 2, "label": "2"},
+                                            ],
+                                            color="teal",
+                                            size="lg",
+                                            labelAlwaysOn=True,
+                                            style={"width": "100%"},
+                                        )
+                                    ],
+                                ),
+                                dmc.Alert(
+                                    title="Top-K",
+                                    color="grape",
+                                    variant="light",
+                                    children=[
+                                        dmc.Slider(
+                                            id="top-k-slider",
+                                            min=0,
+                                            max=100,
+                                            step=1,
+                                            value=40,
+                                            marks=[
+                                                {"value": 0, "label": "0"},
+                                                {"value": 100, "label": "100"},
+                                            ],
+                                            color="grape",
+                                            size="lg",
+                                            labelAlwaysOn=True,
+                                            style={"width": "100%"},
+                                        )
+                                    ],
+                                ),
+                                dmc.Alert(
+                                    title="Top-P",
+                                    color="cyan",
+                                    variant="light",
+                                    children=[
+                                        dmc.Slider(
+                                            id="top-p-slider",
+                                            min=0,
+                                            max=1,
+                                            step=0.01,
+                                            value=0.95,
+                                            marks=[
+                                                {"value": 0, "label": "0"},
+                                                {"value": 1, "label": "1"},
+                                            ],
+                                            color="cyan",
+                                            size="lg",
+                                            labelAlwaysOn=True,
+                                            style={"width": "100%"},
+                                        )
+                                    ],
+                                ),
+                            ],
+                        )
+                    ),
+                ],
+                value="model-parameters",
+            ),
+        ],
+        mt="xl",
+        mb="xl",
+    )
+
     question_input = Keyboard(
         id="keyboard",
         captureKeys=[{"key": "Enter", "ctrlKey": False, "shiftKey": False}],
@@ -98,6 +217,7 @@ def create_layout():
             "maxWidth": "60vw",
         },
         children=[
+            accordion,  # Ajout des sliders ici
             question_input,
             dmc.Center(submit_button),
             model_response_area,
