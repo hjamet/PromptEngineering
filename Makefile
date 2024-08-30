@@ -5,6 +5,9 @@ CLOUDFLARED = cloudflared
 TUNNEL_NAME = prompt-engineering
 CONFIG_FILE = ./config.yml
 
+# Obtenir le nom d'utilisateur actuel
+USER := $(shell whoami)
+
 # Commande par défaut
 .PHONY: all
 all: run
@@ -21,11 +24,13 @@ run-app:
 	@echo "Démarrage de l'application Dash..."
 	$(PYTHON) $(APP)
 
-# Démarrer le tunnel Cloudflare avec le fichier de configuration spécifié
+# Démarrer le tunnel Cloudflare avec le fichier de configuration temporaire
 .PHONY: run-tunnel
 run-tunnel:
 	@echo "Démarrage du tunnel Cloudflare..."
-	$(CLOUDFLARED) tunnel --config $(CONFIG_FILE) run $(TUNNEL_NAME)
+	sed 's|<USER>|$(USER)|g' $(CONFIG_FILE) > config_temp.yml
+	$(CLOUDFLARED) tunnel --config config_temp.yml run $(TUNNEL_NAME)
+	rm config_temp.yml
 
 # Démarrer l'application en mode debug
 .PHONY: debug
