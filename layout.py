@@ -20,169 +20,187 @@ def create_layout():
     )
 
     # Creation of the accordion with sliders and settings icon
+    # Creation of the accordion with sliders and settings icon
+    accordion_control = dmc.AccordionControl(
+        "Model Parameters",
+        icon=DashIconify(
+            icon="tabler:settings",
+            color=dmc.DEFAULT_THEME["colors"]["blue"][6],
+            width=20,
+        ),
+    )
+
+    repeat_penalty_alert = dmc.Alert(
+        title=dmc.Group(
+            [
+                "Repeat Penalty",
+                dmc.Badge(
+                    id="repeat-penalty-badge",
+                    variant="filled",
+                    color="indigo",
+                    size="lg",
+                ),
+            ],
+            gap="xs",
+            justify="space-between",
+        ),
+        color="indigo",
+        variant="light",
+        children=[
+            dmc.Container(
+                children=[
+                    dcc.Slider(
+                        id="repeat-penalty-slider",
+                        min=1,
+                        max=2,
+                        step=0.01,
+                        value=1.1,
+                        marks={1: "1", 1.5: "1.5", 2: "2"},
+                        tooltip={"placement": "top", "always_visible": False},
+                        className="custom-slider custom-slider-indigo",
+                    )
+                ],
+                style={"width": "100%"},
+                p="xs",
+                mb="xs",
+                mt="xs",
+            )
+        ],
+    )
+
+    temperature_alert = dmc.Alert(
+        title=dmc.Group(
+            [
+                "Temperature",
+                dmc.Badge(
+                    id="temperature-badge",
+                    variant="filled",
+                    color="teal",
+                    size="lg",
+                ),
+            ],
+            gap="xs",
+            justify="space-between",
+        ),
+        color="teal",
+        variant="light",
+        children=[
+            dmc.Container(
+                children=[
+                    dcc.Slider(
+                        id="temperature-slider",
+                        min=0,
+                        max=2,
+                        step=0.01,
+                        value=0.7,
+                        marks={0: "0", 1: "1", 2: "2"},
+                        tooltip={"placement": "top", "always_visible": False},
+                        className="custom-slider custom-slider-teal",
+                    )
+                ],
+                style={"width": "100%"},
+                p="xs",
+                mb="xs",
+                mt="xs",
+            )
+        ],
+    )
+
+    top_k_alert = dmc.Alert(
+        title=dmc.Group(
+            [
+                "Top-K",
+                dmc.Badge(
+                    id="top-k-badge",
+                    variant="filled",
+                    color="grape",
+                    size="lg",
+                ),
+            ],
+            gap="xs",
+            justify="space-between",
+        ),
+        color="grape",
+        variant="light",
+        children=[
+            dmc.Container(
+                children=[
+                    dcc.Slider(
+                        id="top-k-slider",
+                        min=0,
+                        max=100,
+                        step=1,
+                        value=40,
+                        marks={0: "0", 50: "50", 100: "100"},
+                        tooltip={"placement": "top", "always_visible": False},
+                        className="custom-slider custom-slider-grape",
+                    )
+                ],
+                style={"width": "100%"},
+                p="xs",
+                mb="xs",
+                mt="xs",
+            )
+        ],
+    )
+
+    top_p_alert = dmc.Alert(
+        title=dmc.Group(
+            [
+                "Top-P",
+                dmc.Badge(
+                    id="top-p-badge",
+                    variant="filled",
+                    color="cyan",
+                    size="lg",
+                ),
+            ],
+            gap="xs",
+            justify="space-between",
+        ),
+        color="cyan",
+        variant="light",
+        children=[
+            dmc.Container(
+                children=[
+                    dcc.Slider(
+                        id="top-p-slider",
+                        min=0,
+                        max=1,
+                        step=0.01,
+                        value=0.95,
+                        marks={0: "0", 0.5: "0.5", 1: "1"},
+                        tooltip={"placement": "top", "always_visible": False},
+                        className="custom-slider custom-slider-cyan",
+                    )
+                ],
+                style={"width": "100%"},
+                p="xs",
+                mb="xs",
+                mt="xs",
+            )
+        ],
+    )
+
+    accordion_panel = dmc.AccordionPanel(
+        dmc.SimpleGrid(
+            cols=2,
+            spacing="xl",
+            children=[
+                repeat_penalty_alert,
+                temperature_alert,
+                top_k_alert,
+                top_p_alert,
+            ],
+        )
+    )
+
     accordion = dmc.Accordion(
         chevronPosition="left",
         variant="separated",
         children=[
             dmc.AccordionItem(
-                [
-                    dmc.AccordionControl(
-                        "Model Parameters",
-                        icon=DashIconify(
-                            icon="tabler:settings",
-                            color=dmc.DEFAULT_THEME["colors"]["blue"][6],
-                            width=20,
-                        ),
-                    ),
-                    dmc.AccordionPanel(
-                        dmc.SimpleGrid(
-                            cols=2,
-                            spacing="xl",
-                            children=[
-                                dmc.Alert(
-                                    title=dmc.Group(
-                                        [
-                                            "Repeat Penalty",
-                                            dmc.Badge(
-                                                id="repeat-penalty-badge",
-                                                variant="filled",
-                                                color="indigo",
-                                                size="lg",
-                                            ),
-                                        ],
-                                        gap="xs",  # Remplace spacing="xs"
-                                        justify="space-between",  # Remplace position="apart"
-                                    ),
-                                    color="indigo",
-                                    variant="light",
-                                    children=[
-                                        dmc.Slider(
-                                            id="repeat-penalty-slider",
-                                            min=1,
-                                            max=2,
-                                            step=0.01,
-                                            value=1.1,
-                                            color="indigo",
-                                            size="lg",
-                                            style={"width": "100%"},
-                                            marks=[
-                                                {"value": 1, "label": "1"},
-                                                {"value": 1.5, "label": "1.5"},
-                                                {"value": 2, "label": "2"},
-                                            ],
-                                            labelAlwaysOn=True,
-                                        )
-                                    ],
-                                ),
-                                dmc.Alert(
-                                    title=dmc.Group(
-                                        [
-                                            "Temperature",
-                                            dmc.Badge(
-                                                id="temperature-badge",
-                                                variant="filled",
-                                                color="teal",
-                                                size="lg",
-                                            ),
-                                        ],
-                                        gap="xs",  # Remplace spacing="xs"
-                                        justify="space-between",  # Remplace position="apart"
-                                    ),
-                                    color="teal",
-                                    variant="light",
-                                    children=[
-                                        dmc.Slider(
-                                            id="temperature-slider",
-                                            min=0,
-                                            max=2,
-                                            step=0.01,
-                                            value=0.7,
-                                            color="teal",
-                                            size="lg",
-                                            style={"width": "100%"},
-                                            marks=[
-                                                {"value": 0, "label": "0"},
-                                                {"value": 1, "label": "1"},
-                                                {"value": 2, "label": "2"},
-                                            ],
-                                            labelAlwaysOn=True,
-                                        )
-                                    ],
-                                ),
-                                dmc.Alert(
-                                    title=dmc.Group(
-                                        [
-                                            "Top-K",
-                                            dmc.Badge(
-                                                id="top-k-badge",
-                                                variant="filled",
-                                                color="grape",
-                                                size="lg",
-                                            ),
-                                        ],
-                                        gap="xs",  # Remplace spacing="xs"
-                                        justify="space-between",  # Remplace position="apart"
-                                    ),
-                                    color="grape",
-                                    variant="light",
-                                    children=[
-                                        dmc.Slider(
-                                            id="top-k-slider",
-                                            min=0,
-                                            max=100,
-                                            step=1,
-                                            value=40,
-                                            color="grape",
-                                            size="lg",
-                                            style={"width": "100%"},
-                                            marks=[
-                                                {"value": 0, "label": "0"},
-                                                {"value": 50, "label": "50"},
-                                                {"value": 100, "label": "100"},
-                                            ],
-                                            labelAlwaysOn=True,
-                                        )
-                                    ],
-                                ),
-                                dmc.Alert(
-                                    title=dmc.Group(
-                                        [
-                                            "Top-P",
-                                            dmc.Badge(
-                                                id="top-p-badge",
-                                                variant="filled",
-                                                color="cyan",
-                                                size="lg",
-                                            ),
-                                        ],
-                                        gap="xs",  # Remplace spacing="xs"
-                                        justify="space-between",  # Remplace position="apart"
-                                    ),
-                                    color="cyan",
-                                    variant="light",
-                                    children=[
-                                        dmc.Slider(
-                                            id="top-p-slider",
-                                            min=0,
-                                            max=1,
-                                            step=0.01,
-                                            value=0.95,
-                                            color="cyan",
-                                            size="lg",
-                                            style={"width": "100%"},
-                                            marks=[
-                                                {"value": 0, "label": "0"},
-                                                {"value": 0.5, "label": "0.5"},
-                                                {"value": 1, "label": "1"},
-                                            ],
-                                            labelAlwaysOn=True,
-                                        )
-                                    ],
-                                ),
-                            ],
-                        )
-                    ),
-                ],
+                [accordion_control, accordion_panel],
                 value="model-parameters",
             ),
         ],

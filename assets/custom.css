@@ -1,0 +1,84 @@
+.custom-slider {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.custom-slider .rc-slider-rail {
+    height: 6px;
+    background-color: #e9ecef;
+}
+
+.custom-slider .rc-slider-track {
+    height: 6px;
+}
+
+.custom-slider .rc-slider-handle {
+    width: 18px;
+    height: 18px;
+    margin-top: -6px;
+    border: 2px solid;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+.custom-slider .rc-slider-handle:hover {
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-slider .rc-slider-handle:active {
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.custom-slider .rc-slider-mark {
+    top: 20px;
+}
+
+.custom-slider .rc-slider-mark-text {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.custom-slider .rc-slider-tooltip {
+    z-index: 5;
+}
+
+.custom-slider .rc-slider-tooltip-inner {
+    padding: 4px 8px;
+    height: auto;
+    font-size: 14px;
+    line-height: 1;
+    min-width: 30px;
+    background-color: #333;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.custom-slider .rc-slider-tooltip-placement-top .rc-slider-tooltip-arrow {
+    bottom: 4px;
+}
+
+/* Styles spécifiques pour chaque slider */
+.custom-slider-indigo .rc-slider-track,
+.custom-slider-indigo .rc-slider-handle {
+    background-color: #4263eb;
+    border-color: #4263eb;
+}
+
+.custom-slider-teal .rc-slider-track,
+.custom-slider-teal .rc-slider-handle {
+    background-color: #0ca678;
+    border-color: #0ca678;
+}
+
+.custom-slider-grape .rc-slider-track,
+.custom-slider-grape .rc-slider-handle {
+    background-color: #ae3ec9;
+    border-color: #ae3ec9;
+}
+
+.custom-slider-cyan .rc-slider-track,
+.custom-slider-cyan .rc-slider-handle {
+    background-color: #15aabf;
+    border-color: #15aabf;
+}
