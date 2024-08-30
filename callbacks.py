@@ -3,6 +3,7 @@ import dash_mantine_components as dmc
 from dash import Input, Output, State, callback, clientside_callback
 from dash_iconify import DashIconify
 
+import json
 from cache_manager import generate_session_id, get_user_data, update_user_data
 from src.Chat import Chat
 from src.Logger import Logger
@@ -47,7 +48,7 @@ def register_callbacks(app):
     def handle_username_input(n_clicks, n_submit, username, session_id):
         if (n_clicks or n_submit) and username:
             # Check if the username is already taken
-            all_sessions = cache.get("all_sessions") or {}
+            all_sessions = json.loads(cache.get("all_sessions") or "{}")
             for sid, data in all_sessions.items():
                 if sid != session_id and data.get("username") == username:
                     logger.warning(f"Username '{username}' is already taken")
@@ -61,8 +62,8 @@ def register_callbacks(app):
             update_user_data(cache, session_id, user_data)
 
             # Update all_sessions in cache
-            all_sessions[session_id] = user_data
-            cache.set("all_sessions", all_sessions)
+            all_sessions[session_id] = {"username": username}
+            cache.set("all_sessions", json.dumps(all_sessions))
 
             logger.info(f"Username set for session {session_id}: {username}")
             return {"username": username}, None

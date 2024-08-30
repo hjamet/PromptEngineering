@@ -26,29 +26,19 @@ def configure_cache(app):
 
 
 def get_user_data(cache, session_id):
-    def query_and_serialize_data():
-        # Initialize user data with a new Chat instance and level 1
-        user_data = {"chat": Chat(), "level": 1}
-        return json.dumps(
-            {"chat": user_data["chat"].to_dict(), "level": user_data["level"]}
-        )
-
-    cached_data = cache.get(session_id)
-    if cached_data is None:
-        cached_data = query_and_serialize_data()
-        cache.set(session_id, cached_data)
-
-    user_data = json.loads(cached_data)
-    user_data["chat"] = Chat.from_dict(user_data["chat"])
-    return user_data
+    data = cache.get(session_id)
+    if data:
+        data = json.loads(data)
+        data["chat"] = Chat.from_dict(data["chat"])
+    else:
+        data = {"chat": Chat(), "level": 1}
+    return data
 
 
 def update_user_data(cache, session_id, user_data):
-    cache.delete(session_id)
-    cache.set(
-        session_id,
-        json.dumps({"chat": user_data["chat"].to_dict(), "level": user_data["level"]}),
-    )
+    serializable_data = user_data.copy()
+    serializable_data["chat"] = user_data["chat"].to_dict()
+    cache.set(session_id, json.dumps(serializable_data))
 
 
 def generate_session_id():

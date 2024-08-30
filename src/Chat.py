@@ -3,6 +3,7 @@ from collections import namedtuple
 from src.Logger import Logger
 import subprocess
 import time
+import json
 
 Message = namedtuple("Message", ["role", "content"])
 
