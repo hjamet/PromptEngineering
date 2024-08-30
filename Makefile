@@ -36,7 +36,20 @@ install:
 	@echo "Configuration du tunnel Cloudflare..."
 	@TUNNEL_ID=$$($(CLOUDFLARED) tunnel list | grep $(TUNNEL_NAME) | awk '{print $$1}'); \
 	if [ -z "$$TUNNEL_ID" ]; then \
+		echo "Création d'un nouveau tunnel..."; \
 		TUNNEL_ID=$$($(CLOUDFLARED) tunnel create $(TUNNEL_NAME) | grep -oP '(?<=Created tunnel ).*(?= with id)'); \
+	else \
+		echo "Utilisation du tunnel existant avec ID: $$TUNNEL_ID"; \
+	fi; \
+	CRED_FILE=~/.cloudflared/$$TUNNEL_ID.json; \
+	if [ ! -f $$CRED_FILE ] || [ ! -s $$CRED_FILE ] || ! grep -q "AccountTag" $$CRED_FILE; then \
+		echo "Création/Mise à jour du fichier de credentials pour le tunnel..."; \
+		$(CLOUDFLARED) tunnel token $$TUNNEL_ID | base64 -d | \
+		sed 's/"a":/"AccountTag":/' | \
+		sed 's/"s":/"TunnelSecret":/' | \
+		sed 's/"t":/"TunnelID":/' > $$CRED_FILE.tmp && mv $$CRED_FILE.tmp $$CRED_FILE; \
+	else \
+		echo "Le fichier de credentials existe déjà et semble valide."; \
 	fi; \
 	sed 's|<USER>|$(USER)|g; s|345d8b1b-1174-4384-b569-16b39c812671|'$$TUNNEL_ID'|g' $(CONFIG_TEMPLATE) > $(CONFIG_FILE)
 	@echo "Configuration DNS..."

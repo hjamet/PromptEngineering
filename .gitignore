@@ -84,3 +84,7 @@ htmlcov/
 .coverage.*
 coverage.xml
 *.cover
+
+# Ajouts pour Cloudflare et configuration
+.cursorignore
+config.yml
