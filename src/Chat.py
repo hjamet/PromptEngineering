@@ -29,7 +29,8 @@ def start_ollama_server():
 
 
 class Chat:
-    def __init__(self, model="llama3:instruct"):
+
+    def __init__(self, model="phi3"):
         """
         Initialize the Chat instance.
 
