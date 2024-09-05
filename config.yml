@@ -1,6 +1,6 @@
 url: http://localhost:8050
 tunnel: 345d8b1b-1174-4384-b569-16b39c812671
-credentials-file: /home/lopilo24/.cloudflared/345d8b1b-1174-4384-b569-16b39c812671.json
+credentials-file: /home/lopilo/.cloudflared/345d8b1b-1174-4384-b569-16b39c812671.json
 ingress:
   - hostname: prompt-engineering.henri-jamet.com
     service: http://localhost:8050
