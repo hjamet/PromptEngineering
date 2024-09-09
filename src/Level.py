@@ -5,7 +5,10 @@ from sentence_transformers import SentenceTransformer
 from scipy.spatial.distance import cosine
 
 CheckResult = namedtuple("CheckResult", ["score", "error_messages"])
-LevelResult = namedtuple("LevelResult", ["total_score", "messages", "individual_scores"])
+LevelResult = namedtuple(
+    "LevelResult", ["total_score", "messages", "individual_scores"]
+)
+
 
 class Level(ABC):
     """Abstract base class for all levels in the game."""
@@ -105,16 +108,83 @@ class Level(ABC):
             "prompt_check": prompt_check.score,
             "prompt_similarity": prompt_similarity * 100,
             "answer_check": answer_check.score,
-            "answer_similarity": answer_similarity * 100
+            "answer_similarity": answer_similarity * 100,
         }
 
         total_score = sum(individual_scores.values()) / len(individual_scores)
 
         messages = (
-            prompt_check.error_messages +
-            answer_check.error_messages +
-            [f"Prompt similarity: {prompt_similarity:.2f}"] +
-            [f"Answer similarity: {answer_similarity:.2f}"]
+            prompt_check.error_messages
+            + answer_check.error_messages
+            + [f"Prompt similarity: {prompt_similarity:.2f}"]
+            + [f"Answer similarity: {answer_similarity:.2f}"]
         )
 
         return LevelResult(total_score, messages, individual_scores)
+
+
+if __name__ == "__main__":
+
+    class ExampleLevel(Level):
+        """Example implementation of a Level."""
+
+        @property
+        def level_number(self) -> int:
+            return 1
+
+        @property
+        def instruction(self) -> str:
+            return "Write a haiku about programming."
+
+        @property
+        def correct_answer(self) -> str:
+            return "Fingers on keyboard\nLogic flows through lines of code\nBugs emerge, then flee"
+
+        def check_prompt(self, prompt: str) -> CheckResult:
+            # Simple check for demonstration
+            if "haiku" in prompt.lower() and "programming" in prompt.lower():
+                return CheckResult(100, [])
+            return CheckResult(0, ["Prompt should mention 'haiku' and 'programming'"])
+
+        def check_answer(self, answer: str) -> CheckResult:
+            # Simple check for demonstration
+            lines = answer.split("\n")
+            if len(lines) == 3 and all(5 <= len(line.split()) <= 7 for line in lines):
+                return CheckResult(100, [])
+            return CheckResult(
+                0, ["Answer should be a haiku (3 lines, 5-7-5 syllables)"]
+            )
+
+    # Create an instance of ExampleLevel
+    example_level = ExampleLevel()
+
+    # Function to evaluate and print results
+    def evaluate_and_print(prompt: str, answer: str):
+        """Evaluate the level and print results."""
+        result = example_level(prompt, answer)
+        print(f"\nPrompt: {prompt}")
+        print(f"Answer: {answer}")
+        print(f"Total Score: {result.total_score:.2f}")
+        print("Messages:")
+        for msg in result.messages:
+            print(f"- {msg}")
+        print("Individual Scores:")
+        for key, value in result.individual_scores.items():
+            print(f"- {key}: {value:.2f}")
+
+    # Bad example
+    bad_prompt = "Write a poem about coding."
+    bad_answer = "Coding is fun\nI love to program all day\nComputers are cool"
+    evaluate_and_print(bad_prompt, bad_answer)
+
+    # Good example
+    good_prompt = "Can you write a haiku about the art of programming?"
+    good_answer = "Code flows like water\nBugs lurk in shadowy depths\nDebugger rescues"
+    evaluate_and_print(good_prompt, good_answer)
+
+    # Almost perfect example
+    perfect_prompt = "Please compose a haiku that captures the essence of programming."
+    perfect_answer = (
+        "Fingers on keyboard\nLogic flows through lines of code\nBugs emerge, then flee"
+    )
+    evaluate_and_print(perfect_prompt, perfect_answer)
