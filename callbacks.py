@@ -1,6 +1,6 @@
 import dash
 import dash_mantine_components as dmc
-from dash import Input, Output, State, callback, clientside_callback
+from dash import Input, Output, State, callback, clientside_callback, set_props
 from dash_iconify import DashIconify
 
 import json
@@ -67,6 +67,16 @@ def register_callbacks(app):
             cache.set("all_sessions", json.dumps(all_sessions))
 
             logger.info(f"Username set for session {session_id}: {username}")
+
+            # Get the current level instructions
+            current_level = user_data.get("level", 1)
+            level = Level1()  # Pour l'instant, nous n'avons que le niveau 1
+            instructions = level.instructions
+
+            # Update level instructions directly
+            set_props("level-instructions", {"children": instructions})
+            set_props("sub-title", {"children": f"Level {current_level}"})
+
             return {"username": username}, None
         logger.warning("Empty username input")
         return dash.no_update, "Please enter a username"

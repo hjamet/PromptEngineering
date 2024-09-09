@@ -23,16 +23,14 @@ class Level(ABC):
         pass
 
     @property
-    @abstractmethod
-    def instruction(self) -> str:
-        """The instruction for the level."""
-        pass
+    def correct_question(self) -> str:
+        """The correct question for the level."""
+        return ""
 
     @property
-    @abstractmethod
     def correct_answer(self) -> str:
         """The correct answer for the level."""
-        pass
+        return ""
 
     @property
     @abstractmethod
@@ -40,7 +38,6 @@ class Level(ABC):
         """Instructions for the level."""
         pass
 
-    @abstractmethod
     def check_answer(self, answer: str) -> CheckResult:
         """
         Check if the given answer is correct.
@@ -51,9 +48,8 @@ class Level(ABC):
         Returns:
             CheckResult with score (0-100) and list of error messages.
         """
-        pass
+        return CheckResult(100, [])
 
-    @abstractmethod
     def check_prompt(self, prompt: str) -> CheckResult:
         """
         Check if the given prompt is correct.
@@ -64,7 +60,7 @@ class Level(ABC):
         Returns:
             CheckResult with score (0-100) and list of error messages.
         """
-        pass
+        return CheckResult(100, [])
 
     def check_prompt_similarity(self, user_prompt: str) -> float:
         """
@@ -76,8 +72,10 @@ class Level(ABC):
         Returns:
             Similarity score between 0 and 1.
         """
+        if not self.correct_question:
+            return 1.0
         user_embedding = self._model.encode([user_prompt])[0]
-        correct_embedding = self._model.encode([self.instruction])[0]
+        correct_embedding = self._model.encode([self.correct_question])[0]
         return 1 - cosine(user_embedding, correct_embedding)
 
     def check_answer_similarity(self, model_answer: str) -> float:
@@ -90,6 +88,8 @@ class Level(ABC):
         Returns:
             Similarity score between 0 and 1.
         """
+        if not self.correct_answer:
+            return 1.0
         model_embedding = self._model.encode([model_answer])[0]
         correct_embedding = self._model.encode([self.correct_answer])[0]
         return 1 - cosine(model_embedding, correct_embedding)

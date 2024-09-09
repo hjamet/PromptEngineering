@@ -7,10 +7,6 @@ class Level1(Level):
         return 1
 
     @property
-    def instruction(self) -> str:
-        return "Ask the AI to respond with anything, but in less than 30 words."
-
-    @property
     def instructions(self) -> str:
         return """
         Welcome to Level 1!
@@ -22,10 +18,6 @@ class Level1(Level):
         - You can be creative with your prompt
         - Remember, the AI's response should be concise
         """
-
-    @property
-    def correct_answer(self) -> str:
-        return "Any response less than 30 words"
 
     def check_prompt(self, prompt: str) -> CheckResult:
         if "less than 30 words" in prompt.lower() or "under 30 words" in prompt.lower():
