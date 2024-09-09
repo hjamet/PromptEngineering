@@ -234,7 +234,7 @@ def create_layout():
             ),
             dmc.ProgressSection(
                 dmc.ProgressLabel("Answer Similarity"),
-                value=10,
+                value=2.5,
                 color="green",
                 id="answer-similarity-progress",
             ),

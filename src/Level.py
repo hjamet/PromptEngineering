@@ -111,10 +111,10 @@ class Level(ABC):
         answer_similarity = self.check_answer_similarity(model_answer)
 
         individual_scores = {
-            "prompt_check": prompt_check.score,
-            "prompt_similarity": prompt_similarity * 100,
-            "answer_check": answer_check.score,
-            "answer_similarity": answer_similarity * 100,
+            "prompt_check": max(prompt_check.score, 10),
+            "prompt_similarity": max(prompt_similarity * 100, 10),
+            "answer_check": max(answer_check.score, 10),
+            "answer_similarity": max(answer_similarity * 100, 10),
         }
 
         total_score = sum(individual_scores.values()) / len(individual_scores)

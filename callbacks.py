@@ -149,14 +149,12 @@ def register_callbacks(app):
                 "",  # question-input
                 False,  # loading-overlay
                 "trigger_focus",  # hidden-div
-                result.individual_scores["prompt_check"],  # prompt-check-progress
-                result.individual_scores[
-                    "prompt_similarity"
-                ],  # prompt-similarity-progress
-                result.individual_scores["answer_check"],  # answer-check-progress
-                result.individual_scores[
-                    "answer_similarity"
-                ],  # answer-similarity-progress
+                result.individual_scores["prompt_check"] / 4,  # prompt-check-progress
+                result.individual_scores["prompt_similarity"]
+                / 4,  # prompt-similarity-progress
+                result.individual_scores["answer_check"] / 4,  # answer-check-progress
+                result.individual_scores["answer_similarity"]
+                / 4,  # answer-similarity-progress
                 markdown_messages,  # level-messages children
                 {"display": "block"},  # level-messages style
             )
