@@ -7,6 +7,7 @@ import json
 from cache_manager import generate_session_id, get_user_data, update_user_data
 from src.Chat import Chat
 from src.Logger import Logger
+from src.levels.level_1 import Level1
 
 logger = Logger(__name__).get_logger()
 
@@ -230,3 +231,57 @@ def register_callbacks(app):
     @app.callback(Output("top-p-badge", "children"), Input("top-p-slider", "value"))
     def update_top_p_badge(value):
         return f"{value:.2f}"
+
+    @app.callback(
+        Output("level-instructions", "children"),
+        Output("sub-title", "children"),
+        Input("session-id", "data"),
+        State("session-store", "data"),
+    )
+    def update_level_info(session_id, session_data):
+        if not session_id or not session_data:
+            return "Please log in to start the game.", "Welcome"
+
+        user_data = get_user_data(cache, session_id)
+        current_level = user_data.get("level", 1)
+
+        # Pour l'instant, nous n'avons que le niveau 1
+        level = Level1()
+
+        return level.instructions, f"Level {current_level}"
+
+    @app.callback(
+        Output("prompt-check-progress", "value"),
+        Output("prompt-similarity-progress", "value"),
+        Output("answer-check-progress", "value"),
+        Output("answer-similarity-progress", "value"),
+        Output("level-messages", "children"),
+        Output("level-messages", "style"),
+        Input("submit-button", "n_clicks"),
+        State("question-input", "value"),
+        State("model-response", "children"),
+        State("session-id", "data"),
+        prevent_initial_call=True,
+    )
+    def evaluate_level(n_clicks, user_prompt, model_response, session_id):
+        if not n_clicks or not session_id:
+            return 0, 0, 0, 0, "", {"display": "none"}
+
+        user_data = get_user_data(cache, session_id)
+        current_level = user_data.get("level", 1)
+
+        # Pour l'instant, nous n'avons que le niveau 1
+        level = Level1()
+
+        result = level(user_prompt, model_response)
+
+        messages = "\n".join(result.messages)
+
+        return (
+            result.individual_scores["prompt_check"],
+            result.individual_scores["prompt_similarity"],
+            result.individual_scores["answer_check"],
+            result.individual_scores["answer_similarity"],
+            messages,
+            {"display": "block"},
+        )

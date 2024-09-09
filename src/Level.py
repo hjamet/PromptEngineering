@@ -34,6 +34,12 @@ class Level(ABC):
         """The correct answer for the level."""
         pass
 
+    @property
+    @abstractmethod
+    def instructions(self) -> str:
+        """Instructions for the level."""
+        pass
+
     @abstractmethod
     def check_answer(self, answer: str) -> CheckResult:
         """

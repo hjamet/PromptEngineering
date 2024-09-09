@@ -16,7 +16,10 @@ def create_layout():
         "Learn Prompt Engineering", order=1, style={"textAlign": "center"}
     )
     sub_title = dmc.Title(
-        "Level 1", order=2, style={"color": "dimmed", "textAlign": "center"}
+        "Welcome",
+        order=2,
+        style={"color": "dimmed", "textAlign": "center"},
+        id="sub-title",
     )
 
     # Creation of the accordion with sliders and settings icon
@@ -208,6 +211,49 @@ def create_layout():
         mb="xl",
     )
 
+    # Replace the existing score_progress with this new implementation
+    score_progress = dmc.ProgressRoot(
+        [
+            dmc.ProgressSection(
+                dmc.ProgressLabel("Prompt Check"),
+                value=0,
+                color="cyan",
+                id="prompt-check-progress",
+            ),
+            dmc.ProgressSection(
+                dmc.ProgressLabel("Prompt Similarity"),
+                value=0,
+                color="pink",
+                id="prompt-similarity-progress",
+            ),
+            dmc.ProgressSection(
+                dmc.ProgressLabel("Answer Check"),
+                value=0,
+                color="orange",
+                id="answer-check-progress",
+            ),
+            dmc.ProgressSection(
+                dmc.ProgressLabel("Answer Similarity"),
+                value=0,
+                color="green",
+                id="answer-similarity-progress",
+            ),
+        ],
+        size="xl",
+        id="score-progress",
+        mb="md",
+    )
+
+    # Add alert for level messages
+    level_messages = dmc.Alert(
+        id="level-messages",
+        title="Level Messages",
+        color="blue",
+        variant="light",
+        mb="md",
+        style={"display": "none"},
+    )
+
     question_input = Keyboard(
         id="keyboard",
         captureKeys=[{"key": "Enter", "ctrlKey": False, "shiftKey": False}],
@@ -278,6 +324,15 @@ def create_layout():
         [clean_chat_button, history_button], justify="center", gap="md"
     )
 
+    level_instructions = dmc.Alert(
+        id="level-instructions",
+        title="Level Instructions",
+        color="blue",
+        variant="light",
+        mb="md",
+        children="Instructions will be displayed here",
+    )
+
     paper_content = dmc.Paper(
         shadow="sm",
         p="xl",
@@ -289,6 +344,9 @@ def create_layout():
         id="paper-content",  # Ajoutez cette ligne
         children=[
             accordion,
+            level_instructions,  # Ajout des instructions du niveau
+            score_progress,  # Add score progress bar
+            level_messages,  # Add level messages alert
             question_input,
             dmc.Center(submit_button),
             model_response_area,
