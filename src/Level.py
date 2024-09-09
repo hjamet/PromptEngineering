@@ -119,12 +119,7 @@ class Level(ABC):
 
         total_score = sum(individual_scores.values()) / len(individual_scores)
 
-        messages = (
-            prompt_check.error_messages
-            + answer_check.error_messages
-            + [f"Prompt similarity: {prompt_similarity:.2f}"]
-            + [f"Answer similarity: {answer_similarity:.2f}"]
-        )
+        messages = prompt_check.error_messages + answer_check.error_messages
 
         return LevelResult(total_score, messages, individual_scores)
 

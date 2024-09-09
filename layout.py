@@ -249,10 +249,12 @@ def create_layout():
         children=[dcc.Markdown(id="level-messages-markdown")],
         id="level-messages",
         title="Level Messages",
-        color="blue",
+        color="orange",
         variant="light",
         mb="md",
         style={"display": "none"},
+        icon=DashIconify(icon="mdi:alert-outline", width=26, color="orange"),
+        withCloseButton=True,
     )
 
     question_input = Keyboard(
