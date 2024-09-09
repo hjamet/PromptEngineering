@@ -330,7 +330,7 @@ def create_layout():
         color="blue",
         variant="light",
         mb="md",
-        children="Instructions will be displayed here",
+        children=[dcc.Markdown(id="level-instructions-markdown")],
     )
 
     paper_content = dmc.Paper(
@@ -341,12 +341,12 @@ def create_layout():
             "width": "100%",
             "maxWidth": "60vw",
         },
-        id="paper-content",  # Ajoutez cette ligne
+        id="paper-content",
         children=[
+            level_instructions,
             accordion,
-            level_instructions,  # Ajout des instructions du niveau
-            score_progress,  # Add score progress bar
-            level_messages,  # Add level messages alert
+            score_progress,
+            level_messages,
             question_input,
             dmc.Center(submit_button),
             model_response_area,

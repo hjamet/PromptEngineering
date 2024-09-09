@@ -2,6 +2,7 @@ import dash
 import dash_mantine_components as dmc
 from dash import Input, Output, State, callback, clientside_callback, set_props
 from dash_iconify import DashIconify
+from dash import dcc
 
 import json
 from cache_manager import generate_session_id, get_user_data, update_user_data
@@ -86,6 +87,12 @@ def register_callbacks(app):
         Output("question-input", "value"),
         Output("loading-overlay", "visible"),
         Output("hidden-div", "children"),
+        Output("prompt-check-progress", "value"),
+        Output("prompt-similarity-progress", "value"),
+        Output("answer-check-progress", "value"),
+        Output("answer-similarity-progress", "value"),
+        Output("level-messages", "children"),
+        Output("level-messages", "style"),
         Input("submit-button", "n_clicks"),
         Input("keyboard", "n_keydowns"),
         State("question-input", "value"),
@@ -99,41 +106,73 @@ def register_callbacks(app):
             (Output("question-input", "disabled"), True, False),
             (Output("submit-button", "disabled"), True, False),
             (Output("loading-overlay", "visible"), True, False),
-            (
-                Output("model-response", "children"),
-                "",
-                "",
-            ),  # Don't put no_update here, it will break the callback
         ],
         prevent_initial_call=True,
     )
-    def update_output(
+    def process_input_and_evaluate(
         n_clicks: int,
         n_keydowns: int,
-        value: str,
+        user_prompt: str,
         session_id: str,
         repeat_penalty: float,
         temperature: float,
         top_k: int,
         top_p: float,
     ):
-        if (n_clicks or n_keydowns) and value and session_id:
+        if (n_clicks or n_keydowns) and user_prompt and session_id:
             user_data = get_user_data(cache, session_id)
             chat = user_data["chat"]
-            logger.info(f"User sent message: {value}")
-            response = chat.ask(
-                value,
+            logger.info(f"User sent message: {user_prompt}")
+
+            # Get AI response
+            model_response = chat.ask(
+                user_prompt,
                 temperature=temperature,
                 repeat_penalty=repeat_penalty,
                 top_k=top_k,
                 top_p=top_p,
             )
+
             user_data["chat"] = chat
             update_user_data(cache, session_id, user_data)
             logger.debug(f"Updated chat for session {session_id}")
 
-            return str(response), "", False, "trigger_focus"
-        return dash.no_update, "", False, dash.no_update
+            # Evaluate the level
+            current_level = user_data.get("level", 1)
+            level = Level1()  # Pour l'instant, nous n'avons que le niveau 1
+            result = level(user_prompt, model_response)
+
+            messages = "\n".join(result.messages)
+            markdown_messages = dcc.Markdown(messages)
+
+            return (
+                str(model_response),  # model-response
+                "",  # question-input
+                False,  # loading-overlay
+                "trigger_focus",  # hidden-div
+                result.individual_scores["prompt_check"],  # prompt-check-progress
+                result.individual_scores[
+                    "prompt_similarity"
+                ],  # prompt-similarity-progress
+                result.individual_scores["answer_check"],  # answer-check-progress
+                result.individual_scores[
+                    "answer_similarity"
+                ],  # answer-similarity-progress
+                markdown_messages,  # level-messages children
+                {"display": "block"},  # level-messages style
+            )
+        return (
+            dash.no_update,
+            "",
+            False,
+            dash.no_update,
+            0,
+            0,
+            0,
+            0,
+            "",
+            {"display": "none"},
+        )
 
     # Clientside callback to handle focus
     app.clientside_callback(
@@ -243,7 +282,7 @@ def register_callbacks(app):
         return f"{value:.2f}"
 
     @app.callback(
-        Output("level-instructions", "children"),
+        Output("level-instructions-markdown", "children"),
         Output("sub-title", "children"),
         Input("session-id", "data"),
         State("session-store", "data"),
@@ -259,39 +298,3 @@ def register_callbacks(app):
         level = Level1()
 
         return level.instructions, f"Level {current_level}"
-
-    @app.callback(
-        Output("prompt-check-progress", "value"),
-        Output("prompt-similarity-progress", "value"),
-        Output("answer-check-progress", "value"),
-        Output("answer-similarity-progress", "value"),
-        Output("level-messages", "children"),
-        Output("level-messages", "style"),
-        Input("submit-button", "n_clicks"),
-        State("question-input", "value"),
-        State("model-response", "children"),
-        State("session-id", "data"),
-        prevent_initial_call=True,
-    )
-    def evaluate_level(n_clicks, user_prompt, model_response, session_id):
-        if not n_clicks or not session_id:
-            return 0, 0, 0, 0, "", {"display": "none"}
-
-        user_data = get_user_data(cache, session_id)
-        current_level = user_data.get("level", 1)
-
-        # Pour l'instant, nous n'avons que le niveau 1
-        level = Level1()
-
-        result = level(user_prompt, model_response)
-
-        messages = "\n".join(result.messages)
-
-        return (
-            result.individual_scores["prompt_check"],
-            result.individual_scores["prompt_similarity"],
-            result.individual_scores["answer_check"],
-            result.individual_scores["answer_similarity"],
-            messages,
-            {"display": "block"},
-        )
