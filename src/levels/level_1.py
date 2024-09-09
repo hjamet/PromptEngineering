@@ -9,14 +9,17 @@ class Level1(Level):
     @property
     def instructions(self) -> str:
         return """
-        Welcome to Level 1!
+        # Welcome to Level 1!
         
-        Your task is simple: Ask the AI to respond with anything, but make sure the response is less than 30 words.
+        Your task is simple:
         
-        Tips:
-        - Be clear in your request
-        - You can be creative with your prompt
-        - Remember, the AI's response should be concise
+        1. Ask the AI to respond with **anything**
+        2. Make sure the response is *less than 30 words*
+        
+        ## Tips:
+        - Be **clear** in your request
+        - You can be *creative* with your prompt
+        - Remember, the AI's response should be `concise`
         """
 
     def check_prompt(self, prompt: str) -> CheckResult:

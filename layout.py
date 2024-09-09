@@ -216,25 +216,25 @@ def create_layout():
         [
             dmc.ProgressSection(
                 dmc.ProgressLabel("Prompt Check"),
-                value=0,
+                value=10,
                 color="cyan",
                 id="prompt-check-progress",
             ),
             dmc.ProgressSection(
                 dmc.ProgressLabel("Prompt Similarity"),
-                value=0,
+                value=10,
                 color="pink",
                 id="prompt-similarity-progress",
             ),
             dmc.ProgressSection(
                 dmc.ProgressLabel("Answer Check"),
-                value=0,
+                value=10,
                 color="orange",
                 id="answer-check-progress",
             ),
             dmc.ProgressSection(
                 dmc.ProgressLabel("Answer Similarity"),
-                value=0,
+                value=10,
                 color="green",
                 id="answer-similarity-progress",
             ),
@@ -246,6 +246,7 @@ def create_layout():
 
     # Add alert for level messages
     level_messages = dmc.Alert(
+        children=[dcc.Markdown(id="level-messages-markdown")],
         id="level-messages",
         title="Level Messages",
         color="blue",

@@ -91,7 +91,7 @@ def register_callbacks(app):
         Output("prompt-similarity-progress", "value"),
         Output("answer-check-progress", "value"),
         Output("answer-similarity-progress", "value"),
-        Output("level-messages", "children"),
+        Output("level-messages-markdown", "children"),
         Output("level-messages", "style"),
         Input("submit-button", "n_clicks"),
         Input("keyboard", "n_keydowns"),
@@ -142,8 +142,7 @@ def register_callbacks(app):
             level = Level1()  # Pour l'instant, nous n'avons que le niveau 1
             result = level(user_prompt, model_response)
 
-            messages = "\n".join(result.messages)
-            markdown_messages = dcc.Markdown(messages)
+            markdown_messages = "\n".join(result.messages)
 
             return (
                 str(model_response),  # model-response
@@ -288,6 +287,16 @@ def register_callbacks(app):
         State("session-store", "data"),
     )
     def update_level_info(session_id, session_data):
+        """
+        Update level information based on user session.
+
+        Args:
+            session_id (str): User's session ID.
+            session_data (dict): User's session data.
+
+        Returns:
+            tuple: Markdown-formatted instructions and level title.
+        """
         if not session_id or not session_data:
             return "Please log in to start the game.", "Welcome"
 

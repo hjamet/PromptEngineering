@@ -47,6 +47,7 @@ app = dash.Dash(
         "https://cdn.jsdelivr.net/npm/@mantine/spotlight@5.10.4/dist/mantine-spotlight.min.css",
     ],
     background_callback_manager=background_callback_manager,
+    prevent_initial_callbacks=True,
 )
 
 # Configure cache
@@ -72,4 +73,4 @@ app.layout = dmc.MantineProvider(
 register_callbacks(app)
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=8050)
+    app.run(debug=True, host="0.0.0.0", port=8050)
