@@ -19,6 +19,7 @@ psutil = "^6.0.0"
 tiktoken = "^0.7.0"
 sentence-transformers = "^3.0.1"
 scipy = "^1.14.1"
+replicate = "^0.32.1"
 
 
 [build-system]

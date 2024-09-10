@@ -1,11 +1,35 @@
 import ollama
+import replicate
+import os
 from collections import namedtuple
 from src.Logger import Logger
 import subprocess
 import time
-import json
+import getpass
 
 Message = namedtuple("Message", ["role", "content"])
+
+
+def get_replicate_token():
+    """Get Replicate API token from environment, file, or user input."""
+    token = os.getenv("REPLICATE_API_TOKEN")
+    if not token:
+        token_file = "scratch/replicate_token.txt"
+        if os.path.exists(token_file):
+            with open(token_file, "r") as f:
+                token = f.read().strip()
+
+        if not token:
+            from getpass import getpass
+
+            token = getpass("Enter your Replicate API token: ")
+            os.makedirs(os.path.dirname(token_file), exist_ok=True)
+            with open(token_file, "w") as f:
+                f.write(token)
+
+        os.environ["REPLICATE_API_TOKEN"] = token
+
+    return token
 
 
 def start_ollama_server():
@@ -30,18 +54,25 @@ def start_ollama_server():
 
 class Chat:
 
-    def __init__(self, model="phi3"):
+    def __init__(self, model="llama3.1", replicate_model=None):
         """
         Initialize the Chat instance.
 
         Args:
             model (str): The name of the Ollama model to use.
+            replicate_model (str): The name of the Replicate model to use.
         """
         self.logger = Logger(__name__).get_logger()
         self.messages = []
         self.model = model
-        self.client = ollama.Client()
-        self.logger.info(f"Chat instance initialized with model: {model}")
+        self.replicate_model = replicate_model
+        if replicate_model:
+            get_replicate_token()
+        else:
+            self.client = ollama.Client()
+        self.logger.info(
+            f"Chat instance initialized with model: {model or replicate_model}"
+        )
 
     def add_message(self, role, content):
         self.messages.append(Message(role, content))
@@ -75,40 +106,53 @@ class Chat:
         self.add_message("user", message)
         response_content = ""
 
-        self.logger.debug(
-            f"""Sending message to Ollama: {message}
-            - Temperature: {temperature}
-            - Repeat Penalty: {repeat_penalty}
-            - Top K: {top_k}
-            - Top P: {top_p}
-            """
-        )
-
-        chat_params = {
-            "model": self.model,
-            "messages": [
-                {"role": msg.role, "content": msg.content} for msg in self.messages
-            ],
-            "options": {
-                "temperature": temperature,
-                "repeat_penalty": repeat_penalty,
-                "top_k": top_k,
-                "top_p": top_p,
-            },
-        }
-
-        if streamline:
-            chat_params["stream"] = True
-            for response in self.client.chat(**chat_params):
-                chunk = response["message"]["content"]
-                response_content += chunk
-                print(chunk, end="", flush=True)
-            print()  # New line after streaming
+        if self.replicate_model:
+            output = replicate.run(
+                self.replicate_model,
+                input={
+                    "prompt": message,
+                    "temperature": temperature,
+                    "top_p": top_p,
+                    "max_new_tokens": 500,
+                    "repetition_penalty": repeat_penalty,
+                },
+            )
+            response_content = "".join(output)
         else:
-            response = self.client.chat(**chat_params)
-            response_content = response["message"]["content"]
+            self.logger.debug(
+                f"""Sending message to Ollama: {message}
+                - Temperature: {temperature}
+                - Repeat Penalty: {repeat_penalty}
+                - Top K: {top_k}
+                - Top P: {top_p}
+                """
+            )
 
-        self.logger.debug(f"Received response from Ollama: {response_content}")
+            chat_params = {
+                "model": self.model,
+                "messages": [
+                    {"role": msg.role, "content": msg.content} for msg in self.messages
+                ],
+                "options": {
+                    "temperature": temperature,
+                    "repeat_penalty": repeat_penalty,
+                    "top_k": top_k,
+                    "top_p": top_p,
+                },
+            }
+
+            if streamline:
+                chat_params["stream"] = True
+                for response in self.client.chat(**chat_params):
+                    chunk = response["message"]["content"]
+                    response_content += chunk
+                    print(chunk, end="", flush=True)
+                print()  # New line after streaming
+            else:
+                response = self.client.chat(**chat_params)
+                response_content = response["message"]["content"]
+
+        self.logger.debug(f"Received response: {response_content}")
         self.add_message("assistant", response_content)
         return response_content
 
@@ -118,6 +162,7 @@ class Chat:
         """
         return {
             "model": self.model,
+            "replicate_model": self.replicate_model,
             "messages": [
                 {"role": msg.role, "content": msg.content} for msg in self.messages
             ],
@@ -128,12 +173,29 @@ class Chat:
         """
         Create a Chat instance from a dictionary.
         """
-        chat = cls(model=data["model"])
+        chat = cls(model=data["model"], replicate_model=data.get("replicate_model"))
         for msg in data["messages"]:
             chat.add_message(msg["role"], msg["content"])
         return chat
 
 
 if __name__ == "__main__":
-    chat = Chat()
-    chat.ask("Hello, how are you?", streamline=True)
+    chat_ollama = Chat()
+    chat_ollama.ask(
+        "Hello, how are you?",
+        streamline=True,
+        temperature=0.1,
+        repeat_penalty=1.1,
+        top_k=40,
+        top_p=0.95,
+    )
+
+    chat_replicate = Chat(replicate_model="meta/meta-llama-3-8b-instruct")
+    chat_replicate.ask(
+        "Hello, how are you?",
+        streamline=True,
+        temperature=0.1,
+        repeat_penalty=1.1,
+        top_k=40,
+        top_p=0.95,
+    )
