@@ -366,8 +366,14 @@ def create_layout():
         withCloseButton=False,
         opened=False,
         children=[
-            dmc.TextInput(
-                id="username-input", placeholder="Your username", required=True
+            Keyboard(
+                id="username-keyboard",
+                captureKeys=[{"key": "Enter", "ctrlKey": False, "shiftKey": False}],
+                children=[
+                    dmc.TextInput(
+                        id="username-input", placeholder="Your username", required=True
+                    )
+                ],
             ),
             dmc.Button("Confirm", id="confirm-username", fullWidth=True, mt="md"),
         ],

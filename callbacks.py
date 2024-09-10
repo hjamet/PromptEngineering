@@ -41,14 +41,27 @@ def register_callbacks(app):
     @app.callback(
         Output("session-store", "data"),
         Output("username-input", "error"),
+        Output("username-modal", "opened", allow_duplicate=True),
         Input("confirm-username", "n_clicks"),
-        Input("username-input", "n_submit"),
+        Input("username-keyboard", "n_keydowns"),
         State("username-input", "value"),
         State("session-id", "data"),
         prevent_initial_call=True,
     )
-    def handle_username_input(n_clicks, n_submit, username, session_id):
-        if (n_clicks or n_submit) and username:
+    def handle_username_input(n_clicks, n_keydowns, username, session_id):
+        """
+        Handle username input and update session data.
+
+        Args:
+            n_clicks (int): Number of clicks on confirm button.
+            n_keydowns (int): Number of keydown events.
+            username (str): Entered username.
+            session_id (str): Current session ID.
+
+        Returns:
+            tuple: Updated session data, error message (if any), and modal state.
+        """
+        if (n_clicks or n_keydowns) and username and session_id:
             # Check if the username is already taken
             all_sessions = json.loads(cache.get("all_sessions") or "{}")
             for sid, data in all_sessions.items():
@@ -57,6 +70,7 @@ def register_callbacks(app):
                     return (
                         dash.no_update,
                         "This username is already taken. Please choose another.",
+                        True,
                     )
 
             user_data = get_user_data(cache, session_id)
@@ -78,9 +92,9 @@ def register_callbacks(app):
             set_props("level-instructions", {"children": instructions})
             set_props("sub-title", {"children": f"Level {current_level}"})
 
-            return {"username": username}, None
+            return {"username": username}, None, False
         logger.warning("Empty username input")
-        return dash.no_update, "Please enter a username"
+        return dash.no_update, "Please enter a username", True
 
     @app.callback(
         Output("model-response", "children"),
