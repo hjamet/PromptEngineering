@@ -217,25 +217,25 @@ def create_layout():
         [
             dmc.ProgressSection(
                 dmc.ProgressLabel("Prompt Check"),
-                value=10,
+                value=3,
                 color="cyan",
                 id="prompt-check-progress",
             ),
             dmc.ProgressSection(
                 dmc.ProgressLabel("Prompt Similarity"),
-                value=10,
+                value=3,
                 color="pink",
                 id="prompt-similarity-progress",
             ),
             dmc.ProgressSection(
                 dmc.ProgressLabel("Answer Check"),
-                value=10,
+                value=3,
                 color="orange",
                 id="answer-check-progress",
             ),
             dmc.ProgressSection(
                 dmc.ProgressLabel("Answer Similarity"),
-                value=2.5,
+                value=3,
                 color="green",
                 id="answer-similarity-progress",
             ),
