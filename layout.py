@@ -3,6 +3,7 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 from dash_extensions import Keyboard
 from dash import dcc
+import dash.html
 
 
 def create_layout():
@@ -409,6 +410,11 @@ def create_layout():
         ],
     )
 
+    notifications_container = dash.html.Div(
+        id="notifications-container",
+        style={"position": "fixed", "top": 20, "right": 20, "zIndex": 9999},
+    )
+
     return dmc.Box(
         style={
             "display": "flex",
@@ -438,5 +444,7 @@ def create_layout():
             hidden_div,
             *session_stores,
             history_drawer,
+            notifications_container,
+            dmc.NotificationProvider(),
         ],
     )

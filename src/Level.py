@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import NamedTuple, List
+from typing import NamedTuple, List, Dict
 from collections import namedtuple
 from sentence_transformers import SentenceTransformer
 from scipy.spatial.distance import cosine
 
-CheckResult = namedtuple("CheckResult", ["score", "error_messages"])
+CheckResult = namedtuple("CheckResult", ["score", "messages"])
+Message = namedtuple("Message", ["content", "color", "icon"])
 LevelResult = namedtuple(
     "LevelResult", ["total_score", "messages", "individual_scores"]
 )
@@ -124,7 +125,27 @@ class Level(ABC):
 
         total_score = sum(individual_scores.values()) / len(individual_scores)
 
-        messages = prompt_check.error_messages + answer_check.error_messages
+        messages = [
+            Message(content=msg, color="red", icon="error")
+            for msg in prompt_check.messages + answer_check.messages
+        ]
+
+        if total_score >= self.min_score_to_pass:
+            messages.append(
+                Message(
+                    content=f"Congratulations! You've passed level {self.level_number}!",
+                    color="green",
+                    icon="check-circle",
+                )
+            )
+        else:
+            messages.append(
+                Message(
+                    content=f"Keep trying! Your current score is {total_score:.2f}",
+                    color="yellow",
+                    icon="info-circle",
+                )
+            )
 
         return LevelResult(total_score, messages, individual_scores)
 
@@ -173,7 +194,7 @@ if __name__ == "__main__":
         print(f"Total Score: {result.total_score:.2f}")
         print("Messages:")
         for msg in result.messages:
-            print(f"- {msg}")
+            print(f"- {msg.content} ({msg.color} {msg.icon})")
         print("Individual Scores:")
         for key, value in result.individual_scores.items():
             print(f"- {key}: {value:.2f}")

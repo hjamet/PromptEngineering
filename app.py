@@ -45,6 +45,7 @@ app = dash.Dash(
         "https://cdn.jsdelivr.net/npm/@mantine/dates@5.10.4/dist/mantine-dates.min.css",
         "https://cdn.jsdelivr.net/npm/@mantine/dropzone@5.10.4/dist/mantine-dropzone.min.css",
         "https://cdn.jsdelivr.net/npm/@mantine/spotlight@5.10.4/dist/mantine-spotlight.min.css",
+        dmc.styles.NOTIFICATIONS,
     ],
     background_callback_manager=background_callback_manager,
     prevent_initial_callbacks=True,
@@ -64,7 +65,6 @@ cache = Cache(
 app.layout = dmc.MantineProvider(
     theme={"colorScheme": "light"},
     children=[
-        # dash.dcc.Store(id="session-store", storage_type="session"),
         create_layout(),
     ],
 )

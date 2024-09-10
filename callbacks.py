@@ -1,6 +1,6 @@
 import dash
 import dash_mantine_components as dmc
-from dash import Input, Output, State, callback, clientside_callback, set_props
+from dash import Input, Output, State, callback, clientside_callback, set_props, html
 from dash_iconify import DashIconify
 from dash import dcc
 
@@ -125,8 +125,7 @@ def register_callbacks(app):
         Output("prompt-similarity-progress", "value"),
         Output("answer-check-progress", "value"),
         Output("answer-similarity-progress", "value"),
-        Output("level-messages-markdown", "children"),
-        Output("level-messages", "style"),
+        Output("notifications-container", "children"),
         Output("level-instructions-markdown", "children", allow_duplicate=True),
         Output("sub-title", "children", allow_duplicate=True),
         Input("submit-button", "n_clicks"),
@@ -173,23 +172,42 @@ def register_callbacks(app):
             level = LEVELS.get(current_level, Level1())
             result = level(user_prompt, model_response)
 
-            # Check if user passed the level
+            try:
+                notifications = html.Div(
+                    [
+                        dmc.Notification(
+                            id=f"notification-{i}",
+                            title=f"Level {current_level} Feedback",
+                            message=msg.content,
+                            color=msg.color,
+                            icon=DashIconify(icon=msg.icon),
+                            autoClose=False,
+                            action="show",
+                        )
+                        for i, msg in enumerate(result.messages)
+                    ]
+                )
+                logger.info(f"Created {len(result.messages)} notifications")
+            except AttributeError as e:
+                logger.error(f"AttributeError in creating notifications: {str(e)}")
+                notifications = html.Div()
+            except Exception as e:
+                logger.error(f"Unexpected error in creating notifications: {str(e)}")
+                notifications = html.Div()
+
+            logger.info(f"Result messages: {result.messages}")
+            logger.info(f"Created notifications: {notifications}")
+
             if result.total_score >= level.min_score_to_pass:
                 current_level += 1
                 user_data["level"] = current_level
                 next_level = LEVELS.get(current_level, Level1())
-                level_up_message = (
-                    f"Congratulations! You've reached Level {current_level}!"
-                )
                 instructions = next_level.instructions
             else:
-                level_up_message = ""
                 instructions = dash.no_update
 
             user_data["chat"] = chat
             update_user_data(cache, session_id, user_data)
-
-            markdown_messages = "\n".join([level_up_message] + result.messages)
 
             return (
                 str(model_response),
@@ -200,8 +218,7 @@ def register_callbacks(app):
                 result.individual_scores["prompt_similarity"] / 4,
                 result.individual_scores["answer_check"] / 4,
                 result.individual_scores["answer_similarity"] / 4,
-                markdown_messages,
-                {"display": "block"},
+                notifications,
                 instructions,
                 f"Level {current_level}",
             )
@@ -214,8 +231,7 @@ def register_callbacks(app):
             0,
             0,
             0,
-            "",
-            {"display": "none"},
+            html.Div(),  # Empty div instead of empty list
             dash.no_update,
             dash.no_update,
         )
