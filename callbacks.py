@@ -173,7 +173,18 @@ def register_callbacks(app):
             result = level(user_prompt, model_response)
 
             try:
-                notifications = html.Div(
+                # First, add a "clean" notification to remove all existing notifications
+                notifications = [
+                    dmc.Notification(
+                        id="clean-notifications",
+                        message="",
+                        action="clean",
+                        autoClose=False,
+                    )
+                ]
+
+                # Then, add the new notifications
+                notifications.extend(
                     [
                         dmc.Notification(
                             id=f"notification-{i}",
@@ -190,10 +201,10 @@ def register_callbacks(app):
                 logger.info(f"Created {len(result.messages)} notifications")
             except AttributeError as e:
                 logger.error(f"AttributeError in creating notifications: {str(e)}")
-                notifications = html.Div()
+                notifications = []
             except Exception as e:
                 logger.error(f"Unexpected error in creating notifications: {str(e)}")
-                notifications = html.Div()
+                notifications = []
 
             logger.info(f"Result messages: {result.messages}")
             logger.info(f"Created notifications: {notifications}")
@@ -231,7 +242,7 @@ def register_callbacks(app):
             0,
             0,
             0,
-            html.Div(),  # Empty div instead of empty list
+            [],
             dash.no_update,
             dash.no_update,
         )

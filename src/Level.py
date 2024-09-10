@@ -141,8 +141,8 @@ class Level(ABC):
         else:
             messages.append(
                 Message(
-                    content=f"Keep trying! Your current score is {total_score:.2f}",
-                    color="yellow",
+                    content=f"Keep trying! Your current score is {total_score:.2f}/{self.min_score_to_pass}",
+                    color="blue",
                     icon="info-circle",
                 )
             )
