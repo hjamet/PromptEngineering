@@ -8,9 +8,17 @@ import json
 from cache_manager import generate_session_id, get_user_data, update_user_data
 from src.Chat import Chat
 from src.Logger import Logger
+
+# -------------------------------- LOAD LEVELS ------------------------------- #
 from src.levels.level_1 import Level1
+from src.levels.level_2 import Level2
 
 logger = Logger(__name__).get_logger()
+
+LEVELS = {
+    1: Level1(),
+    2: Level2(),
+}
 
 
 def register_callbacks(app):
@@ -119,6 +127,8 @@ def register_callbacks(app):
         Output("answer-similarity-progress", "value"),
         Output("level-messages-markdown", "children"),
         Output("level-messages", "style"),
+        Output("level-instructions-markdown", "children", allow_duplicate=True),
+        Output("sub-title", "children", allow_duplicate=True),
         Input("submit-button", "n_clicks"),
         Input("keyboard", "n_keydowns"),
         State("question-input", "value"),
@@ -148,7 +158,7 @@ def register_callbacks(app):
         if (n_clicks or n_keydowns) and user_prompt and session_id:
             user_data = get_user_data(cache, session_id)
             chat = user_data["chat"]
-            logger.info(f"User sent message: {user_prompt}")
+            current_level = user_data.get("level", 1)
 
             # Get AI response
             model_response = chat.ask(
@@ -159,30 +169,41 @@ def register_callbacks(app):
                 top_p=top_p,
             )
 
-            user_data["chat"] = chat
-            update_user_data(cache, session_id, user_data)
-            logger.debug(f"Updated chat for session {session_id}")
-
             # Evaluate the level
-            current_level = user_data.get("level", 1)
-            level = Level1()  # Pour l'instant, nous n'avons que le niveau 1
+            level = LEVELS.get(current_level, Level1())
             result = level(user_prompt, model_response)
 
-            markdown_messages = "\n".join(result.messages)
+            # Check if user passed the level
+            if result.total_score >= level.min_score_to_pass:
+                current_level += 1
+                user_data["level"] = current_level
+                next_level = LEVELS.get(current_level, Level1())
+                level_up_message = (
+                    f"Congratulations! You've reached Level {current_level}!"
+                )
+                instructions = next_level.instructions
+            else:
+                level_up_message = ""
+                instructions = dash.no_update
+
+            user_data["chat"] = chat
+            update_user_data(cache, session_id, user_data)
+
+            markdown_messages = "\n".join([level_up_message] + result.messages)
 
             return (
-                str(model_response),  # model-response
-                "",  # question-input
-                False,  # loading-overlay
-                "trigger_focus",  # hidden-div
-                result.individual_scores["prompt_check"] / 4,  # prompt-check-progress
-                result.individual_scores["prompt_similarity"]
-                / 4,  # prompt-similarity-progress
-                result.individual_scores["answer_check"] / 4,  # answer-check-progress
-                result.individual_scores["answer_similarity"]
-                / 4,  # answer-similarity-progress
-                markdown_messages,  # level-messages children
-                {"display": "block"},  # level-messages style
+                str(model_response),
+                "",
+                False,
+                "trigger_focus",
+                result.individual_scores["prompt_check"] / 4,
+                result.individual_scores["prompt_similarity"] / 4,
+                result.individual_scores["answer_check"] / 4,
+                result.individual_scores["answer_similarity"] / 4,
+                markdown_messages,
+                {"display": "block"},
+                instructions,
+                f"Level {current_level}",
             )
         return (
             dash.no_update,
@@ -195,6 +216,8 @@ def register_callbacks(app):
             0,
             "",
             {"display": "none"},
+            dash.no_update,
+            dash.no_update,
         )
 
     # Clientside callback to handle focus

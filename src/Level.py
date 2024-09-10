@@ -38,6 +38,11 @@ class Level(ABC):
         """Instructions for the level."""
         pass
 
+    @property
+    def min_score_to_pass(self) -> float:
+        """Minimum score required to pass the level."""
+        return 90.0
+
     def check_answer(self, answer: str) -> CheckResult:
         """
         Check if the given answer is correct.
