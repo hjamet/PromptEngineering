@@ -42,6 +42,8 @@ def register_callbacks(app):
         Output("session-store", "data"),
         Output("username-input", "error"),
         Output("username-modal", "opened", allow_duplicate=True),
+        Output("level-instructions-markdown", "children", allow_duplicate=True),
+        Output("sub-title", "children"),
         Input("confirm-username", "n_clicks"),
         Input("username-keyboard", "n_keydowns"),
         State("username-input", "value"),
@@ -50,7 +52,7 @@ def register_callbacks(app):
     )
     def handle_username_input(n_clicks, n_keydowns, username, session_id):
         """
-        Handle username input and update session data.
+        Handle username input, update session data, and set level instructions.
 
         Args:
             n_clicks (int): Number of clicks on confirm button.
@@ -59,7 +61,7 @@ def register_callbacks(app):
             session_id (str): Current session ID.
 
         Returns:
-            tuple: Updated session data, error message (if any), and modal state.
+            tuple: Updated session data, error message (if any), modal state, level instructions, and subtitle.
         """
         if (n_clicks or n_keydowns) and username and session_id:
             # Check if the username is already taken
@@ -71,6 +73,8 @@ def register_callbacks(app):
                         dash.no_update,
                         "This username is already taken. Please choose another.",
                         True,
+                        dash.no_update,
+                        dash.no_update,
                     )
 
             user_data = get_user_data(cache, session_id)
@@ -88,13 +92,21 @@ def register_callbacks(app):
             level = Level1()  # Pour l'instant, nous n'avons que le niveau 1
             instructions = level.instructions
 
-            # Update level instructions directly
-            set_props("level-instructions", {"children": instructions})
-            set_props("sub-title", {"children": f"Level {current_level}"})
-
-            return {"username": username}, None, False
+            return (
+                {"username": username},
+                None,
+                False,
+                instructions,
+                f"Level {current_level}",
+            )
         logger.warning("Empty username input")
-        return dash.no_update, "Please enter a username", True
+        return (
+            dash.no_update,
+            "Please enter a username",
+            True,
+            dash.no_update,
+            dash.no_update,
+        )
 
     @app.callback(
         Output("model-response", "children"),
@@ -293,10 +305,11 @@ def register_callbacks(app):
         return f"{value:.2f}"
 
     @app.callback(
-        Output("level-instructions-markdown", "children"),
-        Output("sub-title", "children"),
+        Output("level-instructions-markdown", "children", allow_duplicate=True),
+        Output("sub-title", "children", allow_duplicate=True),
         Input("session-id", "data"),
         State("session-store", "data"),
+        prevent_initial_call=True,
     )
     def update_level_info(session_id, session_data):
         """
