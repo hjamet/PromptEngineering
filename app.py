@@ -64,7 +64,7 @@ cache = Cache(
 app.layout = dmc.MantineProvider(
     theme={"colorScheme": "light"},
     children=[
-        dash.dcc.Store(id="session-store", storage_type="session"),
+        # dash.dcc.Store(id="session-store", storage_type="session"),
         create_layout(),
     ],
 )
