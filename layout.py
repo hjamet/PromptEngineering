@@ -325,7 +325,20 @@ def create_layout():
     )
 
     button_group = dmc.Group(
-        [clean_chat_button, history_button], justify="center", gap="md"
+        [
+            clean_chat_button,
+            history_button,
+            dmc.Button(
+                "Scores",
+                id="scores-button",
+                leftSection=DashIconify(icon="mdi:trophy", width=20),
+                variant="outline",
+                color="green",
+                mt="md",
+            ),
+        ],
+        justify="center",
+        gap="md",
     )
 
     level_instructions = dmc.Alert(
@@ -415,6 +428,18 @@ def create_layout():
         style={"position": "fixed", "top": 20, "right": 20, "zIndex": 9999},
     )
 
+    # Ajout du modal pour les scores
+    scores_modal = dmc.Modal(
+        title="Scores",
+        id="scores-modal",
+        size="lg",
+        zIndex=10000,
+        fullScreen=True,
+        children=[
+            # Le contenu du modal sera ajouté plus tard
+        ],
+    )
+
     return dmc.Box(
         style={
             "display": "flex",
@@ -441,6 +466,7 @@ def create_layout():
                 ],
             ),
             username_modal,
+            scores_modal,  # Ajout du modal des scores
             hidden_div,
             *session_stores,
             history_drawer,

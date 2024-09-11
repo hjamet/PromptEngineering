@@ -456,3 +456,14 @@ def register_callbacks(app):
         level = LEVELS.get(current_level, Level1())
 
         return level.instructions, f"Level {current_level}"
+
+    @app.callback(
+        Output("scores-modal", "opened"),
+        Input("scores-button", "n_clicks"),
+        State("scores-modal", "opened"),
+        prevent_initial_call=True,
+    )
+    def toggle_scores_modal(n_clicks, opened):
+        if n_clicks:
+            return not opened
+        return opened
