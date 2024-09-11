@@ -9,21 +9,24 @@ class Level2(Level):
     @property
     def instructions(self) -> str:
         return """
-        Welcome to Level 2!
+        # Welcome to Level 2!
         
-        Your task for this level is to make the AI respond with exactly the following phrase:
-        "This is my answer"
+        Your task for this level is to make the AI respond with **exactly** the following phrase:
+        
+        ```
+        This is my answer
+        ```
         
         Nothing more, nothing less.
         
-        Tips:
-        - Be very specific in your instructions
-        - Think about how to phrase your request to get an exact response
-        - Remember, any deviation from the exact phrase will not be considered correct
+        ## Tips:
+        - Be **very specific** in your instructions
+        - Think about how to phrase your request to get an *exact* response
+        - Remember, any deviation from the exact phrase will **not** be considered correct
         """
 
     def check_prompt(self, prompt: str) -> CheckResult:
-        if "exactly" in prompt.lower() and "this is my answer" in prompt.lower():
+        if "this is my answer" in prompt.lower():
             return CheckResult(100, [])
         return CheckResult(
             0, ["Your prompt should ask for the exact phrase 'This is my answer'"]

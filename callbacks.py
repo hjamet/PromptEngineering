@@ -12,12 +12,14 @@ from src.Logger import Logger
 # -------------------------------- LOAD LEVELS ------------------------------- #
 from src.levels.level_1 import Level1
 from src.levels.level_2 import Level2
+from src.levels.level_3 import Level3
 
 logger = Logger(__name__).get_logger()
 
 LEVELS = {
     1: Level1(),
     2: Level2(),
+    3: Level3(),
 }
 
 

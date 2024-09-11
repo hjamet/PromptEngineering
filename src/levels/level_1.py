@@ -17,10 +17,6 @@ class Level1(Level):
         2. Make sure the response is **less than 30 words**
         """
 
-    @property
-    def correct_question(self) -> str:
-        return "Please provide a response on any topic, but keep it under 30 words."
-
     def check_answer(self, answer: str) -> CheckResult:
         """
         Check if the answer is less than 30 words.
