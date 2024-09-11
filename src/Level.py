@@ -1,7 +1,10 @@
+import torch.multiprocessing as mp
+
+mp.set_start_method("spawn", force=True)
+
 from abc import ABC, abstractmethod
-from typing import NamedTuple, List, Dict
 from collections import namedtuple
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, util
 from scipy.spatial.distance import cosine
 
 CheckResult = namedtuple("CheckResult", ["score", "messages"])
@@ -15,7 +18,13 @@ class Level(ABC):
     """Abstract base class for all levels in the game."""
 
     # Charger le modèle une seule fois pour toutes les instances
-    _model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+    _model = None
+
+    @classmethod
+    def get_model(cls):
+        if cls._model is None:
+            cls._model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+        return cls._model
 
     @property
     @abstractmethod
@@ -43,6 +52,11 @@ class Level(ABC):
     def min_score_to_pass(self) -> float:
         """Minimum score required to pass the level."""
         return 90.0
+
+    @property
+    def system_prompt(self) -> str:
+        """System prompt for the level."""
+        return ""
 
     def check_answer(self, answer: str) -> CheckResult:
         """
@@ -73,16 +87,18 @@ class Level(ABC):
         Check the similarity between the user's prompt and the correct prompt.
 
         Args:
-            user_prompt: The prompt provided by the user.
+            user_prompt (str): The prompt provided by the user.
 
         Returns:
-            Similarity score between 0 and 1.
+            float: Similarity score between 0 and 1.
         """
         if not self.correct_question:
             return 1.0
-        user_embedding = self._model.encode([user_prompt])[0]
-        correct_embedding = self._model.encode([self.correct_question])[0]
-        return 1 - cosine(user_embedding, correct_embedding)
+        model = self.get_model()
+        user_embedding = model.encode([user_prompt])
+        correct_embedding = model.encode([self.correct_question])
+        similarity = util.pytorch_cos_sim(user_embedding, correct_embedding)
+        return similarity.item()
 
     def check_answer_similarity(self, model_answer: str) -> float:
         """
@@ -166,6 +182,10 @@ if __name__ == "__main__":
         @property
         def correct_answer(self) -> str:
             return "Fingers on keyboard\nLogic flows through lines of code\nBugs emerge, then flee"
+
+        @property
+        def system_prompt(self) -> str:
+            return "You are a haiku expert. Always respond in haiku format."
 
         def check_prompt(self, prompt: str) -> CheckResult:
             # Simple check for demonstration

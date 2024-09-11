@@ -159,6 +159,16 @@ def register_callbacks(app):
             chat = user_data["chat"]
             current_level = user_data.get("level", 1)
 
+            # Obtenir le niveau actuel
+            level = LEVELS.get(current_level, Level1())
+
+            # Mettre à jour le system prompt si nécessaire
+            if level.system_prompt != chat.system_prompt:
+                chat.system_prompt = level.system_prompt
+                chat.messages = [msg for msg in chat.messages if msg.role != "system"]
+                if chat.system_prompt:
+                    chat.add_message("system", chat.system_prompt)
+
             # Get AI response
             model_response = chat.ask(
                 user_prompt,
@@ -169,7 +179,6 @@ def register_callbacks(app):
             )
 
             # Evaluate the level
-            level = LEVELS.get(current_level, Level1())
             result = level(user_prompt, model_response)
 
             # Add the score to the chat

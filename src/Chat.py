@@ -68,18 +68,22 @@ def start_ollama_server():
 
 class Chat:
 
-    def __init__(self, model="llama3.1", replicate_model=None):
+    def __init__(self, model="llama3.1", replicate_model=None, system_prompt=None):
         """
         Initialize the Chat instance.
 
         Args:
             model (str): The name of the Ollama model to use.
             replicate_model (str): The name of the Replicate model to use.
+            system_prompt (str): The system prompt to use.
         """
         self.logger = Logger(__name__).get_logger()
         self.messages = []
         self.model = model
         self.replicate_model = replicate_model
+        self.system_prompt = system_prompt
+        if system_prompt:
+            self.add_message("system", system_prompt)
         if replicate_model:
             get_replicate_token()
         else:
@@ -129,10 +133,19 @@ class Chat:
         response_content = ""
 
         if self.replicate_model:
+            # Ajoutez le system prompt à l'entrée si présent
+            # Construct the prompt with the simplified format
+            formatted_prompt = ""
+            for msg in self.messages:
+                formatted_prompt += f"{msg.role}: {msg.content}\n"
+
+            # Add the current user message and prompt for assistant response
+            formatted_prompt += f"user: {message}\nassistant: "
+
             output = replicate.run(
                 self.replicate_model,
                 input={
-                    "prompt": message,
+                    "prompt": formatted_prompt,
                     "temperature": temperature,
                     "top_p": top_p,
                     "max_new_tokens": 500,
@@ -185,6 +198,7 @@ class Chat:
         return {
             "model": self.model,
             "replicate_model": self.replicate_model,
+            "system_prompt": self.system_prompt,
             "messages": [
                 {"role": msg.role, "content": msg.content, "score": msg.score}
                 for msg in self.messages
@@ -196,9 +210,14 @@ class Chat:
         """
         Create a Chat instance from a dictionary.
         """
-        chat = cls(model=data["model"], replicate_model=data.get("replicate_model"))
+        chat = cls(
+            model=data["model"],
+            replicate_model=data.get("replicate_model"),
+            system_prompt=data.get("system_prompt"),
+        )
         for msg in data["messages"]:
-            chat.add_message(msg["role"], msg["content"], msg.get("score"))
+            if msg["role"] != "system":  # Éviter d'ajouter deux fois le system prompt
+                chat.add_message(msg["role"], msg["content"], msg.get("score"))
         return chat
 
     def add_score_to_last_exchange(self, score: float) -> bool:
@@ -226,7 +245,7 @@ class Chat:
 
 
 if __name__ == "__main__":
-    chat_ollama = Chat()
+    chat_ollama = Chat(system_prompt="You must always answer in german")
     chat_ollama.ask(
         "Hello, how are you?",
         streamline=True,
@@ -236,7 +255,10 @@ if __name__ == "__main__":
         top_p=0.95,
     )
 
-    chat_replicate = Chat(replicate_model="meta/meta-llama-3-8b-instruct")
+    chat_replicate = Chat(
+        replicate_model="meta/meta-llama-3-8b-instruct",
+        system_prompt="You must always answer in german",
+    )
     chat_replicate.ask(
         "Hello, how are you?",
         streamline=True,
