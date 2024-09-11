@@ -34,3 +34,9 @@ class Level2(Level):
                 f"The response should be exactly 'This is my answer'. Got: '{answer[:min(100, len(answer))]}'"
             ],
         )
+
+    def on_success(self, score: float) -> str:
+        return "Not bad! This one was a bit more challenging, and you handled it like a pro!"
+
+    def on_failure(self, score: float) -> str:
+        return f"Close, but not quite there! Your score is {score:.2f}. Remember, precision is key in this level!"

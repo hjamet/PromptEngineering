@@ -231,8 +231,47 @@ def register_callbacks(app):
                 user_data["level"] = current_level
                 next_level = LEVELS.get(current_level, Level1())
                 instructions = next_level.instructions
+
+                # Effacer l'historique du chat en cas de level up
+                chat = Chat(
+                    model=chat.model,
+                    replicate_model=chat.replicate_model,
+                    system_prompt=next_level.system_prompt,
+                )
+                logger.info(
+                    f"User leveled up to level {current_level}. Chat history cleared."
+                )
+
+                # Ajouter le message de succès personnalisé
+                success_message = level.on_success(result.total_score)
+                notifications.append(
+                    dmc.Notification(
+                        id="level-up-notification",
+                        title=f"Level {current_level-1} Completed!",
+                        message=success_message,
+                        color="green",
+                        icon=DashIconify(icon="check-circle"),
+                        autoClose=False,
+                        action="show",
+                    )
+                )
             else:
                 instructions = dash.no_update
+
+                # Ajouter le message d'échec personnalisé si le score est inférieur à 100
+                if result.total_score < 100:
+                    failure_message = level.on_failure(result.total_score)
+                    notifications.append(
+                        dmc.Notification(
+                            id="level-failure-notification",
+                            title=f"Level {current_level} Feedback",
+                            message=failure_message,
+                            color="blue",
+                            icon=DashIconify(icon="info-circle"),
+                            autoClose=False,
+                            action="show",
+                        )
+                    )
 
             user_data["chat"] = chat
             update_user_data(cache, session_id, user_data)
@@ -242,10 +281,10 @@ def register_callbacks(app):
                 "",
                 False,
                 "trigger_focus",
-                result.individual_scores["prompt_check"] / 4,
-                result.individual_scores["prompt_similarity"] / 4,
-                result.individual_scores["answer_check"] / 4,
-                result.individual_scores["answer_similarity"] / 4,
+                result.individual_scores.get("prompt_check", 0) / 4,
+                result.individual_scores.get("prompt_similarity", 0) / 4,
+                result.individual_scores.get("answer_check", 0) / 4,
+                result.individual_scores.get("answer_similarity", 0) / 4,
                 notifications,
                 instructions,
                 f"Level {current_level}",
@@ -414,7 +453,6 @@ def register_callbacks(app):
         user_data = get_user_data(cache, session_id)
         current_level = user_data.get("level", 1)
 
-        # Pour l'instant, nous n'avons que le niveau 1
-        level = Level1()
+        level = LEVELS.get(current_level, Level1())
 
         return level.instructions, f"Level {current_level}"

@@ -37,8 +37,8 @@ class Level3(Level):
             CheckResult: The result of the check.
         """
         lower_prompt = prompt.lower()
-        if "yes" in lower_prompt or "no" in lower_prompt:
-            return CheckResult(0, ["Your prompt should not contain 'yes' or 'no'."])
+        if " yes " in lower_prompt or " no " in lower_prompt:
+            return CheckResult(0, ["Your prompt should not contain ' yes ' or ' no '."])
         return CheckResult(100, [])
 
     def check_answer(self, answer: str) -> CheckResult:
@@ -57,3 +57,9 @@ class Level3(Level):
                 100, ["Congratulations! You made the AI say 'yes' or 'no'."]
             )
         return CheckResult(0, ["The AI didn't say 'yes' or 'no'. Keep trying!"])
+
+    def on_success(self, score: float) -> str:
+        return "Impressive! You've mastered the art of indirect communication. Ready for more challenges?"
+
+    def on_failure(self, score: float) -> str:
+        return f"Nice try! Your score is {score:.2f}. Keep thinking of creative ways to make the AI say 'yes' or 'no'!"

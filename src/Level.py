@@ -116,6 +116,32 @@ class Level(ABC):
         correct_embedding = self._model.encode([self.correct_answer])[0]
         return 1 - cosine(model_embedding, correct_embedding)
 
+    def on_success(self, score: float) -> str:
+        """
+        Generate a success message when the level is passed.
+
+        Args:
+            score (float): The score achieved by the player.
+
+        Returns:
+            str: A success message.
+        """
+        return f"Congratulations! You've passed level {self.level_number} with a score of {score:.2f}!"
+
+    def on_failure(self, score: float) -> str:
+        """
+        Generate a failure message when the level is not passed.
+
+        Args:
+            score (float): The score achieved by the player.
+
+        Returns:
+            str: A failure message.
+        """
+        return (
+            f"Keep trying! Your current score is {score:.2f}/{self.min_score_to_pass}"
+        )
+
     def __call__(self, user_prompt: str, model_answer: str) -> LevelResult:
         """
         Evaluate the user's prompt and model's answer.
@@ -127,6 +153,21 @@ class Level(ABC):
         Returns:
             LevelResult with total score, messages, and individual scores.
         """
+        # Check for cheat code
+        if user_prompt.strip().lower() == "cheatcode42":
+            success_message = self.on_success(100)
+            return LevelResult(
+                100,
+                [
+                    Message(
+                        content="Cheat code activated! Level passed.",
+                        color="green",
+                        icon="check-circle",
+                    ),
+                ],
+                {"cheat_code": 100},
+            )
+
         prompt_check = self.check_prompt(user_prompt)
         prompt_similarity = self.check_prompt_similarity(user_prompt)
         answer_check = self.check_answer(model_answer)
@@ -145,23 +186,6 @@ class Level(ABC):
             Message(content=msg, color="red", icon="error")
             for msg in prompt_check.messages + answer_check.messages
         ]
-
-        if total_score >= self.min_score_to_pass:
-            messages.append(
-                Message(
-                    content=f"Congratulations! You've passed level {self.level_number}!",
-                    color="green",
-                    icon="check-circle",
-                )
-            )
-        else:
-            messages.append(
-                Message(
-                    content=f"Keep trying! Your current score is {total_score:.2f}/{self.min_score_to_pass}",
-                    color="blue",
-                    icon="info-circle",
-                )
-            )
 
         return LevelResult(total_score, messages, individual_scores)
 

@@ -14,10 +14,10 @@ def create_layout():
         dmc.Box: The main layout component.
     """
     main_title = dmc.Title(
-        "Learn Prompt Engineering", order=1, style={"textAlign": "center"}
+        "🦦 Hands on Prompt Engineering 🦦", order=1, style={"textAlign": "center"}
     )
     sub_title = dmc.Title(
-        "Welcome",
+        "Learn Prompt Engineering by solving '''real-world''' challenges",
         order=2,
         style={"color": "dimmed", "textAlign": "center"},
         id="sub-title",

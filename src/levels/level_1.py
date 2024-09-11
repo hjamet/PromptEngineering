@@ -33,3 +33,9 @@ class Level1(Level):
         return CheckResult(
             0, [f"The response has {word_count} words. It should be less than 30."]
         )
+
+    def on_success(self, score: float) -> str:
+        return "Well done! Okay, this level wasn't particularly challenging, but let's make things a bit more complex..."
+
+    def on_failure(self, score: float) -> str:
+        return f"Almost there! You're at {score:.2f} points. Just a little more effort to reach 90 points!"
