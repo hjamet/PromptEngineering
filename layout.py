@@ -24,7 +24,6 @@ def create_layout():
     )
 
     # Creation of the accordion with sliders and settings icon
-    # Creation of the accordion with sliders and settings icon
     accordion_control = dmc.AccordionControl(
         "Model Parameters",
         icon=DashIconify(
@@ -435,6 +434,9 @@ def create_layout():
         size="lg",
         zIndex=10000,
         fullScreen=True,
+        closeOnClickOutside=True,
+        closeOnEscape=True,
+        withCloseButton=True,
         children=[
             # Le contenu du modal sera ajouté plus tard
         ],

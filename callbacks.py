@@ -22,6 +22,8 @@ LEVELS = {
     3: Level3(),
 }
 
+MAX_LEVEL = max(LEVELS.keys())  # Définir le niveau maximum
+
 
 def register_callbacks(app):
     # Récupérer l'objet Cache directement
@@ -130,6 +132,8 @@ def register_callbacks(app):
         Output("notifications-container", "children"),
         Output("level-instructions-markdown", "children", allow_duplicate=True),
         Output("sub-title", "children", allow_duplicate=True),
+        Output("scores-modal", "opened", allow_duplicate=True),
+        Output("scores-modal", "children", allow_duplicate=True),
         Input("submit-button", "n_clicks"),
         Input("keyboard", "n_keydowns"),
         State("question-input", "value"),
@@ -138,6 +142,7 @@ def register_callbacks(app):
         State("temperature-slider", "value"),
         State("top-k-slider", "value"),
         State("top-p-slider", "value"),
+        State("scores-modal", "children"),
         background=True,
         running=[
             (Output("question-input", "disabled"), True, False),
@@ -155,6 +160,7 @@ def register_callbacks(app):
         temperature: float,
         top_k: int,
         top_p: float,
+        current_modal_children,
     ):
         if (n_clicks or n_keydowns) and user_prompt and session_id:
             user_data = get_user_data(cache, session_id)
@@ -229,32 +235,82 @@ def register_callbacks(app):
             if result.total_score >= level.min_score_to_pass:
                 current_level += 1
                 user_data["level"] = current_level
-                next_level = LEVELS.get(current_level, Level1())
-                instructions = next_level.instructions
 
-                # Effacer l'historique du chat en cas de level up
-                chat = Chat(
-                    model=chat.model,
-                    replicate_model=chat.replicate_model,
-                    system_prompt=next_level.system_prompt,
-                )
-                logger.info(
-                    f"User leveled up to level {current_level}. Chat history cleared."
-                )
-
-                # Ajouter le message de succès personnalisé
-                success_message = level.on_success(result.total_score)
-                notifications.append(
-                    dmc.Notification(
-                        id="level-up-notification",
-                        title=f"Level {current_level-1} Completed!",
-                        message=success_message,
-                        color="green",
-                        icon=DashIconify(icon="check-circle"),
-                        autoClose=False,
-                        action="show",
+                if current_level > MAX_LEVEL:
+                    # L'utilisateur a terminé tous les niveaux
+                    congratulations_message = html.Div(
+                        [
+                            html.H2(
+                                "Félicitations !",
+                                style={"textAlign": "center", "color": "green"},
+                            ),
+                            html.P(
+                                "Vous avez terminé tous les niveaux !",
+                                style={"textAlign": "center"},
+                            ),
+                        ],
+                        style={"marginBottom": "20px"},
                     )
-                )
+                    set_props(
+                        "scores-modal",
+                        {
+                            "closeOnClickOutside": False,
+                            "closeOnEscape": False,
+                            "withCloseButton": False,
+                        },
+                    )
+
+                    if not any(
+                        isinstance(child, html.Div)
+                        and "Félicitations !" in child.children[0].children
+                        for child in current_modal_children
+                    ):
+                        current_modal_children = [
+                            congratulations_message
+                        ] + current_modal_children
+
+                    return (
+                        str(model_response),
+                        "",
+                        False,
+                        "trigger_focus",
+                        result.individual_scores.get("prompt_check", 0) / 4,
+                        result.individual_scores.get("prompt_similarity", 0) / 4,
+                        result.individual_scores.get("answer_check", 0) / 4,
+                        result.individual_scores.get("answer_similarity", 0) / 4,
+                        notifications,
+                        dash.no_update,
+                        dash.no_update,
+                        True,  # Ouvrir le modal des scores
+                        current_modal_children,
+                    )
+                else:
+                    next_level = LEVELS.get(current_level, Level1())
+                    instructions = next_level.instructions
+
+                    # Effacer l'historique du chat en cas de level up
+                    chat = Chat(
+                        model=chat.model,
+                        replicate_model=chat.replicate_model,
+                        system_prompt=next_level.system_prompt,
+                    )
+                    logger.info(
+                        f"User leveled up to level {current_level}. Chat history cleared."
+                    )
+
+                    # Ajouter le message de succès personnalisé
+                    success_message = level.on_success(result.total_score)
+                    notifications.append(
+                        dmc.Notification(
+                            id="level-up-notification",
+                            title=f"Level {current_level-1} Completed!",
+                            message=success_message,
+                            color="green",
+                            icon=DashIconify(icon="check-circle"),
+                            autoClose=False,
+                            action="show",
+                        )
+                    )
             else:
                 instructions = dash.no_update
 
@@ -288,6 +344,8 @@ def register_callbacks(app):
                 notifications,
                 instructions,
                 f"Level {current_level}",
+                False,  # Ne pas ouvrir le modal des scores
+                dash.no_update,
             )
         return (
             dash.no_update,
@@ -300,6 +358,8 @@ def register_callbacks(app):
             0,
             [],
             dash.no_update,
+            dash.no_update,
+            False,  # Ne pas ouvrir le modal des scores
             dash.no_update,
         )
 
@@ -432,6 +492,9 @@ def register_callbacks(app):
     @app.callback(
         Output("level-instructions-markdown", "children", allow_duplicate=True),
         Output("sub-title", "children", allow_duplicate=True),
+        Output("scores-modal", "opened", allow_duplicate=True),
+        Output("scores-modal", "closeOnClickOutside"),
+        Output("scores-modal", "closeOnEscape"),
         Input("session-id", "data"),
         State("session-store", "data"),
         prevent_initial_call=True,
@@ -448,14 +511,23 @@ def register_callbacks(app):
             tuple: Markdown-formatted instructions and level title.
         """
         if not session_id or not session_data:
-            return "Please log in to start the game.", "Welcome"
+            return "Please log in to start the game.", "Welcome", False, True, True
 
         user_data = get_user_data(cache, session_id)
         current_level = user_data.get("level", 1)
 
+        if current_level > MAX_LEVEL:
+            return (
+                "Félicitations ! Vous avez terminé tous les niveaux !",
+                "Jeu terminé",
+                True,  # Ouvrir le modal des scores
+                False,  # Empêcher la fermeture en cliquant à l'extérieur
+                False,  # Empêcher la fermeture avec la touche Echap
+            )
+
         level = LEVELS.get(current_level, Level1())
 
-        return level.instructions, f"Level {current_level}"
+        return level.instructions, f"Level {current_level}", False, True, True
 
     @app.callback(
         Output("scores-modal", "opened"),
