@@ -317,7 +317,8 @@ def register_callbacks(app):
             for msg in chat.messages:
                 if msg.role == "user":
                     icon = DashIconify(
-                        icon="emojione:smiling-face-with-sunglasses", width=24
+                        icon="emojione:smiling-face-with-sunglasses",
+                        width=24,
                     )
                     color = "blue"
                     content = dmc.Group(
@@ -334,7 +335,10 @@ def register_callbacks(app):
                         ]
                     )
                 else:
-                    icon = DashIconify(icon="emojione:robot-face", width=24)
+                    icon = DashIconify(
+                        icon="emojione:robot-face",
+                        width=24,
+                    )
                     color = "green"
                     content = msg.content
 
@@ -344,6 +348,7 @@ def register_callbacks(app):
                         icon=icon,
                         color=color,
                         mt="md",
+                        ms="xs",
                     )
                 )
 
