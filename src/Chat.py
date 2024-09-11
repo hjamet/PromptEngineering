@@ -7,7 +7,21 @@ import subprocess
 import time
 import getpass
 
-Message = namedtuple("Message", ["role", "content"])
+
+class Message:
+    """
+    Represents a chat message.
+
+    Attributes:
+        role (str): The role of the message sender.
+        content (str): The content of the message.
+        score (float, optional): The score of the message.
+    """
+
+    def __init__(self, role: str, content: str, score: float = None):
+        self.role = role
+        self.content = content
+        self.score = score
 
 
 def get_replicate_token():
@@ -74,8 +88,16 @@ class Chat:
             f"Chat instance initialized with model: {model or replicate_model}"
         )
 
-    def add_message(self, role, content):
-        self.messages.append(Message(role, content))
+    def add_message(self, role, content, score=None):
+        """
+        Add a message to the chat history.
+
+        Args:
+            role (str): The role of the message sender.
+            content (str): The content of the message.
+            score (float, optional): The score of the message.
+        """
+        self.messages.append(Message(role, content, score))
 
     def get_messages(self):
         return self.messages
@@ -103,7 +125,7 @@ class Chat:
         Returns:
             str: The answer to the message.
         """
-        self.add_message("user", message)
+        self.add_message("user", message, score=None)
         response_content = ""
 
         if self.replicate_model:
@@ -164,7 +186,8 @@ class Chat:
             "model": self.model,
             "replicate_model": self.replicate_model,
             "messages": [
-                {"role": msg.role, "content": msg.content} for msg in self.messages
+                {"role": msg.role, "content": msg.content, "score": msg.score}
+                for msg in self.messages
             ],
         }
 
@@ -175,8 +198,31 @@ class Chat:
         """
         chat = cls(model=data["model"], replicate_model=data.get("replicate_model"))
         for msg in data["messages"]:
-            chat.add_message(msg["role"], msg["content"])
+            chat.add_message(msg["role"], msg["content"], msg.get("score"))
         return chat
+
+    def add_score_to_last_exchange(self, score: float) -> bool:
+        """
+        Add score to the last user message in the chat.
+
+        Args:
+            score (float): The score to add.
+
+        Returns:
+            bool: True if score was added successfully, False otherwise.
+        """
+        if len(self.messages) < 2:
+            self.logger.error("Not enough messages to add score")
+            return False
+
+        for msg in reversed(self.messages):
+            if msg.role == "user":
+                msg.score = score
+                self.logger.info(f"Added score {score} to user message")
+                return True
+
+        self.logger.error("Unable to find a user message")
+        return False
 
 
 if __name__ == "__main__":

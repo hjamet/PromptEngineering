@@ -172,6 +172,12 @@ def register_callbacks(app):
             level = LEVELS.get(current_level, Level1())
             result = level(user_prompt, model_response)
 
+            # Add the score to the chat
+            if chat.add_score_to_last_exchange(result.total_score):
+                logger.info(f"Added score {result.total_score} to last exchange")
+            else:
+                logger.error("Failed to add score to last exchange")
+
             try:
                 # First, add a "clean" notification to remove all existing notifications
                 notifications = [
@@ -314,13 +320,27 @@ def register_callbacks(app):
                         icon="emojione:smiling-face-with-sunglasses", width=24
                     )
                     color = "blue"
+                    content = dmc.Group(
+                        [
+                            dmc.Text(msg.content),
+                            dmc.Badge(
+                                (
+                                    f"Score: {msg.score:.2f}"
+                                    if msg.score is not None
+                                    else "Pending"
+                                ),
+                                color="green",
+                            ),
+                        ]
+                    )
                 else:
                     icon = DashIconify(icon="emojione:robot-face", width=24)
                     color = "green"
+                    content = msg.content
 
                 history_blocks.append(
                     dmc.Blockquote(
-                        msg.content,
+                        content,
                         icon=icon,
                         color=color,
                         mt="md",
