@@ -25,6 +25,12 @@ from src.levels.level_1 import Level1
 from src.levels.level_2 import Level2
 from src.levels.level_3 import Level3
 
+from src.callbacks.user_management import (
+    manage_modal_display,
+    handle_username_input,
+    update_level_info,
+)
+
 logger = Logger(__name__).get_logger()
 
 LEVELS = {
@@ -48,18 +54,8 @@ def register_callbacks(app):
         Input("session-store", "data"),
         prevent_initial_call=False,
     )
-    def manage_modal_display(session_data):
-        if not session_data:
-            session_id = generate_session_id()
-            user_data = get_user_data(cache, session_id)
-            logger.info(f"New session created: {session_id}")
-            return True, {"display": "none"}, "", session_id
-        username = session_data.get("username")
-        if username:
-            logger.debug(f"User {username} logged in")
-            return False, {"display": "block"}, f"Welcome, {username}!", dash.no_update
-        logger.debug("No username in session, showing modal")
-        return True, {"display": "none"}, "", dash.no_update
+    def manage_modal_display_callback(session_data):
+        return manage_modal_display(session_data, cache)
 
     @app.callback(
         Output("session-store", "data"),
@@ -73,63 +69,8 @@ def register_callbacks(app):
         State("session-id", "data"),
         prevent_initial_call=True,
     )
-    def handle_username_input(n_clicks, n_keydowns, username, session_id):
-        """
-        Handle username input, update session data, and set level instructions.
-
-        Args:
-            n_clicks (int): Number of clicks on confirm button.
-            n_keydowns (int): Number of keydown events.
-            username (str): Entered username.
-            session_id (str): Current session ID.
-
-        Returns:
-            tuple: Updated session data, error message (if any), modal state, level instructions, and subtitle.
-        """
-        if (n_clicks or n_keydowns) and username and session_id:
-            # Check if the username is already taken
-            all_sessions = json.loads(cache.get("all_sessions") or "{}")
-            for sid, data in all_sessions.items():
-                if sid != session_id and data.get("username") == username:
-                    logger.warning(f"Username '{username}' is already taken")
-                    return (
-                        dash.no_update,
-                        "This username is already taken. Please choose another.",
-                        True,
-                        dash.no_update,
-                        dash.no_update,
-                    )
-
-            user_data = get_user_data(cache, session_id)
-            user_data["username"] = username
-            update_user_data(cache, session_id, user_data)
-
-            # Update all_sessions in cache
-            all_sessions[session_id] = {"username": username}
-            cache.set("all_sessions", json.dumps(all_sessions))
-
-            logger.info(f"Username set for session {session_id}: {username}")
-
-            # Get the current level instructions
-            current_level = user_data.get("level", 1)
-            level = Level1()  # Pour l'instant, nous n'avons que le niveau 1
-            instructions = level.instructions
-
-            return (
-                {"username": username},
-                None,
-                False,
-                instructions,
-                f"Level {current_level}",
-            )
-        logger.warning("Empty username input")
-        return (
-            dash.no_update,
-            "Please enter a username",
-            True,
-            dash.no_update,
-            dash.no_update,
-        )
+    def handle_username_input_callback(n_clicks, n_keydowns, username, session_id):
+        return handle_username_input(n_clicks, n_keydowns, username, session_id, cache)
 
     @app.callback(
         Output("model-response", "children"),
@@ -510,35 +451,8 @@ def register_callbacks(app):
         State("session-store", "data"),
         prevent_initial_call=True,
     )
-    def update_level_info(session_id, session_data):
-        """
-        Update level information based on user session.
-
-        Args:
-            session_id (str): User's session ID.
-            session_data (dict): User's session data.
-
-        Returns:
-            tuple: Markdown-formatted instructions and level title.
-        """
-        if not session_id or not session_data:
-            return "Please log in to start the game.", "Welcome", False, True, True
-
-        user_data = get_user_data(cache, session_id)
-        current_level = user_data.get("level", 1)
-
-        if current_level > MAX_LEVEL:
-            return (
-                "Félicitations ! Vous avez terminé tous les niveaux !",
-                "Jeu terminé",
-                True,  # Ouvrir le modal des scores
-                False,  # Empêcher la fermeture en cliquant à l'extérieur
-                False,  # Empêcher la fermeture avec la touche Echap
-            )
-
-        level = LEVELS.get(current_level, Level1())
-
-        return level.instructions, f"Level {current_level}", False, True, True
+    def update_level_info_callback(session_id, session_data):
+        return update_level_info(session_id, session_data, cache)
 
     @app.callback(
         Output("scores-modal", "opened"),
