@@ -579,6 +579,7 @@ def register_callbacks(app):
             {
                 "name": f"Level {level}",
                 "value": count,
+                "color": f"hsl({(level * 137.5) % 360}, 70%, 50%)",  # Using golden ratio for color distribution
             }
             for level, count in level_counts.items()
         ]

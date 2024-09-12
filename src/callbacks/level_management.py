@@ -1,3 +1,4 @@
+from dash import Input, Output, State
 from src.callbacks.user_management import manage_modal_display, handle_username_input
 from src.callbacks.chat_management import (
     process_input_and_evaluate,
@@ -14,20 +15,6 @@ from src.callbacks.ui_updates import (
     update_donut_chart,
 )
 
-from src.levels.level_1 import Level1
-from src.levels.level_2 import Level2
-from src.levels.level_3 import Level3
-import dash_mantine_components as dmc
-from dash_iconify import DashIconify
-
-LEVELS = {
-    1: Level1(),
-    2: Level2(),
-    3: Level3(),
-}
-
-MAX_LEVEL = max(LEVELS.keys())
-
 
 def register_callbacks(app):
     cache = next(iter(app.server.extensions["cache"].values()))
@@ -39,7 +26,7 @@ def register_callbacks(app):
         Output("session-id", "data"),
         Input("session-store", "data"),
         prevent_initial_call=False,
-    )(lambda session_data: manage_modal_display(session_data, cache))
+    )(manage_modal_display)
 
     app.callback(
         Output("session-store", "data"),
@@ -56,31 +43,38 @@ def register_callbacks(app):
 
     app.callback(
         Output("model-response", "children"),
-        Output("user-prompt", "value"),
-        Output("user-prompt", "disabled"),
-        Output("user-prompt", "focus"),
-        Output("prompt-check-badge", "children"),
-        Output("prompt-similarity-badge", "children"),
-        Output("answer-check-badge", "children"),
-        Output("answer-similarity-badge", "children"),
+        Output("question-input", "value"),
+        Output("loading-overlay", "visible"),
+        Output("hidden-div", "children"),
+        Output("prompt-check-progress", "value"),
+        Output("prompt-similarity-progress", "value"),
+        Output("answer-check-progress", "value"),
+        Output("answer-similarity-progress", "value"),
         Output("notifications-container", "children"),
         Output("level-instructions-markdown", "children", allow_duplicate=True),
-        Output("sub-title", "children"),
-        Output("clean-chat-button", "disabled"),
-        Output("clean-chat-button", "children"),
+        Output("sub-title", "children", allow_duplicate=True),
+        Output("scores-modal", "opened", allow_duplicate=True),
+        Output("scores-modal", "children", allow_duplicate=True),
         Input("submit-button", "n_clicks"),
-        Input("user-prompt-keyboard", "n_keydowns"),
-        State("user-prompt", "value"),
+        Input("keyboard", "n_keydowns"),
+        State("question-input", "value"),
         State("session-id", "data"),
         State("repeat-penalty-slider", "value"),
         State("temperature-slider", "value"),
         State("top-k-slider", "value"),
         State("top-p-slider", "value"),
+        State("scores-modal", "children"),
+        background=True,
+        running=[
+            (Output("question-input", "disabled"), True, False),
+            (Output("submit-button", "disabled"), True, False),
+            (Output("loading-overlay", "visible"), True, False),
+        ],
         prevent_initial_call=True,
     )(lambda *args: process_input_and_evaluate(*args, cache))
 
     app.callback(
-        Output("clean-chat-button", "children"),
+        Output("model-response", "children", allow_duplicate=True),
         Input("clean-chat-button", "n_clicks"),
         State("session-id", "data"),
         prevent_initial_call=True,
@@ -97,9 +91,9 @@ def register_callbacks(app):
     app.callback(
         Output("level-instructions-markdown", "children"),
         Output("sub-title", "children"),
-        Output("clean-chat-button", "style"),
-        Output("history-button", "style"),
-        Output("submit-button", "style"),
+        Output("level-completed", "display"),
+        Output("level-instructions", "display"),
+        Output("level-instructions-markdown", "display"),
         Input("session-id", "data"),
         State("session-store", "data"),
         prevent_initial_call=True,
@@ -128,14 +122,14 @@ def register_callbacks(app):
     app.callback(
         Output("scores-modal", "opened"),
         Output("scores-modal", "children"),
-        Input("scores-modal", "opened"),
         Input("scores-modal", "n_clicks"),
+        State("scores-modal", "opened"),
         prevent_initial_call=True,
     )(toggle_scores_modal)
 
     app.callback(
-        Output("donut-chart", "children"),
+        Output("scores-modal", "children"),
         Input("interval-component", "n_intervals"),
-        Input("scores-modal", "opened"),
+        State("scores-modal", "opened"),
         prevent_initial_call=True,
     )(lambda *args: update_donut_chart(*args, cache))
