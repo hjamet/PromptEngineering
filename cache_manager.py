@@ -68,3 +68,19 @@ def get_all_users_data(cache):
         }
 
     return all_users_data
+
+
+def reset_cache(cache):
+    """
+    Réinitialise complètement le cache en supprimant toutes les données utilisateurs.
+
+    Args:
+        cache: L'instance de cache à réinitialiser.
+    """
+    # Supprime toutes les entrées du cache
+    cache.clear()
+
+    # Réinitialise la liste des sessions
+    cache.set("all_sessions", json.dumps({}))
+
+    print("Cache réinitialisé avec succès.")

@@ -116,6 +116,8 @@ def process_input_and_evaluate(
             current_modal_children,
             notifications,
             model_response,
+            cache,
+            session_id,
         )
     else:
         return _handle_same_level(
@@ -203,6 +205,8 @@ def _handle_level_up(
     current_modal_children: List[Any],
     notifications: List[Any],
     model_response: str,
+    cache: Any,
+    session_id: str,
 ) -> Tuple[
     str,
     str,
@@ -237,6 +241,9 @@ def _handle_level_up(
             "Level Up", current_level - 1, success_message, "green", "check-circle"
         )
     )
+
+    user_data["chat"] = chat
+    update_user_data(cache, session_id, user_data)
 
     return _create_response(
         result,

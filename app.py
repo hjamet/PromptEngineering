@@ -6,6 +6,7 @@ import dash_mantine_components as dmc
 from layout import create_layout
 from callbacks import register_callbacks
 from src.Chat import start_ollama_server
+from cache_manager import configure_cache, reset_cache  # Ajout de l'import
 
 # Set React version
 os.environ["REACT_VERSION"] = "18.2.0"
@@ -53,14 +54,10 @@ app = dash.Dash(
 )
 
 # Configure cache
-cache = Cache(
-    app.server,
-    config={
-        "CACHE_TYPE": "filesystem",
-        "CACHE_DIR": "cache-directory",
-        "CACHE_THRESHOLD": 200,
-    },
-)
+cache = configure_cache(app)
+
+# Réinitialiser le cache au démarrage de l'application
+reset_cache(cache)
 
 # Set up app layout
 app.layout = dmc.MantineProvider(
