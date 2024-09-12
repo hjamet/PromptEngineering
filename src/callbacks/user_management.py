@@ -43,6 +43,11 @@ def manage_modal_display(
     username = session_data.get("username")
     if username:
         logger.debug(f"User {username} logged in")
+        all_sessions = json.loads(cache.get("all_sessions") or "{}")
+        if username not in [data.get("username") for data in all_sessions.values()]:
+            session_id = generate_session_id()
+            _create_session(cache, session_id, username)
+            return False, {"display": "block"}, f"Welcome back, {username}!", session_id
         return False, {"display": "block"}, f"Welcome, {username}!", no_update
     logger.debug("No username in session, showing modal")
     return True, {"display": "none"}, "", no_update
@@ -77,14 +82,7 @@ def handle_username_input(
                     no_update,
                 )
 
-        user_data = get_user_data(cache, session_id)
-        user_data["username"] = username
-        update_user_data(cache, session_id, user_data)
-
-        all_sessions[session_id] = {"username": username}
-        cache.set("all_sessions", json.dumps(all_sessions))
-
-        logger.info(f"Username set for session {session_id}: {username}")
+        user_data, _ = _create_session(cache, session_id, username)
 
         current_level = user_data.get("level", 1)
         level = Level1()
@@ -139,3 +137,32 @@ def update_level_info(
     level = LEVELS.get(current_level, Level1())
 
     return level.instructions, f"Level {current_level}", False, True, True
+
+
+# ---------------------------------------------------------------------------- #
+#                               PRIVATE FUNCTIONS                              #
+# ---------------------------------------------------------------------------- #
+
+
+def _create_session(cache, session_id, username):
+    """
+    Create a new session for a user.
+
+    Args:
+        cache: Cache object.
+        session_id (str): Session ID.
+        username (str): Username.
+
+    Returns:
+        Tuple[Dict[str, Any], Dict[str, Any]]: User data and all sessions data.
+    """
+    user_data = get_user_data(cache, session_id)
+    user_data["username"] = username
+    update_user_data(cache, session_id, user_data)
+
+    all_sessions = json.loads(cache.get("all_sessions") or "{}")
+    all_sessions[session_id] = {"username": username}
+    cache.set("all_sessions", json.dumps(all_sessions))
+
+    logger.info(f"New session created for user {username}: {session_id}")
+    return user_data, all_sessions

@@ -48,13 +48,13 @@ def generate_session_id():
 
 def get_all_users_data(cache):
     """
-    Récupère les données de tous les utilisateurs.
+    Recovers data from all users.
 
     Args:
-        cache: L'instance de cache.
+        cache: The cache instance.
 
     Returns:
-        dict: Un dictionnaire contenant les données de tous les utilisateurs.
+        dict: A dictionary containing the data of all users.
     """
     all_sessions = json.loads(cache.get("all_sessions") or "{}")
     all_users_data = {}
@@ -72,15 +72,15 @@ def get_all_users_data(cache):
 
 def reset_cache(cache):
     """
-    Réinitialise complètement le cache en supprimant toutes les données utilisateurs.
+    Resets the cache completely, deleting all user data.
 
     Args:
-        cache: L'instance de cache à réinitialiser.
+        cache: The cache instance to reset.
     """
-    # Supprime toutes les entrées du cache
+    # Deletes all cache entries
     cache.clear()
 
-    # Réinitialise la liste des sessions
+    # Reset session list
     cache.set("all_sessions", json.dumps({}))
 
-    print("Cache réinitialisé avec succès.")
+    print("Cache successfully reset.")
