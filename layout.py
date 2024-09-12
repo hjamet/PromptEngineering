@@ -438,7 +438,10 @@ def create_layout():
         closeOnEscape=True,
         withCloseButton=True,
         children=[
-            # Le contenu du modal sera ajouté plus tard
+            dcc.Interval(id="scores-update-interval", interval=5000, n_intervals=0),
+            dmc.Container(
+                id="donut-chart-container", style={"height": "400px", "width": "100%"}
+            ),
         ],
     )
 

@@ -46,6 +46,7 @@ app = dash.Dash(
         "https://cdn.jsdelivr.net/npm/@mantine/dropzone@5.10.4/dist/mantine-dropzone.min.css",
         "https://cdn.jsdelivr.net/npm/@mantine/spotlight@5.10.4/dist/mantine-spotlight.min.css",
         dmc.styles.NOTIFICATIONS,
+        dmc.styles.CHARTS,
     ],
     background_callback_manager=background_callback_manager,
     prevent_initial_callbacks=True,

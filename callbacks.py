@@ -1,6 +1,15 @@
 import dash
 import dash_mantine_components as dmc
-from dash import Input, Output, State, callback, clientside_callback, set_props, html
+from dash import (
+    Input,
+    Output,
+    State,
+    callback,
+    clientside_callback,
+    set_props,
+    html,
+    callback_context,
+)
 from dash_iconify import DashIconify
 from dash import dcc
 
@@ -531,11 +540,53 @@ def register_callbacks(app):
 
     @app.callback(
         Output("scores-modal", "opened"),
+        Output("scores-update-interval", "disabled"),
         Input("scores-button", "n_clicks"),
         State("scores-modal", "opened"),
         prevent_initial_call=True,
     )
     def toggle_scores_modal(n_clicks, opened):
         if n_clicks:
-            return not opened
-        return opened
+            return not opened, False  # Activer l'intervalle quand le modal est ouvert
+        return opened, opened  # Désactiver l'intervalle quand le modal est fermé
+
+    @app.callback(
+        Output("donut-chart-container", "children"),
+        Input("scores-update-interval", "n_intervals"),
+        Input("scores-modal", "opened"),
+    )
+    def update_donut_chart(n_intervals, modal_opened):
+        # Utiliser callback_context pour déterminer ce qui a déclenché le callback
+        triggered_id = callback_context.triggered[0]["prop_id"].split(".")[0]
+
+        # Si le modal vient d'être ouvert, forcer la mise à jour
+        force_update = triggered_id == "scores-modal" and modal_opened
+
+        if n_intervals is None and not force_update:
+            return dash.no_update
+
+        # Le reste de votre logique pour créer le graphique
+        all_sessions = json.loads(cache.get("all_sessions") or "{}")
+        level_counts = {}
+
+        for session_data in all_sessions.values():
+            level = session_data.get("level", 1)
+            level_counts[level] = level_counts.get(level, 0) + 1
+
+        data = [
+            {
+                "name": f"Level {level}",
+                "value": count,
+            }
+            for level, count in level_counts.items()
+        ]
+
+        return dmc.DonutChart(
+            data=data,
+            size=300,
+            thickness=40,
+            withTooltip=True,
+            tooltipDataSource="segment",
+            chartLabel=f"Total: {sum(level_counts.values())}",
+            style={"margin": "auto"},
+        )
