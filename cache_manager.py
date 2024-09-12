@@ -44,3 +44,27 @@ def update_user_data(cache, session_id, user_data):
 def generate_session_id():
     """Generate a unique session ID."""
     return str(uuid.uuid4())
+
+
+def get_all_users_data(cache):
+    """
+    Récupère les données de tous les utilisateurs.
+
+    Args:
+        cache: L'instance de cache.
+
+    Returns:
+        dict: Un dictionnaire contenant les données de tous les utilisateurs.
+    """
+    all_sessions = json.loads(cache.get("all_sessions") or "{}")
+    all_users_data = {}
+
+    for session_id, session_data in all_sessions.items():
+        user_data = get_user_data(cache, session_id)
+        all_users_data[session_id] = {
+            "username": session_data.get("username"),
+            "level": user_data.get("level", 1),
+            "chat": user_data.get("chat"),
+        }
+
+    return all_users_data

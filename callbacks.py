@@ -4,17 +4,19 @@ from dash import (
     Input,
     Output,
     State,
-    callback,
-    clientside_callback,
     set_props,
     html,
     callback_context,
 )
 from dash_iconify import DashIconify
-from dash import dcc
 
 import json
-from cache_manager import generate_session_id, get_user_data, update_user_data
+from cache_manager import (
+    generate_session_id,
+    get_user_data,
+    update_user_data,
+    get_all_users_data,
+)
 from src.Chat import Chat
 from src.Logger import Logger
 
@@ -565,12 +567,12 @@ def register_callbacks(app):
         if n_intervals is None and not force_update:
             return dash.no_update
 
-        # Le reste de votre logique pour créer le graphique
-        all_sessions = json.loads(cache.get("all_sessions") or "{}")
+        # Utiliser la nouvelle fonction pour obtenir toutes les données des utilisateurs
+        all_users_data = get_all_users_data(cache)
         level_counts = {}
 
-        for session_data in all_sessions.values():
-            level = session_data.get("level", 1)
+        for user_data in all_users_data.values():
+            level = user_data.get("level", 1)
             level_counts[level] = level_counts.get(level, 0) + 1
 
         data = [
