@@ -71,26 +71,18 @@ def process_input_and_evaluate(
 ]:
     """
     Process user input, evaluate it, and return updated UI components.
-
-    Args:
-        n_clicks (int): Number of button clicks.
-        n_keydowns (int): Number of key presses.
-        user_prompt (str): User's input prompt.
-        session_id (str): User's session ID.
-        repeat_penalty (float): Repeat penalty for the AI model.
-        temperature (float): Temperature for the AI model.
-        top_k (int): Top-k parameter for the AI model.
-        top_p (float): Top-p parameter for the AI model.
-        current_modal_children (List[Any]): Current children of the modal.
-        cache (Any): Cache object.
-
-    Returns:
-        Tuple containing updated values for various UI components.
     """
     if not (n_clicks or n_keydowns) or not user_prompt or not session_id:
         return _handle_no_input()
 
     user_data = get_user_data(cache, session_id)
+
+    # Check if the game is already completed
+    if user_data.get("game_completed", False):
+        return _handle_game_completion(
+            None, current_modal_children, [], user_data, cache, session_id
+        )
+
     chat, current_level = user_data["chat"], user_data.get("level", 1)
     level = LEVELS.get(current_level, Level1())
 
@@ -227,7 +219,9 @@ def _handle_level_up(
     user_data["level"] = current_level
 
     if current_level > MAX_LEVEL:
-        return _handle_game_completion(result, current_modal_children, notifications)
+        return _handle_game_completion(
+            result, current_modal_children, notifications, user_data, cache, session_id
+        )
 
     next_level = LEVELS.get(current_level, Level1())
     chat = Chat(
@@ -257,7 +251,12 @@ def _handle_level_up(
 
 
 def _handle_game_completion(
-    result: Any, current_modal_children: List[Any], notifications: List[Any]
+    result: Any,
+    current_modal_children: List[Any],
+    notifications: List[Any],
+    user_data: Dict[str, Any],
+    cache: Any,
+    session_id: str,
 ) -> Tuple[
     str,
     str,
@@ -274,6 +273,11 @@ def _handle_game_completion(
     List[Any],
 ]:
     """Handle the case when user completes all levels."""
+    # Increment the user's level to MAX_LEVEL + 1
+    user_data["level"] = MAX_LEVEL + 1
+    user_data["game_completed"] = True
+    update_user_data(cache, session_id, user_data)
+
     set_props(
         "scores-modal",
         {

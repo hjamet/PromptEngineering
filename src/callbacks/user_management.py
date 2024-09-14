@@ -124,8 +124,20 @@ def update_level_info(
 
     user_data = get_user_data(cache, session_id)
     current_level = user_data.get("level", 1)
+    game_completed = user_data.get("game_completed", False)
+
+    if game_completed:
+        return (
+            "Félicitations ! Vous avez terminé tous les niveaux !",
+            "Jeu terminé",
+            True,
+            False,
+            False,
+        )
 
     if current_level > MAX_LEVEL:
+        user_data["game_completed"] = True
+        update_user_data(cache, session_id, user_data)
         return (
             "Félicitations ! Vous avez terminé tous les niveaux !",
             "Jeu terminé",

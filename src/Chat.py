@@ -88,9 +88,6 @@ class Chat:
             get_replicate_token()
         else:
             self.client = ollama.Client()
-        self.logger.info(
-            f"Chat instance initialized with model: {model or replicate_model}"
-        )
 
     def add_message(self, role, content, score=None):
         """
