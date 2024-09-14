@@ -170,12 +170,15 @@ def register_callbacks(app):
         Output("scores-modal", "opened", allow_duplicate=True),
         Output("scores-modal", "closeOnClickOutside"),
         Output("scores-modal", "closeOnEscape"),
+        Output("scores-modal", "withCloseButton"),
+        Output("scores-modal", "children"),
         Input("session-id", "data"),
         State("session-store", "data"),
+        State("scores-modal", "children"),
         prevent_initial_call=True,
     )
-    def update_level_info_callback(session_id, session_data):
-        return update_level_info(session_id, session_data, cache)
+    def update_level_info_callback(session_id, session_data, scores_modal_children):
+        return update_level_info(session_id, session_data, scores_modal_children, cache)
 
     @app.callback(
         Output("scores-modal", "opened"),

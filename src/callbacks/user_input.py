@@ -288,12 +288,44 @@ def _handle_game_completion(
     )
     congratulations_message = html.Div(
         [
-            html.H2("Félicitations !", style={"textAlign": "center", "color": "green"}),
+            html.H2(
+                "🎉 Congratulations! 🎉",
+                style={
+                    "textAlign": "center",
+                    "color": "#2ecc71",
+                    "fontSize": "3em",
+                    "marginBottom": "30px",
+                    "fontWeight": "bold",
+                    "textShadow": "2px 2px 4px rgba(0,0,0,0.1)",
+                },
+            ),
             html.P(
-                "Vous avez terminé tous les niveaux !", style={"textAlign": "center"}
+                "You've mastered all levels! Your journey through the challenges has been truly remarkable.",
+                style={
+                    "textAlign": "center",
+                    "fontSize": "1.4em",
+                    "marginBottom": "20px",
+                    "color": "#34495e",
+                    "lineHeight": "1.6",
+                },
+            ),
+            html.P(
+                "🏆 Your dedication and problem-solving skills have shined brightly. Well done! 🌟",
+                style={
+                    "textAlign": "center",
+                    "fontSize": "1.4em",
+                    "color": "#34495e",
+                    "lineHeight": "1.6",
+                },
             ),
         ],
-        style={"marginBottom": "20px"},
+        style={
+            "marginBottom": "40px",
+            "padding": "30px",
+            "backgroundColor": "#e8f8f5",
+            "borderRadius": "15px",
+            "boxShadow": "0 4px 6px rgba(0,0,0,0.1)",
+        },
     )
 
     if not any(

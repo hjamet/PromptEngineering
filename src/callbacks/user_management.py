@@ -1,5 +1,5 @@
-from typing import Dict, Any, Tuple, Optional
-from dash import no_update
+from typing import Dict, Any, Tuple, Optional, List
+from dash import no_update, html
 from src.levels.level_1 import Level1
 from src.levels.level_2 import Level2
 from src.levels.level_3 import Level3
@@ -106,49 +106,102 @@ def handle_username_input(
 
 
 def update_level_info(
-    session_id: str, session_data: Dict[str, Any], cache
-) -> Tuple[str, str, bool, bool, bool]:
+    session_id: str,
+    session_data: Dict[str, Any],
+    scores_modal_children: List[Any],
+    cache,
+) -> Tuple[str, str, bool, bool, bool, bool, List[Any]]:
     """
     Update level information based on user session.
 
     Args:
         session_id (str): User's session ID.
         session_data (Dict[str, Any]): User's session data.
+        scores_modal_children (List[Any]): Scores modal children.
         cache: Cache object.
 
     Returns:
-        Tuple[str, str, bool, bool, bool]: Instructions, level title, modal state, and modal close options.
+        Tuple[str, str, bool, bool, bool, bool, List[Any]]: Instructions, level title, modal state, modal close options, and modal children.
     """
     if not session_id or not session_data:
-        return "Please log in to start the game.", "Welcome", False, True, True
+        return (
+            "Please log in to start the game.",
+            "Welcome",
+            False,
+            True,
+            True,
+            True,
+            scores_modal_children,
+        )
 
     user_data = get_user_data(cache, session_id)
     current_level = user_data.get("level", 1)
     game_completed = user_data.get("game_completed", False)
 
-    if game_completed:
-        return (
-            "Félicitations ! Vous avez terminé tous les niveaux !",
-            "Jeu terminé",
-            True,
-            False,
-            False,
-        )
-
-    if current_level > MAX_LEVEL:
+    if current_level > MAX_LEVEL or game_completed:
         user_data["game_completed"] = True
         update_user_data(cache, session_id, user_data)
+        congratulations_message = html.Div(
+            [
+                html.H2(
+                    "🎉 Congratulations! 🎉",
+                    style={
+                        "textAlign": "center",
+                        "color": "#2ecc71",
+                        "fontSize": "3em",
+                        "marginBottom": "30px",
+                        "fontWeight": "bold",
+                        "textShadow": "2px 2px 4px rgba(0,0,0,0.1)",
+                    },
+                ),
+                html.P(
+                    "You've mastered all levels! Your journey through the challenges has been truly remarkable.",
+                    style={
+                        "textAlign": "center",
+                        "fontSize": "1.4em",
+                        "marginBottom": "20px",
+                        "color": "#34495e",
+                        "lineHeight": "1.6",
+                    },
+                ),
+                html.P(
+                    "🏆 Your dedication and problem-solving skills have shined brightly. Well done! 🌟",
+                    style={
+                        "textAlign": "center",
+                        "fontSize": "1.4em",
+                        "color": "#34495e",
+                        "lineHeight": "1.6",
+                    },
+                ),
+            ],
+            style={
+                "marginBottom": "40px",
+                "padding": "30px",
+                "backgroundColor": "#e8f8f5",
+                "borderRadius": "15px",
+                "boxShadow": "0 4px 6px rgba(0,0,0,0.1)",
+            },
+        )
         return (
-            "Félicitations ! Vous avez terminé tous les niveaux !",
-            "Jeu terminé",
+            "Congratulations! You have completed all levels!",
+            "Game Completed",
             True,
             False,
             False,
+            False,
+            [congratulations_message] + scores_modal_children,
         )
 
     level = LEVELS.get(current_level, Level1())
-
-    return level.instructions, f"Level {current_level}", False, True, True
+    return (
+        level.instructions,
+        f"Level {current_level}",
+        False,
+        True,
+        True,
+        True,
+        scores_modal_children,
+    )
 
 
 # ---------------------------------------------------------------------------- #

@@ -443,9 +443,7 @@ def create_layout():
                 id="donut-chart-container", style={"height": "400px", "width": "100%"}
             ),
             dmc.Space(h=20),
-            dmc.Container(
-                id="user-table-container", style={"width": "100%"}
-            ),
+            dmc.Container(id="user-table-container", style={"width": "100%"}),
         ],
     )
 
