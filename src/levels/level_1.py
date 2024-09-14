@@ -9,12 +9,16 @@ class Level1(Level):
     @property
     def instructions(self) -> str:
         return """
-        # Welcome to Level 1!
-        
-        Your task is simple:
-        
-        1. Ask the AI to respond with **anything**
-        2. Make sure the response is **less than 30 words**
+        # 🎉 Welcome to Level 1: The Chatterbox Challenge! 🎉
+
+        Alright, AI whisperer, here's your mission :
+
+        1. 🗣️ Get our AI buddy to say **literally anything**. Yep, anything at all!
+        2. 🤏 But here's the twist: keep it snappy! The response should be **under 30 words**.
+
+        ## 💡 Pro Tips:
+        - This is your warm-up lap. Easy peasy lemon squeezy!
+        - Remember, brevity is the soul of wit (and passing this level)!
         """
 
     def check_answer(self, answer: str) -> CheckResult:

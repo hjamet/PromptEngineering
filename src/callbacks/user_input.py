@@ -1,27 +1,4 @@
 from typing import Dict, Any, Tuple, List, Union
-import dash
-from dash import html, set_props
-from dash_iconify import DashIconify
-import dash_mantine_components as dmc
-from src.Chat import Chat
-from src.Logger import Logger
-from src.levels.level_1 import Level1
-from src.levels.level_2 import Level2
-from src.levels.level_3 import Level3
-from cache_manager import get_user_data, update_user_data
-
-logger = Logger(__name__).get_logger()
-
-LEVELS = {
-    1: Level1(),
-    2: Level2(),
-    3: Level3(),
-}
-
-MAX_LEVEL = max(LEVELS.keys())
-
-
-from typing import Dict, Any, Tuple, List, Union, Optional
 from dash import html, set_props, no_update
 from dash_iconify import DashIconify
 import dash_mantine_components as dmc
@@ -30,6 +7,7 @@ from src.Logger import Logger
 from src.levels.level_1 import Level1
 from src.levels.level_2 import Level2
 from src.levels.level_3 import Level3
+from src.levels.level_4 import Level4
 from cache_manager import get_user_data, update_user_data
 
 logger = Logger(__name__).get_logger()
@@ -38,6 +16,7 @@ LEVELS = {
     1: Level1(),
     2: Level2(),
     3: Level3(),
+    4: Level4(),
 }
 
 MAX_LEVEL = max(LEVELS.keys())

@@ -9,20 +9,22 @@ class Level2(Level):
     @property
     def instructions(self) -> str:
         return """
-        # Welcome to Level 2!
-        
-        Your task for this level is to make the AI respond with **exactly** the following phrase:
+        # 🎭 Welcome to Level 2: The Precision Performer! 🎭
+
+        Alright, word wizard, here's your next challenge:
+
+        1. 🎯 Make our AI buddy say **exactly** this phrase:
         
         ```
         This is my answer
         ```
-        
-        Nothing more, nothing less.
-        
-        ## Tips:
-        - Be **very specific** in your instructions
-        - Think about how to phrase your request to get an *exact* response
-        - Remember, any deviation from the exact phrase will **not** be considered correct
+
+        2. ⚖️ Not a letter more, not a letter less! It's like a verbal tightrope walk!
+
+        ## 💡 Pro Tips:
+        - When you open your car door, always look in the rear-view mirror to see if there's a cyclist who might hit you.
+
+        Break a leg! (But not the sentence structure! 😉)
         """
 
     def check_answer(self, answer: str) -> CheckResult:
