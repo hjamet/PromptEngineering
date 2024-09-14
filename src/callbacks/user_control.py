@@ -183,7 +183,7 @@ def update_user_table(
     n_intervals: int | None, modal_opened: bool, cache, current_session_id: str
 ):
     """
-    Update the user table with current levels.
+    Update the user table with current levels and best scores.
 
     Args:
         n_intervals (int | None): Number of intervals passed.
@@ -201,20 +201,38 @@ def update_user_table(
         return dash.no_update
 
     all_users_data = get_all_users_data(cache)
+
+    # Calculate best score for each user
+    for user_data in all_users_data.values():
+        chat = user_data.get("chat")
+        if chat and isinstance(chat, Chat):
+            best_score = max(
+                (msg.score for msg in chat.messages if msg.score is not None), default=0
+            )
+            user_data["best_score"] = best_score
+
     sorted_users = sorted(
-        all_users_data.items(), key=lambda x: x[1].get("level", 1), reverse=True
+        all_users_data.items(),
+        key=lambda x: (x[1].get("level", 1), x[1].get("best_score", 0)),
+        reverse=True,
     )
 
     rows = []
     for session_id, user_data in sorted_users:
         username = user_data.get("username", "Unknown")
         level = user_data.get("level", 1)
+        best_score = user_data.get("best_score", 0)
         is_current_user = session_id == current_session_id
 
         row = html.Tr(
             [
                 html.Td(html.Strong(username) if is_current_user else username),
                 html.Td(html.Strong(str(level)) if is_current_user else str(level)),
+                html.Td(
+                    html.Strong(f"{best_score:.2f}")
+                    if is_current_user
+                    else f"{best_score:.2f}"
+                ),
             ],
             style={"fontWeight": "bold"} if is_current_user else {},
         )
@@ -222,10 +240,25 @@ def update_user_table(
 
     return dmc.Table(
         [
-            html.Thead(html.Tr([html.Th("Username"), html.Th("Level")])),
+            html.Thead(
+                html.Tr(
+                    [
+                        html.Th("Username", style={"textAlign": "left"}),
+                        html.Th("Level", style={"textAlign": "left"}),
+                        html.Th("Best Score", style={"textAlign": "left"}),
+                    ]
+                )
+            ),
             html.Tbody(rows),
         ],
         striped=True,
         highlightOnHover=True,
         withTableBorder=True,
+        withColumnBorders=True,
+        withRowBorders=True,
+        horizontalSpacing="xs",
+        verticalSpacing="xs",
+        captionSide="top",
+        stickyHeader=True,
+        style={"width": "100%", "tableLayout": "fixed"},
     )
