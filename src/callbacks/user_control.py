@@ -10,6 +10,8 @@ from src.Logger import Logger
 logger = Logger(__name__)
 
 from typing import Tuple
+import dash_mantine_components as dmc
+from dash import html
 
 
 def clean_chat(n_clicks: int, session_id: str, cache) -> str:
@@ -174,4 +176,56 @@ def update_donut_chart(n_intervals, modal_opened, cache):
         tooltipDataSource="segment",
         chartLabel=f"Total: {sum(level_counts.values())}",
         style={"margin": "auto"},
+    )
+
+
+def update_user_table(
+    n_intervals: int | None, modal_opened: bool, cache, current_session_id: str
+):
+    """
+    Update the user table with current levels.
+
+    Args:
+        n_intervals (int | None): Number of intervals passed.
+        modal_opened (bool): Whether the modal is opened.
+        cache: Cache object for storing user data.
+        current_session_id (str): The session ID of the current user.
+
+    Returns:
+        dmc.Table: A table component with user data.
+    """
+    triggered_id = callback_context.triggered[0]["prop_id"].split(".")[0]
+    force_update = triggered_id == "scores-modal" and modal_opened
+
+    if n_intervals is None and not force_update:
+        return dash.no_update
+
+    all_users_data = get_all_users_data(cache)
+    sorted_users = sorted(
+        all_users_data.items(), key=lambda x: x[1].get("level", 1), reverse=True
+    )
+
+    rows = []
+    for session_id, user_data in sorted_users:
+        username = user_data.get("username", "Unknown")
+        level = user_data.get("level", 1)
+        is_current_user = session_id == current_session_id
+
+        row = html.Tr(
+            [
+                html.Td(html.Strong(username) if is_current_user else username),
+                html.Td(html.Strong(str(level)) if is_current_user else str(level)),
+            ],
+            style={"fontWeight": "bold"} if is_current_user else {},
+        )
+        rows.append(row)
+
+    return dmc.Table(
+        [
+            html.Thead(html.Tr([html.Th("Username"), html.Th("Level")])),
+            html.Tbody(rows),
+        ],
+        striped=True,
+        highlightOnHover=True,
+        withTableBorder=True,
     )

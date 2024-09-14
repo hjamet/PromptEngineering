@@ -27,6 +27,7 @@ from src.callbacks.user_control import (
     toggle_history_drawer,
     update_donut_chart,
     toggle_scores_modal,
+    update_user_table,
 )
 
 logger = Logger(__name__).get_logger()
@@ -193,3 +194,12 @@ def register_callbacks(app):
     )
     def update_donut_chart_callback(n_intervals, modal_opened):
         return update_donut_chart(n_intervals, modal_opened, cache)
+
+    @app.callback(
+        Output("user-table-container", "children"),
+        Input("scores-update-interval", "n_intervals"),
+        Input("scores-modal", "opened"),
+        State("session-id", "data"),
+    )
+    def update_user_table_callback(n_intervals, modal_opened, session_id):
+        return update_user_table(n_intervals, modal_opened, cache, session_id)
