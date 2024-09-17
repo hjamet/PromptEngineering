@@ -5,11 +5,6 @@ from dash import (
 )
 from src.Logger import Logger
 
-# -------------------------------- LOAD LEVELS ------------------------------- #
-from src.levels.level_1 import Level1
-from src.levels.level_2 import Level2
-from src.levels.level_3 import Level3
-
 from src.callbacks.user_management import (
     manage_modal_display,
     handle_username_input,
@@ -31,14 +26,6 @@ from src.callbacks.user_control import (
 )
 
 logger = Logger(__name__).get_logger()
-
-LEVELS = {
-    1: Level1(),
-    2: Level2(),
-    3: Level3(),
-}
-
-MAX_LEVEL = max(LEVELS.keys())  # Définir le niveau maximum
 
 
 def register_callbacks(app):

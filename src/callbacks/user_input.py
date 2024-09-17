@@ -8,6 +8,7 @@ from src.levels.level_1 import Level1
 from src.levels.level_2 import Level2
 from src.levels.level_3 import Level3
 from src.levels.level_4 import Level4
+from src.levels.level_5 import Level5
 from cache_manager import get_user_data, update_user_data
 
 logger = Logger(__name__).get_logger()
@@ -17,6 +18,7 @@ LEVELS = {
     2: Level2(),
     3: Level3(),
     4: Level4(),
+    5: Level5(),
 }
 
 MAX_LEVEL = max(LEVELS.keys())
