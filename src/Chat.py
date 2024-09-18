@@ -1,11 +1,11 @@
 import ollama
 import replicate
 import os
-from collections import namedtuple
 from src.Logger import Logger
 import subprocess
 import time
-import getpass
+from getpass import getpass
+from openai import OpenAI
 
 
 class Message:
@@ -46,6 +46,26 @@ def get_replicate_token():
     return token
 
 
+def get_openai_token():
+    """Get OpenAI API token from environment, file, or user input."""
+    token = os.getenv("OPENAI_API_KEY")
+    if not token:
+        token_file = "scratch/openai_token.txt"
+        if os.path.exists(token_file):
+            with open(token_file, "r") as f:
+                token = f.read().strip()
+
+        if not token:
+            token = getpass("Enter your OpenAI API token: ")
+            os.makedirs(os.path.dirname(token_file), exist_ok=True)
+            with open(token_file, "w") as f:
+                f.write(token)
+
+        os.environ["OPENAI_API_KEY"] = token
+
+    return token
+
+
 def start_ollama_server():
     """
     Start the Ollama server in a subprocess if it's not running.
@@ -68,31 +88,39 @@ def start_ollama_server():
 
 class Chat:
 
-    def __init__(
-        self,
-        model="llama3.1",
-        replicate_model="meta/meta-llama-3-8b-instruct",
-        system_prompt=None,
-    ):
+    def __init__(self, system_prompt: str = None, provider: str = "openai"):
         """
         Initialize the Chat instance.
 
         Args:
-            model (str): The name of the Ollama model to use.
-            replicate_model (str): The name of the Replicate model to use.
-            system_prompt (str): The system prompt to use.
+            system_prompt (str, optional): The system prompt to use.
+            provider (str): The provider to use ('ollama', 'replicate', or 'openai'). Defaults to 'openai'.
         """
         self.logger = Logger(__name__).get_logger()
         self.messages = []
-        self.model = model
-        self.replicate_model = replicate_model
         self.system_prompt = system_prompt
+        self.provider = provider.lower()
+
         if system_prompt:
             self.add_message("system", system_prompt)
-        if replicate_model:
-            get_replicate_token()
-        else:
+
+        if self.provider == "ollama":
+            self.model = "llama3.1"
             self.client = ollama.Client()
+        elif self.provider == "replicate":
+            self.replicate_model = "meta/meta-llama-3-8b-instruct"
+            get_replicate_token()
+        elif self.provider == "openai":
+            self.model = "gpt-4o-mini"
+            get_openai_token()
+            self.openai_client = OpenAI()
+        else:
+            raise ValueError(
+                "Invalid provider. Choose 'ollama', 'replicate', or 'openai'."
+            )
+
+        if self.provider == "ollama":
+            start_ollama_server()
 
     def add_message(self, role, content, score=None):
         """
@@ -122,11 +150,11 @@ class Chat:
 
         Args:
             message (str): The message to ask.
-            temperature (float): Controls randomness in generation. Higher values make output more random.
-            repeat_penalty (float): Penalty for repeating tokens. Higher values make repetitions less likely.
-            top_k (int): Limits the next token selection to the K most probable tokens.
-            top_p (float): Selects tokens with cumulative probability above this threshold.
-            streamline (bool): If True, display tokens in console as they are produced.
+            temperature (float): Controls randomness in generation. Range: 0-2.
+            repeat_penalty (float): Penalty for repeating tokens.
+            top_k (int): Limits token selection to top K options.
+            top_p (float): Nucleus sampling threshold. Range: 0-1.
+            streamline (bool): If True, stream the response.
 
         Returns:
             str: The answer to the message.
@@ -134,14 +162,41 @@ class Chat:
         self.add_message("user", message, score=None)
         response_content = ""
 
-        if self.replicate_model:
-            # Ajoutez le system prompt à l'entrée si présent
-            # Construct the prompt with the simplified format
+        if self.provider == "openai":
+            formatted_messages = [
+                {"role": msg.role, "content": msg.content} for msg in self.messages
+            ]
+
+            try:
+                completion = self.openai_client.chat.completions.create(
+                    model=self.model,
+                    messages=formatted_messages,
+                    temperature=temperature,
+                    top_p=top_p,
+                    frequency_penalty=repeat_penalty,
+                    presence_penalty=0,
+                    stream=streamline,
+                )
+
+                if streamline:
+                    for chunk in completion:
+                        if chunk.choices[0].delta.content is not None:
+                            content = chunk.choices[0].delta.content
+                            response_content += content
+                            print(content, end="", flush=True)
+                    print()  # New line after streaming
+                else:
+                    response_content = completion.choices[0].message.content
+
+            except Exception as e:
+                self.logger.error(f"Error with OpenAI API: {str(e)}")
+                return f"Error: {str(e)}"
+
+        elif self.provider == "replicate":
             formatted_prompt = ""
             for msg in self.messages:
                 formatted_prompt += f"{msg.role}: {msg.content}\n"
 
-            # Add the current user message and prompt for assistant response
             formatted_prompt += f"user: {message}\nassistant: "
 
             output = replicate.run(
@@ -155,7 +210,7 @@ class Chat:
                 },
             )
             response_content = "".join(output)
-        else:
+        elif self.provider == "ollama":
             self.logger.debug(
                 f"""Sending message to Ollama: {message}
                 - Temperature: {temperature}
@@ -196,10 +251,13 @@ class Chat:
     def to_dict(self):
         """
         Convert the Chat instance to a dictionary for serialization.
+
+        Returns:
+            dict: A dictionary representation of the Chat instance.
         """
         return {
-            "model": self.model,
-            "replicate_model": self.replicate_model,
+            "provider": self.provider,
+            "model": getattr(self, "model", None),
             "system_prompt": self.system_prompt,
             "messages": [
                 {"role": msg.role, "content": msg.content, "score": msg.score}
@@ -211,15 +269,17 @@ class Chat:
     def from_dict(cls, data):
         """
         Create a Chat instance from a dictionary.
+
+        Args:
+            data (dict): A dictionary representation of the Chat instance.
+
+        Returns:
+            Chat: A new Chat instance created from the dictionary data.
         """
-        chat = cls(
-            model=data["model"],
-            replicate_model=data.get("replicate_model"),
-            system_prompt=data.get("system_prompt"),
-        )
+        chat = cls(provider=data["provider"], system_prompt=data.get("system_prompt"))
+        chat.model = data.get("model")
         for msg in data["messages"]:
-            if msg["role"] != "system":  # Éviter d'ajouter deux fois le system prompt
-                chat.add_message(msg["role"], msg["content"], msg.get("score"))
+            chat.add_message(msg["role"], msg["content"], msg.get("score"))
         return chat
 
     def add_score_to_last_exchange(self, score: float) -> bool:
@@ -257,15 +317,40 @@ if __name__ == "__main__":
     #     top_p=0.95,
     # )
 
-    chat_replicate = Chat(
-        replicate_model="meta/meta-llama-3-8b-instruct",
-        system_prompt="You must always answer in german",
-    )
-    chat_replicate.ask(
-        "Hello, how are you?",
-        streamline=True,
-        temperature=0.1,
-        repeat_penalty=1.1,
-        top_k=40,
-        top_p=0.95,
-    )
+    # chat_replicate = Chat(
+    #     replicate_model="meta/meta-llama-3-8b-instruct",
+    #     system_prompt="You must always answer in german",
+    # )
+    # chat_replicate.ask(
+    #     "Hello, how are you?",
+    #     streamline=True,
+    #     temperature=0.1,
+    #     repeat_penalty=1.1,
+    #     top_k=40,
+    #     top_p=0.95,
+    # )
+
+    # Test with different providers
+    providers = ["openai"]
+    system_prompt = "You must always answer in German"
+
+    for provider in providers:
+        print(f"\nTesting {provider.capitalize()} provider:")
+        chat = Chat(provider=provider, system_prompt=system_prompt)
+        response = chat.ask(
+            "Hello, how are you?",
+            streamline=True,
+            temperature=0.1,
+            repeat_penalty=1.1,
+            top_k=40,
+            top_p=0.95,
+        )
+        print(f"{provider.capitalize()} response: {response}\n")
+
+        # Add a score to the last exchange
+        chat.add_score_to_last_exchange(0.8)
+
+        # Print the chat history
+        print("Chat history:")
+        for msg in chat.get_messages():
+            print(f"{msg.role}: {msg.content} (Score: {msg.score})")
