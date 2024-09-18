@@ -7,6 +7,7 @@ from layout import create_layout
 from callbacks import register_callbacks
 from src.Chat import start_ollama_server
 from cache_manager import configure_cache, reset_cache
+from datetime import timedelta
 
 # Set React version
 dash._dash_renderer._set_react_version("18.2.0")

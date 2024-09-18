@@ -24,6 +24,7 @@ def configure_cache(app):
             "CACHE_TYPE": "filesystem",
             "CACHE_DIR": "cache-directory",
             "CACHE_THRESHOLD": 200,
+            "CACHE_DEFAULT_TIMEOUT": 365 * 24 * 60 * 60,  # 31536000,
         },
     )
     logger.debug("Cache configured successfully")

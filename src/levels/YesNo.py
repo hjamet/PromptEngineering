@@ -5,12 +5,12 @@ import re
 class YesNoLevel(Level):
     @property
     def level_number(self) -> int:
-        return 4
+        return 5
 
     @property
     def instructions(self) -> str:
         return """
-        # 🎭 Welcome to Level 4: The Epic "Yes or No" Showdown! 🎭
+        # 🎭 Welcome to Level 5: The Epic "Yes or No" Showdown! 🎭
 
         ## 🤪 Honestly, this one's just for fun:
         

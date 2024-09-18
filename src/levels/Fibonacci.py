@@ -156,7 +156,28 @@ This sequence is similar to the Fibonacci sequence, with each term being the sum
             )
 
     def on_success(self, score: float) -> str:
-        return f"Excellent! You've mastered the modified Fibonacci sequence challenge with a score of {score:.2f}."
+        """Return a humorous success message.
+
+        Args:
+            score (float): The user's score.
+
+        Returns:
+            str: A funny success message.
+        """
+        return f"Fibonacci would be proud! You've cracked the sequence with a score of {score:.2f}. And this one was definitly not the easiest one!"
 
     def on_failure(self, score: float) -> str:
-        return f"Almost there! Your current score is {score:.2f}. Make sure to include the correct 21st term of the modified Fibonacci sequence (20295) and no larger numbers."
+        """Return a humorous failure message.
+
+        Args:
+            score (float): The user's score.
+
+        Returns:
+            str: A funny failure message.
+        """
+        messages = [
+            f"Oops! Your Fibonacci is a bit Fibonaccy. Current score: {score:.2f}. Remember, 20295 is the magic number, and bigger isn't always better!",
+            f"Almost there, but not quite! Score: {score:.2f}. Hint: Fibonacci wasn't a fan of 'go big or go home'. Stick to 20295!",
+            f"Nice try, but your sequence is more 'Fibo-not-quite'. Score: {score:.2f}. Focus on 20295, and leave the larger numbers for your bank account!",
+        ]
+        return messages[hash(str(score)) % len(messages)]
