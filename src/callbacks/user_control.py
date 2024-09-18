@@ -73,8 +73,7 @@ def toggle_history_drawer(n_clicks: int, session_id: str, cache) -> tuple[bool, 
         history_blocks = []
 
         # Remove context from the chat
-        if len(chat.messages) and chat.messages[0].role == "system":
-            chat.messages = chat.messages[1:]
+        chat.messages = list(filter(lambda x: x.role != "system", chat.messages))
 
         for msg in chat.messages:
             if msg.role == "user":
