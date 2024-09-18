@@ -88,6 +88,7 @@ def process_input_and_evaluate(
             session_id,
             model_response,
             notifications,
+            user_prompt,  # Ajout de user_prompt ici
         )
 
 
@@ -213,6 +214,7 @@ def _handle_level_up(
         f"Level {current_level}",
         False,
         no_update,
+        "",  # Passer une chaîne vide pour user_prompt
     )
 
 
@@ -301,7 +303,14 @@ def _handle_game_completion(
         current_modal_children = [congratulations_message] + current_modal_children
 
     return _create_response(
-        result, "", notifications, no_update, no_update, True, current_modal_children
+        result,
+        "",
+        notifications,
+        no_update,
+        no_update,
+        True,
+        current_modal_children,
+        "",  # Passer une chaîne vide pour user_prompt
     )
 
 
@@ -314,6 +323,7 @@ def _handle_same_level(
     session_id: str,
     model_response: str,
     notifications: List[Any],
+    user_prompt: str,  # Ajout du paramètre user_prompt
 ) -> Tuple[
     str,
     str,
@@ -349,6 +359,7 @@ def _handle_same_level(
         f"Level {current_level}",
         False,
         no_update,
+        user_prompt,  # Passer user_prompt à _create_response
     )
 
 
@@ -408,6 +419,7 @@ def _create_response(
     subtitle: Union[str, no_update],
     open_modal: bool,
     modal_children: Union[List[Any], no_update],
+    user_prompt: str,  # Ajout du paramètre user_prompt
 ) -> Tuple[
     str,
     str,
@@ -426,7 +438,7 @@ def _create_response(
     """Create a standardized response tuple."""
     return (
         str(model_response),
-        "",
+        user_prompt,  # Retourner user_prompt au lieu d'une chaîne vide
         False,
         "trigger_focus",
         result.individual_scores.get("prompt_check", 0) / 4,

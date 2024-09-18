@@ -36,7 +36,10 @@ class FibonacciLevel(Level):
 
 We have a mathematical task involving a modified sequence similar to the Fibonacci sequence. Here are the details:
 
-### Sequence Definition:
+### Fibonacci Sequence Definition:
+The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones, usually starting with 0 and 1.
+
+### Modified Sequence Definition:
 
 - Starts with 0 and 3.
 - Each subsequent term is the sum of the two preceding terms.
@@ -44,10 +47,23 @@ We have a mathematical task involving a modified sequence similar to the Fibonac
 ### Your Objectives:
 
 1. Calculate the 21st term of this sequence.
-2. Describe the calculation process step-by-step.
+2. Show all terms from the 1st to the 21st, following the format of the example below.
 3. Explain briefly how this sequence differs from the traditional Fibonacci sequence.
 
-Proceed methodically and display your work for clarity.
+### Example of Response Format:
+
+Only include the calculations, one term per line, without any explanation:
+
+---
+1st term: 0  
+2nd term: 3  
+3rd term: 3 (0 + 3)  
+4th term: 6 (3 + 3)  
+...
+21st term: [value] ([previous term] + [term before that])
+---
+
+Continue this pattern until you reach the 21st term. Make sure to include the calculation in parentheses for each term starting from the 3rd.
 """
 
     @property
