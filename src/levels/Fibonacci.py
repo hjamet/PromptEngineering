@@ -1,4 +1,5 @@
 from src.Level import Level, CheckResult
+import re
 
 
 class FibonacciLevel(Level):
@@ -13,159 +14,74 @@ class FibonacciLevel(Level):
     @property
     def instructions(self) -> str:
         return """
-        # 🧮 Welcome to Level 3: The Fibonacci Sequence Challenge! 🧮
+        # 🧮 Welcome to Level 3: The Modified Fibonacci Sequence Challenge! 🧮
 
-        Alright, number enthusiast, here's your exciting mission:
+        Let's define our special sequence:
+        - It starts with 0 and 3
+        - Each subsequent number is the sum of the two preceding ones
 
-        1. 🔢 Guide our AI companion to calculate the 21st term of the Fibonacci sequence.
-        2. 🎯 Ensure the answer includes the correct number. It's our star of the show!
-        3. 🚫 Keep it precise - no numbers larger than the result should appear in the response.
-        4. 🧠 No cheating: the AI should do the calculation, not you!
+        Your mission, should you choose to accept it:
+
+        1. 🔢 Guide our AI buddy to calculate the 21st term of this sequence.
+        2. 🎯 Make sure the correct answer is included. It's the star of our math show!
+        3. 🧠 The AI should do the math, not you. No sneaky calculators allowed!
 
         ## 💡 Pro Tip:
-        - Encourage a step-by-step calculation approach. It's not just about the final answer, but the journey to get there!
+        Encourage a step-by-step approach. We want to see the journey, not just the destination!
         """
 
     @property
     def correct_question(self) -> str:
-        return """Please calculate the 21st term of the Fibonacci sequence. Follow these steps:
-1. Start with the first two terms: 0 and 1.
-2. Calculate each subsequent term by adding the two preceding terms.
-3. Continue this process until you reach the 21st term.
-4. Provide the final result and show your work.
-Remember, the Fibonacci sequence starts with 0 and 1, and each number afterwards is the sum of the two preceding ones."""
+        return """## AI Assistant Task
+
+We have a mathematical task involving a modified sequence similar to the Fibonacci sequence. Here are the details:
+
+### Sequence Definition:
+
+- Starts with 0 and 3.
+- Each subsequent term is the sum of the two preceding terms.
+
+### Your Objectives:
+
+1. Calculate the 21st term of this sequence.
+2. Describe the calculation process step-by-step.
+3. Explain briefly how this sequence differs from the traditional Fibonacci sequence.
+
+Proceed methodically and display your work for clarity.
+"""
 
     @property
     def correct_answer(self) -> str:
-        return """
-The Fibonacci sequence is a sequence of numbers where each term is the sum of the two preceding terms, typically with the first initial value defined as 0 (F(0) = 0) and the second initial value being 1 (F(1) = 1). This process is repeated for each subsequent term: the preceding term is added to the one that preceded it.
+        return """To calculate the 21st term of this modified sequence, where we start with 0 and 3 and each subsequent term is the sum of the two preceding terms, let's work through it step-by-step:
 
-Step 1: Calculate F(2)
+Step-by-Step Calculation:
+Initial Terms:
 
-Using the given values of F(0) and F(1), we calculate F(2) as follows:
+Term 1: 0
+Term 2: 3
+Subsequent Terms Calculation:
 
-F(2) = F(1) + F(0) = 1 + 0 = 1
-
-Step 2: Calculate F(3)
-
-We now add the previous term (which is F(2)) to F(1) to find F(3) :
-
-F(3) = F(2) + F(1) = 1 + 1 = 2
-
-Step 3: Calculate F(4)
-
-Now we take F(3), which is the previous term, and add it to F(2) to calculate F(4) :
-
-F(4) = F(3) + F(2) = 2 + 1 = 3
-
-Step 4: Calculate F(5)
-
-Following the same logic, we now add F(4), which is the previous term, to F(3) to find F(5) :
-
-F(5) = F(4) + F(3) = 3 + 2 = 5
-
-Step 5: Calculate F(6)
-
-To obtain F(6), we now add F(5), the previous term, to F(4) :
-
-F(6) = F(5) + F(4) = 5 + 3 = 8
-
-Step 6: Calculate F(7)
-
-Continuing this process, we now add the previous term (which is F(6)) to F(5) to find F(7) :
-
-F(7) = F(6) + F(5) = 8 + 5 = 13
-
-Step 7: Calculate F(8)
-
-To obtain F(8), we now add the previous term (which is F(7)) to F(6) :
-
-F(8) = F(7) + F(6) = 13 + 8 = 21
-
-Step 8: Calculate F(9)
-
-Continuing, we now add the previous term (which is F(8)) to F(7) to find F(9) :
-
-F(9) = F(8) + F(7) = 21 + 13 = 34
-
-Step 9: Calculate F(10)
-
-To obtain F(10), we now add the previous term (which is F(9)) to F(8) :
-
-F(10) = F(9) + F(8) = 34 + 21 = 55
-
-Step 10: Calculate F(11)
-
-Continuing this process, we now add the previous term (which is F(10)) to F(9) to find F(11) :
-
-F(11) = F(10) + F(9) = 55 + 34 = 89
-
-Step 11: Calculate F(12)
-
-To obtain F(12), we now add the previous term (which is F(11)) to F(10) :
-
-F(12) = F(11) + F(10) = 89 + 55 = 144
-
-Step 12: Calculate F(13)
-
-Continuing, we now add the previous term (which is F(12)) to F(11) to find F(13) :
-
-F(13) = F(12) + F(11) = 144 + 89 = 233
-
-Step 13: Calculate F(14)
-
-To obtain F(14), we now add the previous term (which is F(13)) to F(12) :
-
-F(14) = F(13) + F(12) = 233 + 144 = 377
-
-Step 14: Calculate F(15)
-
-Continuing this process, we now add the previous term (which is F(14)) to F(13) to find F(15) :
-
-F(15) = F(14) + F(13) = 377 + 233 = 610
-
-Step 15: Calculate F(16)
-
-To obtain F(16), we now add the previous term (which is F(15)) to F(14) :
-
-F(16) = F(15) + F(14) = 610 + 377 = 987
-
-Step 16: Calculate F(17)
-
-Continuing, we now add the previous term (which is F(16)) to F(15) to find F(17) :
-
-F(17) = F(16) + F(15) = 987 + 610 = 1597
-
-Step 17: Calculate F(18)
-
-To obtain F(18), we now add the previous term (which is F(17)) to F(16) :
-
-F(18) = F(17) + F(16) = 1597 + 987 = 2584
-
-Step 18: Calculate F(19)
-
-Continuing this process, we now add the previous term (which is F(18)) to F(17) to find F(19) :
-
-F(19) = F(18) + F(17) = 2584 + 1597 = 4181
-
-Step 19: Calculate F(20)
-
-To obtain F(20), we now add the previous term (which is F(19)) to F(18) :
-
-F(20) = F(19) + F(18) = 4181 + 2584 = 6765
-
-Step 20: Calculate F(21)
-
-Finally, to find the 21st term of the Fibonacci sequence, we now add the previous term (which is F(20)) to F(19) :
-
-F(21) = F(20) + F(19) = 6765 + 4181 = 10946
-
-The 21st term of the Fibonacci sequence is therefore :
-
-10946.
-
-This exercise helps you understand the evolution of a well-known sequence, and each step demonstrates the logical process of adding the two previous terms to obtain the next term.
-"""
+Term 3: 0 + 3 = 3
+Term 4: 3 + 3 = 6
+Term 5: 3 + 6 = 9
+Term 6: 6 + 9 = 15
+Term 7: 9 + 15 = 24
+Term 8: 15 + 24 = 39
+Term 9: 24 + 39 = 63
+Term 10: 39 + 63 = 102
+Term 11: 63 + 102 = 165
+Term 12: 102 + 165 = 267
+Term 13: 165 + 267 = 432
+Term 14: 267 + 432 = 699
+Term 15: 432 + 699 = 1131
+Term 16: 699 + 1131 = 1830
+Term 17: 1131 + 1830 = 2961
+Term 18: 1830 + 2961 = 4791
+Term 19: 2961 + 4791 = 7752
+Term 20: 4791 + 7752 = 12543
+Term 21: 7752 + 12543 = 20295
+Explanation of the Sequence Difference:
+This sequence is similar to the Fibonacci sequence, with each term being the sum of the two preceding terms. However, it differs from the traditional Fibonacci sequence in its initial terms. The traditional Fibonacci sequence starts with 0 and 1, whereas this modified sequence starts with 0 and 3. This change in initial terms alters all subsequent terms in the sequence."""
 
     def check_prompt(self, prompt: str) -> CheckResult:
         """
@@ -178,20 +94,27 @@ This exercise helps you understand the evolution of a well-known sequence, and e
             CheckResult: The result of the check.
         """
         lower_prompt = prompt.lower()
-        if "10946" in lower_prompt:
-            return CheckResult(0, ["The prompt should not contain the answer (10946)."])
+        if "20295" in lower_prompt:
+            return CheckResult(0, ["The prompt should not contain the answer."])
 
-        if "fibonacci" not in lower_prompt or "21" not in lower_prompt:
+        if (
+            "fibonacci" not in lower_prompt
+            or "21" not in lower_prompt
+            or "1" not in lower_prompt
+            or "3" not in lower_prompt
+        ):
             return CheckResult(
                 0,
-                ["The prompt should mention the Fibonacci sequence and the 21st term."],
+                [
+                    "The prompt should mention the modified Fibonacci sequence starting with 1 and 3, and ask for the 21st term."
+                ],
             )
 
         return CheckResult(100, [])
 
     def check_answer(self, answer: str) -> CheckResult:
         """
-        Check if the answer contains 10946 and no larger numbers.
+        Check if the answer contains the 21st term of the modified Fibonacci sequence and no larger numbers.
 
         Args:
             answer (str): The answer to check.
@@ -199,18 +122,25 @@ This exercise helps you understand the evolution of a well-known sequence, and e
         Returns:
             CheckResult: The result of the check.
         """
-        numbers = [int(n) for n in answer.split() if n.isdigit()]
-        if 10946 in numbers and all(n <= 10946 for n in numbers):
+        # Extract numbers from the answer, including those in markdown or adjacent to other characters
+        numbers = [int(n) for n in re.findall(r"\d+", answer)]
+
+        if 20295 in numbers and all(n <= 20295 for n in numbers):
             return CheckResult(100, [])
-        elif 10946 not in numbers:
-            return CheckResult(0, ["Damned ! The 21st Fibonacci number is missing !"])
+        elif 20295 not in numbers:
+            return CheckResult(
+                0,
+                [
+                    "Damned! The 21st term of the modified Fibonacci sequence is missing!"
+                ],
+            )
         else:
             return CheckResult(
-                0, ["Hum...The answer contains numbers larger than 10946."]
+                0, ["Hum...The answer contains numbers larger than the 21st term."]
             )
 
     def on_success(self, score: float) -> str:
-        return f"Excellent! You've mastered the Fibonacci sequence challenge with a score of {score:.2f}."
+        return f"Excellent! You've mastered the modified Fibonacci sequence challenge with a score of {score:.2f}."
 
     def on_failure(self, score: float) -> str:
-        return f"Almost there! Your current score is {score:.2f}. Make sure to include the correct 21st Fibonacci number (10946) and no larger numbers."
+        return f"Almost there! Your current score is {score:.2f}. Make sure to include the correct 21st term of the modified Fibonacci sequence (20295) and no larger numbers."
