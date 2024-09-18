@@ -146,7 +146,7 @@ class Chat:
         streamline: bool = False,
     ) -> str:
         """
-        Ask a message to the chat.
+        Ask a message to the chat without using previous message history.
 
         Args:
             message (str): The message to ask.
@@ -162,15 +162,17 @@ class Chat:
         self.add_message("user", message, score=None)
         response_content = ""
 
-        if self.provider == "openai":
-            formatted_messages = [
-                {"role": msg.role, "content": msg.content} for msg in self.messages
-            ]
+        # Prepare messages with only system prompt (if any) and current user message
+        current_messages = []
+        if self.system_prompt:
+            current_messages.append({"role": "system", "content": self.system_prompt})
+        current_messages.append({"role": "user", "content": message})
 
+        if self.provider == "openai":
             try:
                 completion = self.openai_client.chat.completions.create(
                     model=self.model,
-                    messages=formatted_messages,
+                    messages=current_messages,
                     temperature=temperature,
                     top_p=top_p,
                     frequency_penalty=repeat_penalty,
@@ -194,10 +196,9 @@ class Chat:
 
         elif self.provider == "replicate":
             formatted_prompt = ""
-            for msg in self.messages:
-                formatted_prompt += f"{msg.role}: {msg.content}\n"
-
-            formatted_prompt += f"user: {message}\nassistant: "
+            for msg in current_messages:
+                formatted_prompt += f"{msg['role']}: {msg['content']}\n"
+            formatted_prompt += "assistant: "
 
             output = replicate.run(
                 self.replicate_model,
@@ -210,6 +211,7 @@ class Chat:
                 },
             )
             response_content = "".join(output)
+
         elif self.provider == "ollama":
             self.logger.debug(
                 f"""Sending message to Ollama: {message}
@@ -222,9 +224,7 @@ class Chat:
 
             chat_params = {
                 "model": self.model,
-                "messages": [
-                    {"role": msg.role, "content": msg.content} for msg in self.messages
-                ],
+                "messages": current_messages,
                 "options": {
                     "temperature": temperature,
                     "repeat_penalty": repeat_penalty,
