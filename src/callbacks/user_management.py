@@ -1,27 +1,13 @@
 from typing import Dict, Any, Tuple, Optional, List
 from dash import no_update, html
-from src.levels.level_1 import Level1
-from src.levels.level_2 import Level2
-from src.levels.level_3 import Level3
-from src.levels.level_4 import Level4
-from src.levels.level_5 import Level5
 from src.Logger import Logger
+from src.levels.LevelList import levels, max_level
 from cache_manager import (
     generate_session_id,
     get_user_data,
     update_user_data,
 )
 import json
-
-LEVELS = {
-    1: Level1(),
-    2: Level2(),
-    3: Level3(),
-    4: Level4(),
-    5: Level5(),
-}
-
-MAX_LEVEL = max(LEVELS.keys())
 
 logger = Logger(__name__).get_logger()
 
@@ -89,7 +75,7 @@ def handle_username_input(
         user_data, _ = _create_session(cache, session_id, username)
 
         current_level = user_data.get("level", 1)
-        level = Level1()
+        level = levels.get(current_level, levels[1])
         instructions = level.instructions
 
         return (
@@ -142,7 +128,7 @@ def update_level_info(
     current_level = user_data.get("level", 1)
     game_completed = user_data.get("game_completed", False)
 
-    if current_level > MAX_LEVEL or game_completed:
+    if current_level > max_level or game_completed:
         user_data["game_completed"] = True
         update_user_data(cache, session_id, user_data)
         congratulations_message = html.Div(
@@ -196,7 +182,7 @@ def update_level_info(
             [congratulations_message] + scores_modal_children,
         )
 
-    level = LEVELS.get(current_level, Level1())
+    level = levels.get(current_level, levels[1])
     return (
         level.instructions,
         f"Level {current_level}",

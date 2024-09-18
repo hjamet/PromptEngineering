@@ -1,7 +1,7 @@
 from src.Level import Level, CheckResult
 
 
-class Level5(Level):
+class FamilyLevel(Level):
     """Level 5: Complex Family Relations"""
 
     @property

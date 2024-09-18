@@ -2,7 +2,7 @@ from src.Level import Level, CheckResult, LevelResult, Message
 import re
 
 
-class Level4(Level):
+class YesNoLevel(Level):
     @property
     def level_number(self) -> int:
         return 4

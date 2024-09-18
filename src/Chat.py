@@ -68,7 +68,12 @@ def start_ollama_server():
 
 class Chat:
 
-    def __init__(self, model="llama3.1", replicate_model=None, system_prompt=None):
+    def __init__(
+        self,
+        model="llama3.1",
+        replicate_model="meta/meta-llama-3-8b-instruct",
+        system_prompt=None,
+    ):
         """
         Initialize the Chat instance.
 
@@ -242,15 +247,15 @@ class Chat:
 
 
 if __name__ == "__main__":
-    chat_ollama = Chat(system_prompt="You must always answer in german")
-    chat_ollama.ask(
-        "Hello, how are you?",
-        streamline=True,
-        temperature=0.1,
-        repeat_penalty=1.1,
-        top_k=40,
-        top_p=0.95,
-    )
+    # chat_ollama = Chat(system_prompt="You must always answer in german")
+    # chat_ollama.ask(
+    #     "Hello, how are you?",
+    #     streamline=True,
+    #     temperature=0.1,
+    #     repeat_penalty=1.1,
+    #     top_k=40,
+    #     top_p=0.95,
+    # )
 
     chat_replicate = Chat(
         replicate_model="meta/meta-llama-3-8b-instruct",

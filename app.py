@@ -9,7 +9,7 @@ from src.Chat import start_ollama_server
 from cache_manager import configure_cache, reset_cache
 
 # Set React version
-os.environ["REACT_VERSION"] = "18.2.0"
+dash._dash_renderer._set_react_version("18.2.0")
 
 # Configure logging
 logging.basicConfig(
@@ -72,4 +72,4 @@ register_callbacks(app)
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8050)
+    app.run(debug=False, host="0.0.0.0", port=8050)

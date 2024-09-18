@@ -1,7 +1,7 @@
 from src.Level import Level, CheckResult, LevelResult
 
 
-class Level2(Level):
+class PrecisionPerformerLevel(Level):
     @property
     def level_number(self) -> int:
         return 2

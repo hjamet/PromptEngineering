@@ -4,24 +4,10 @@ from dash_iconify import DashIconify
 import dash_mantine_components as dmc
 from src.Chat import Chat
 from src.Logger import Logger
-from src.levels.level_1 import Level1
-from src.levels.level_2 import Level2
-from src.levels.level_3 import Level3
-from src.levels.level_4 import Level4
-from src.levels.level_5 import Level5
+from src.levels.LevelList import levels, max_level
 from cache_manager import get_user_data, update_user_data
 
 logger = Logger(__name__).get_logger()
-
-LEVELS = {
-    1: Level1(),
-    2: Level2(),
-    3: Level3(),
-    4: Level4(),
-    5: Level5(),
-}
-
-MAX_LEVEL = max(LEVELS.keys())
 
 
 def process_input_and_evaluate(
@@ -65,7 +51,7 @@ def process_input_and_evaluate(
         )
 
     chat, current_level = user_data["chat"], user_data.get("level", 1)
-    level = LEVELS.get(current_level, Level1())
+    level = levels.get(current_level, levels[1])
 
     _update_system_prompt(chat, level)
     model_response = chat.ask(
@@ -199,18 +185,18 @@ def _handle_level_up(
     current_level += 1
     user_data["level"] = current_level
 
-    if current_level > MAX_LEVEL:
+    if current_level > max_level:
         return _handle_game_completion(
             result, current_modal_children, notifications, user_data, cache, session_id
         )
 
-    next_level = LEVELS.get(current_level, Level1())
+    next_level = levels.get(current_level, levels[1])
     chat = Chat(
         model=chat.model,
         replicate_model=chat.replicate_model,
         system_prompt=next_level.system_prompt,
     )
-    success_message = LEVELS[current_level - 1].on_success(result.total_score)
+    success_message = levels[current_level - 1].on_success(result.total_score)
     notifications.append(
         _create_level_notification(
             "Level Up", current_level - 1, success_message, "green", "check-circle"
@@ -255,7 +241,7 @@ def _handle_game_completion(
 ]:
     """Handle the case when user completes all levels."""
     # Increment the user's level to MAX_LEVEL + 1
-    user_data["level"] = MAX_LEVEL + 1
+    user_data["level"] = max_level + 1
     user_data["game_completed"] = True
     update_user_data(cache, session_id, user_data)
 
@@ -346,7 +332,7 @@ def _handle_same_level(
 ]:
     """Handle the case when user remains at the same level."""
     if result.total_score < 100:
-        failure_message = LEVELS[current_level].on_failure(result.total_score)
+        failure_message = levels[current_level].on_failure(result.total_score)
         notifications.append(
             _create_level_notification(
                 "Feedback", current_level, failure_message, "blue", "info-circle"

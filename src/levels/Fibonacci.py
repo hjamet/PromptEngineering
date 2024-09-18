@@ -1,7 +1,7 @@
 from src.Level import Level, CheckResult
 
 
-class Level3(Level):
+class FibonacciLevel(Level):
     @property
     def level_number(self) -> int:
         return 3

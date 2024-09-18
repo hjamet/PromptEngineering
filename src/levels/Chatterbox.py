@@ -1,7 +1,7 @@
 from src.Level import Level, CheckResult, LevelResult
 
 
-class Level1(Level):
+class ChatterboxLevel(Level):
     @property
     def level_number(self) -> int:
         return 1
