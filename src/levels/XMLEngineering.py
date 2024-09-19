@@ -51,23 +51,27 @@ class XMLEngineeringLevel(Level):
         Returns:
             CheckResult: The result of the check.
         """
-        try:
-            root = ET.fromstring(prompt)
-        except ET.ParseError:
-            return CheckResult(0, ["Malformed XML. Check your tags."])
-
+        # Extract all XML content
         required_tags = [
-            "character",
-            "setting",
-            "genre",
-            "include_words",
-            "exclude_words",
+            "<character>",
+            "<setting>",
+            "<genre>",
+            "<include_words>",
+            "<exclude_words>",
+            "</character>",
+            "</setting>",
+            "</genre>",
+            "</include_words>",
+            "</exclude_words>",
         ]
-        found_tags = [elem.tag.lower() for elem in root.iter()]
 
-        missing_tags = [tag for tag in required_tags if tag not in found_tags]
+        missing_tags = []
+        for tag in required_tags:
+            if tag not in prompt:
+                missing_tags.append(tag)
+
         if missing_tags:
-            return CheckResult(50, [f"Missing tags: {', '.join(missing_tags)}"])
+            return CheckResult(0, [f"Missing tags: {', '.join(missing_tags)}"])
 
         expected_words = {
             "include": ["butterfly", "moonlight", "whisper", "adventure", "dream"],
@@ -82,7 +86,7 @@ class XMLEngineeringLevel(Level):
         if missing_words:
             return CheckResult(0, [f"Missing words: {', '.join(missing_words)}"])
 
-        return CheckResult(100, ["Well-structured XML with all required elements."])
+        return CheckResult(100, [])
 
     def check_answer(self, answer: str) -> CheckResult:
         """

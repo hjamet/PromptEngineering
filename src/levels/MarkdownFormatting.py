@@ -55,7 +55,7 @@ class MarkdownFormattingLevel(Level):
         ]
 
         score = sum(bool(re.search(pattern, prompt)) for pattern in markdown_elements)
-        score = min(score * 20, 100)  # 20 points per element, max 100
+        score = 20 + min(score * 20, 80)  # 20 points per element, max 100
 
         if score < 60:
             return CheckResult(
@@ -93,7 +93,7 @@ class MarkdownFormattingLevel(Level):
             bool(re.search(pattern, markdown_content.group(1)))
             for pattern in markdown_elements
         )
-        score = min(score * 20, 100)  # 20 points per element, max 100
+        score = 20 + min(score * 20, 80)  # 20 points per element, max 100
 
         if score < 60:
             return CheckResult(
