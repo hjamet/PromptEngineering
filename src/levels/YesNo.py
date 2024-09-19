@@ -5,7 +5,7 @@ import re
 class YesNoLevel(Level):
     @property
     def level_number(self) -> int:
-        return 5
+        return 6
 
     @property
     def instructions(self) -> str:

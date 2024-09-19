@@ -6,7 +6,7 @@ class FamilyLevel(Level):
 
     @property
     def level_number(self) -> int:
-        return 6
+        return 7
 
     @property
     def min_score_to_pass(self) -> float:

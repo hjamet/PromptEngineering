@@ -11,7 +11,16 @@ class ChatterboxLevel(Level):
         return """
         # 🎉 Welcome to Level 1: The Chatterbox Challenge! 🎉
 
-        Alright, AI whisperer, here's your mission :
+        ## 🚨 Important Notes Before You Start:
+
+        1. The model may have a system prompt that you can't access.
+        2. The model has no memory - it doesn't remember your previous questions!
+        3. We're using a smaller model than GPT-4, so expect lower performance. This is good because:
+           - It makes the game more challenging (we're a bit evil 😈)
+           - Techniques that work on small models will work even better on larger ones!
+           - It keeps the game from being too easy 😉
+
+        Alright, AI whisperer, here's your mission:
 
         1. 🗣️ Get our AI buddy to say **literally anything**. Yep, anything at all!
         2. 🤏 But here's the twist: keep it snappy! The response should be **under 30 words**.
@@ -19,6 +28,8 @@ class ChatterboxLevel(Level):
         ## 💡 Pro Tips:
         - This is your warm-up lap. Easy peasy lemon squeezy!
         - Remember, brevity is the soul of wit (and passing this level)!
+
+        Good luck, and let the prompt engineering begin!
         """
 
     def check_answer(self, answer: str) -> CheckResult:

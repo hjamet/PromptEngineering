@@ -17,6 +17,8 @@ class XMLEngineeringLevel(Level):
         return """
         # 🏗️ Welcome to Level 4: XML Engineering for Prompt Crafting! 🏗️
 
+        Did you know that using XML tags in prompts can significantly enhance the structure and clarity of your instructions to AI models? Similar to Markdown, XML tags help organize different components of your prompt, leading to more accurate and higher-quality outputs.
+
         In this level, you'll use XML tags to structure your prompts and control the AI's output.
 
         Your mission:
@@ -28,7 +30,14 @@ class XMLEngineeringLevel(Level):
         3. 🎭 Include tags for `<character>`, `<setting>`, and `<genre>`.
         4. 🔍 Ensure your XML is well-formed (properly nested and closed tags).
 
-        To learn more about using XML in prompt engineering, research the topic online.
+        ## 💡 Pro Tips:
+        - XML tags help separate different parts of your prompt, preventing the AI from mixing up instructions with examples or context.
+        - Use consistent tag names throughout your prompt for clarity.
+        - Nest tags for hierarchical content: `<outer><inner></inner></outer>`.
+        - This technique is particularly effective for models like Claude.
+
+        To learn more about using XML in prompt engineering, check out this guide: [Use XML tags to structure your prompts](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags).
+
         Be creative and precise in your prompt crafting!
         """
 

@@ -4,13 +4,15 @@ from src.levels.Fibonacci import FibonacciLevel
 from src.levels.YesNo import YesNoLevel
 from src.levels.Family import FamilyLevel
 from src.levels.XMLEngineering import XMLEngineeringLevel
+from src.levels.MarkdownFormatting import MarkdownFormattingLevel
 
 levels = {
     1: ChatterboxLevel(),
     2: PrecisionPerformerLevel(),
     3: FibonacciLevel(),
     4: XMLEngineeringLevel(),
-    5: YesNoLevel(),
-    6: FamilyLevel(),
+    5: MarkdownFormattingLevel(),
+    6: YesNoLevel(),
+    7: FamilyLevel(),
 }
 max_level = max(levels.keys())
