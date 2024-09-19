@@ -33,7 +33,7 @@ class PrecisionPerformerLevel(Level):
         return CheckResult(
             0,
             [
-                f"The response should be exactly 'This is my answer'. Got: '{answer[:min(100, len(answer))]}'"
+                f"The response should be exactly 'This is my answer'. I am afraid there is a small detail that is not correct 😉"
             ],
         )
 

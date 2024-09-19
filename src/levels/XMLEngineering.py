@@ -26,7 +26,7 @@ class XMLEngineeringLevel(Level):
         1. 📝 Create a prompt using XML tags to instruct the AI to write a short story.
         2. 🏷️ Use XML tags to specify two lists of words:
            - Words that MUST be included in the story: butterfly, moonlight, whisper, adventure, dream
-           - Words that MUST NOT be used in the story: the, and, a, is, was
+           - Words that MUST NOT be used in the story: wing, night, voice, journey, sleep
         3. 🎭 Include tags for `<character>`, `<setting>`, and `<genre>`.
         4. 🔍 Ensure your XML is well-formed (properly nested and closed tags).
 
@@ -42,15 +42,19 @@ class XMLEngineeringLevel(Level):
         """
 
     def check_prompt(self, prompt: str) -> CheckResult:
+        """
+        Check if the prompt contains required XML tags and words.
+
+        Args:
+            prompt (str): The user's prompt.
+
+        Returns:
+            CheckResult: The result of the check.
+        """
         try:
             root = ET.fromstring(prompt)
         except ET.ParseError:
-            return CheckResult(
-                0,
-                [
-                    "The XML in your prompt is not well-formed. Please check for proper nesting and closing of tags."
-                ],
-            )
+            return CheckResult(0, ["Malformed XML. Check your tags."])
 
         required_tags = [
             "character",
@@ -63,64 +67,66 @@ class XMLEngineeringLevel(Level):
 
         missing_tags = [tag for tag in required_tags if tag not in found_tags]
         if missing_tags:
-            return CheckResult(
-                50,
-                [
-                    f"Your prompt is missing the following required tags: {', '.join(missing_tags)}"
-                ],
-            )
+            return CheckResult(50, [f"Missing tags: {', '.join(missing_tags)}"])
 
-        include_words = root.find("include_words")
-        exclude_words = root.find("exclude_words")
+        expected_words = {
+            "include": ["butterfly", "moonlight", "whisper", "adventure", "dream"],
+            "exclude": ["wing", "night", "voice", "journey", "sleep"],
+        }
 
-        if include_words is None or exclude_words is None:
-            return CheckResult(
-                75,
-                [
-                    "Make sure you have both <include_words> and <exclude_words> tags in your prompt."
-                ],
-            )
+        missing_words = []
+        for word in expected_words["include"] + expected_words["exclude"]:
+            if not re.search(r"\b" + re.escape(word) + r"\b", prompt.lower()):
+                missing_words.append(word)
 
-        if len(include_words.text.split()) != 5 or len(exclude_words.text.split()) != 5:
-            return CheckResult(
-                75,
-                [
-                    "Both <include_words> and <exclude_words> should contain exactly 5 words each."
-                ],
-            )
+        if missing_words:
+            return CheckResult(0, [f"Missing words: {', '.join(missing_words)}"])
 
-        return CheckResult(
-            100,
-            [
-                "Great job! Your XML prompt is well-structured and includes all required elements."
-            ],
-        )
+        return CheckResult(100, ["Well-structured XML with all required elements."])
 
     def check_answer(self, answer: str) -> CheckResult:
-        root = ET.fromstring(self.last_prompt)
-        include_words = root.find("include_words").text.lower().split()
-        exclude_words = root.find("exclude_words").text.lower().split()
+        """
+        Check if the answer contains required words and excludes forbidden words.
+
+        Args:
+            answer (str): The AI's answer.
+
+        Returns:
+            CheckResult: The result of the check.
+        """
+        include_words = ["butterfly", "moonlight", "whisper", "adventure", "dream"]
+        exclude_words = ["wing", "night", "voice", "journey", "sleep"]
 
         answer_lower = answer.lower()
-        included_count = sum(word in answer_lower for word in include_words)
-        excluded_count = sum(word in answer_lower for word in exclude_words)
+        included_words = []
+        excluded_words = []
 
-        score = (included_count / 5) * 50 + ((5 - excluded_count) / 5) * 50
+        for word in include_words:
+            if not re.search(r"\b" + re.escape(word) + r"\b", answer_lower):
+                included_words.append(word)
+        for word in exclude_words:
+            if re.search(r"\b" + re.escape(word) + r"\b", answer_lower):
+                excluded_words.append(word)
+
+        included_count = len(include_words) - len(included_words)
+        excluded_count = len(excluded_words)
+
+        score = (included_count / len(include_words)) * 50 + (
+            (len(exclude_words) - excluded_count) / len(exclude_words)
+        ) * 50
         messages = []
 
-        if included_count < 5:
+        if included_words:
             messages.append(
-                f"The story is missing {5 - included_count} required words."
+                f"{len(included_words)} required words missing: {', '.join(included_words)}"
             )
-        if excluded_count > 0:
+        if excluded_words:
             messages.append(
-                f"The story contains {excluded_count} words that should have been excluded."
+                f"{excluded_count} excluded words present: {', '.join(excluded_words)}"
             )
 
         if not messages:
-            messages.append(
-                "The AI's response correctly includes and excludes the specified words."
-            )
+            messages.append("Correct response with included/excluded words.")
 
         return CheckResult(score, messages)
 

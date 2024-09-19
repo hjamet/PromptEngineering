@@ -26,8 +26,17 @@ class FibonacciLevel(Level):
         2. 🎯 Make sure the correct answer is included. It's the star of our math show!
         3. 🧠 The AI should do the math, not you. No sneaky calculators allowed!
 
-        ## 💡 Pro Tip:
-        Encourage a step-by-step approach. We want to see the journey, not just the destination!
+        ## 💡 Pro Tips:
+        - Encourage a step-by-step approach. We want to see the journey, not just the destination!
+        - Use the phrase "Think step by step!" This prompts the model to write out its reasoning process.
+        - Remember: language models don't actually "think" - they can only "think" by writing. 
+          Without writing, they're limited to "intuitions" based on pattern matching.
+        - By asking the model to write out its steps, we're helping it to:
+          a) Organize its approach to the problem
+          b) Catch potential errors in its logic
+          c) Provide a clear explanation of its problem-solving method
+        
+        Guiding the AI to write out its thought process often leads to more accurate and reliable results!
         """
 
     @property
