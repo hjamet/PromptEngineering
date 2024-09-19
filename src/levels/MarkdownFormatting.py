@@ -7,12 +7,16 @@ class MarkdownFormattingLevel(Level):
 
     @property
     def level_number(self) -> int:
-        return 5
+        return 3
+
+    @property
+    def min_score_to_pass(self) -> float:
+        return 85.0
 
     @property
     def instructions(self) -> str:
         return """
-        # 📝 Welcome to Level 5: Markdown Mastery! 📝
+        # 📝 Welcome to Level 3: Markdown Mastery! 📝
 
         Did you know that language models are often trained to respond in a language called Markdown? It's what manages the formatting of the response (like headings, bold, italic, links, etc.). For example, when you use ChatGPT and ask a question, the model will respond in Markdown, making the content more interesting and readable than plain text!
 

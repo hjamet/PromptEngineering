@@ -10,7 +10,7 @@ class XMLEngineeringLevel(Level):
 
     @property
     def min_score_to_pass(self) -> float:
-        return 100.0
+        return 90.0
 
     @property
     def instructions(self) -> str:
@@ -25,8 +25,8 @@ class XMLEngineeringLevel(Level):
 
         1. 📝 Create a prompt using XML tags to instruct the AI to write a short story.
         2. 🏷️ Use XML tags to specify two lists of words:
-           - Words that MUST be included in the story
-           - Words that MUST NOT be used in the story
+           - Words that MUST be included in the story: butterfly, moonlight, whisper, adventure, dream
+           - Words that MUST NOT be used in the story: the, and, a, is, was
         3. 🎭 Include tags for `<character>`, `<setting>`, and `<genre>`.
         4. 🔍 Ensure your XML is well-formed (properly nested and closed tags).
 

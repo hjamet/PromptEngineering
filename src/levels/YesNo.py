@@ -10,7 +10,7 @@ class YesNoLevel(Level):
     @property
     def instructions(self) -> str:
         return """
-        # 🎭 Welcome to Level 5: The Epic "Yes or No" Showdown! 🎭
+        # 🎭 Welcome to Level 6: The Epic "Yes or No" Showdown! 🎭
 
         ## 🤪 Honestly, this one's just for fun:
         

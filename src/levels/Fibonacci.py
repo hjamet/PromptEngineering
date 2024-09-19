@@ -5,7 +5,7 @@ import re
 class FibonacciLevel(Level):
     @property
     def level_number(self) -> int:
-        return 3
+        return 5
 
     @property
     def min_score_to_pass(self) -> float:
@@ -14,7 +14,7 @@ class FibonacciLevel(Level):
     @property
     def instructions(self) -> str:
         return """
-        # 🧮 Welcome to Level 3: The Modified Fibonacci Sequence Challenge! 🧮
+        # 🧮 Welcome to Level 5: The Modified Fibonacci Sequence Challenge! 🧮
 
         Let's define our special sequence:
         - It starts with 0 and 3

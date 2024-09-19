@@ -9,9 +9,9 @@ from src.levels.MarkdownFormatting import MarkdownFormattingLevel
 levels = {
     1: ChatterboxLevel(),
     2: PrecisionPerformerLevel(),
-    3: FibonacciLevel(),
+    3: MarkdownFormattingLevel(),
     4: XMLEngineeringLevel(),
-    5: MarkdownFormattingLevel(),
+    5: FibonacciLevel(),
     6: YesNoLevel(),
     7: FamilyLevel(),
 }
