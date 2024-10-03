@@ -10,7 +10,7 @@ class Logger:
     Includes filename and line number in log messages.
     """
 
-    def __init__(self, name, log_file="app.log", level=logging.DEBUG):
+    def __init__(self, name, log_file="app.log", level=logging.ERROR):
         """
         Initialize the logger with the given name and log file.
 

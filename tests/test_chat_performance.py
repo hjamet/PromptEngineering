@@ -1,3 +1,8 @@
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import multiprocessing
 import time
 import random
@@ -27,20 +32,14 @@ def simulate_user_session(user_id, num_questions):
     chat = Chat()
     results = []
     questions = [
-        "What is the capital of France?",
-        "Explain the theory of relativity briefly.",
-        "Who wrote 'To Kill a Mockingbird'?",
-        "What is the boiling point of water?",
-        "Describe the process of photosynthesis.",
-        "What are the main causes of climate change?",
-        "Explain the concept of artificial intelligence.",
-        "What is the significance of the Mona Lisa painting?",
-        "How does a computer's CPU work?",
-        "What are the major events of World War II?",
+        "Explain the concept of quantum computing.",
+        "What are the main differences between renewable and non-renewable energy sources?",
+        "Describe the process of neural network training in machine learning.",
+        "What are the potential implications of CRISPR technology in medicine?",
+        "How does blockchain technology work and what are its applications beyond cryptocurrency?",
     ]
 
-    for _ in range(num_questions):
-        question = random.choice(questions)
+    for question in questions[:num_questions]:
         start_time = time.time()
         response = chat.ask(question)
         end_time = time.time()
@@ -55,7 +54,10 @@ def simulate_user_session(user_id, num_questions):
                 "total_tokens": input_tokens + output_tokens,
             }
         )
-        time.sleep(random.uniform(1, 3))  # Pause aléatoire entre les questions
+        print(
+            f"User {user_id} got response to question {question} in {response_time:.2f} seconds"
+        )
+        time.sleep(random.uniform(0.5, 1.5))  # Reduced pause between questions
 
     return results
 
@@ -154,9 +156,7 @@ if __name__ == "__main__":
     start_ollama_server()
 
     scenarios = [
-        {"num_users": 1, "num_questions": 5},
-        {"num_users": 5, "num_questions": 3},
-        {"num_users": 10, "num_questions": 2},
+        {"num_users": 30, "num_questions": 3},
     ]
 
     scenarios_results = []
@@ -164,7 +164,7 @@ if __name__ == "__main__":
     for scenario in scenarios:
         print(f"\n{'='*50}")
         print(
-            f"Testing with {scenario['num_users']} users, {scenario['num_questions']} questions each"
+            f"Testing with {scenario['num_users']} concurrent users, {scenario['num_questions']} questions each"
         )
         print(f"{'='*50}")
         stats = run_performance_test(**scenario)

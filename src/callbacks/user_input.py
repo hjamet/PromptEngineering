@@ -193,7 +193,6 @@ def _handle_level_up(
 
     next_level = levels.get(current_level, levels[1])
     chat = Chat(
-        provider=chat.provider,
         system_prompt=next_level.system_prompt,
     )
     success_message = levels[current_level - 1].on_success(result.total_score)

@@ -14,7 +14,7 @@ dash._dash_renderer._set_react_version("18.2.0")
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
 logger = logging.getLogger(__name__)
@@ -54,11 +54,24 @@ app = dash.Dash(
     prevent_initial_callbacks=True,
 )
 
+
+# Réinitialiser le model_queue au démarrage de l'application
+def reset_model_queue():
+    """Réinitialise le fichier model_queue.txt"""
+    queue_file = "scratch/model_queue.txt"
+    providers = ["OpenAI", "Replicate", "Ollama"]
+    with open(queue_file, "w") as f:
+        for provider in providers:
+            f.write(f"{provider}: 0\n")
+
+
 # Configure cache
 cache = configure_cache(app)
 
-# Réinitialiser le cache au démarrage de l'application
+# Réinitialiser le cache et le model_queue au démarrage de l'application
 reset_cache(cache)
+reset_model_queue()
+
 
 # Set up app layout
 app.layout = dmc.MantineProvider(
